@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Hexo</title>
+  <title>Karl&#39;s Blog</title>
   
+  <subtitle>不积跬步无以至千里</subtitle>
+  <link href="https://karltan0328.github.io/atom.xml" rel="self"/>
   
-  <link href="http://example.com/atom.xml" rel="self"/>
-  
-  <link href="http://example.com/"/>
+  <link href="https://karltan0328.github.io/"/>
   <updated>2023-02-01T14:33:25.251Z</updated>
-  <id>http://example.com/</id>
+  <id>https://karltan0328.github.io/</id>
   
   <author>
-    <name>John Doe</name>
+    <name>Karl</name>
     
   </author>
   
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Hello World</title>
-    <link href="http://example.com/2023/02/01/hello-world/"/>
-    <id>http://example.com/2023/02/01/hello-world/</id>
+    <link href="https://karltan0328.github.io/2023/02/01/hello-world/"/>
+    <id>https://karltan0328.github.io/2023/02/01/hello-world/</id>
     <published>2023-02-01T14:33:25.251Z</published>
     <updated>2023-02-01T14:33:25.251Z</updated>
     
