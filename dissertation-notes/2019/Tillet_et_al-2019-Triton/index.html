@@ -1,0 +1,782 @@
+<!-- ./node_modules/hexo-theme-anzhiyu/layout/includes/layout.pug--><!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>论文笔记《Triton：An Intermediate Language and Compiler for Tiled Neural Network Computations》 | Karl的博客</title><meta name="keywords" content="论文笔记,MAPL"><meta name="author" content="Karl"><meta name="copyright" content="Karl"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="论文笔记《Triton：An Intermediate Language and Compiler for Tiled Neural Network Computations》"><meta name="application-name" content="论文笔记《Triton：An Intermediate Language and Compiler for Tiled Neural Network Computations》"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="论文笔记《Triton：An Intermediate Language and Compiler for Tiled Neural Network Computations》"><meta property="og:url" content="http://blog.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/index.html"><meta property="og:site_name" content="Karl的博客"><meta property="og:description" content="Triton：用于图块神经网络计算的中间语言和编译器。"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://img.karltan.com/covers/dissertation-notes/2019/Tillet_et_al-2019-Triton.png"><meta property="article:author" content="Karl"><meta property="article:tag"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://img.karltan.com/covers/dissertation-notes/2019/Tillet_et_al-2019-Triton.png"><meta name="description" content="Triton：用于图块神经网络计算的中间语言和编译器。"><link rel="shortcut icon" href="/img/logo.png"><link rel="canonical" href="http://blog.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/"><link rel="preconnect" href="//cdn.cbd.int"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//static.cloudflareinsights.com"/><link rel="preconnect" href="//www.clarity.ms"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="ItAgqL0bGv4TvuAzDl6nNhCuwt5RdBLYRkwae25qGzU"/><meta name="baidu-site-verification" content="codeva-Y7ehYLkADp"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@1.0.17/lib/assets/font-awesome-animation.min.css"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.20/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?0f2c96ab05c3c6d77e2d8fbf3240e404";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script defer="defer" data-pjax="data-pjax" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon="{&quot;token&quot;: &quot;758e166757ec488583caf56b7dd7f095&quot;}"></script><script>(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "i0moouu8jj");</script><script>const GLOBAL_CONFIG = {
+  linkPageTop: {"enable":true,"title":"与数百名博主无限进步","addFriendPlaceholder":"昵称（请勿包含博客等字样）：\n网站地址（要求博客地址，请勿提交个人主页）：\n头像图片url（请提供尽可能清晰的图片）：\n描述：\n站点截图（可选）：\n"},
+  peoplecanvas: undefined,
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"tianli","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"a93a787ee06b121647ed","Referer":"https://blog.karltan.com/"},
+  diytitle: undefined,
+  LA51: {"enable":true,"ck":"3Gbf0O9t4EtAOhf1","LingQueMonitorID":"3GbfAYtZPDEan7kS"},
+  greetingBox: {"enable":true,"default":"晚上好👋","list":[{"greeting":"晚安😴","startTime":0,"endTime":5},{"greeting":"早上好鸭👋, 祝你一天好心情！","startTime":6,"endTime":9},{"greeting":"上午好👋, 状态很好，鼓励一下～","startTime":10,"endTime":10},{"greeting":"11点多啦, 在坚持一下就吃饭啦～","startTime":11,"endTime":11},{"greeting":"午安👋, 宝贝","startTime":12,"endTime":13},{"greeting":"🌈充实的一天辛苦啦！","startTime":14,"endTime":17},{"greeting":"18点喽, 奖励一顿丰盛的大餐吧🍔。","startTime":18,"endTime":19},{"greeting":"晚上好👋, 在属于自己的时间好好放松😌~","startTime":20,"endTime":24}]},
+  twikooEnvId: 'https://twikoo.karltan.com/.netlify/functions/twikoo',
+  commentBarrageConfig:{"enable":true,"maxBarrage":1,"barrageTime":4000,"accessToken":"6f88301de4664d9d9a7cadf39a9f6e5a","mailMd5":""},
+  root: '/',
+  preloader: {"source":2},
+  friends_vue_info: {"apiurl":"https://fcircle.karltan.com/"},
+  navMusic: false,
+  mainTone: undefined,
+  authorStatus: {"skills":["🤖️ 数码科技爱好者","🔍 分享与热心帮助","🏠 智能家居小能手","🔨 设计开发一条龙","🤝 专修交互与设计","🏃 脚踏实地行动派","🧱 团队小组发动机","💢 壮汉人狠话不多"]},
+  algolia: {"appId":"8C3UHN3LPN","apiKey":"e00dcc69cdc423d89a288bc784a14012","indexName":"blog-search","hits":{"per_page":6},"languages":{"input_placeholder":"输入关键词后按下回车查找","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: {"limitDay":1,"position":"top","messagePrev":"本文距上次修改已经","messageNext":"天，其中的内容可能已经不再适用。"},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"作者: Karl","link":"链接: ","source":"来源: Karl的博客","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-right"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: {"enable":true,"delay":100,"shiftDelay":200},
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: 'Karl的博客',
+  title: '论文笔记《Triton：An Intermediate Language and Compiler for Tiled Neural Network Computations》',
+  postAI: 'true',
+  pageFillDescription: 'Triton An Intermediate Language and Compiler for Tiled Neural Network Computations, Abstract, 1 Introduction, 2 Related Work, 3 The Triton-C Language, 3.1 Syntax, 3.2 Semantics, 3.2.1 Tile Semantics, 3.2.2 Broadcasting Semantics, 3.3 Programming Model, 4 The Triton IR, 4.1 Structure, 4.1.1 Modules, 4.1.2 Functions, 4.1.3 Basic Blocks, 4.2 Support for Tile-Level Data-Flow Analysis, 4.2.1 Types, 4.2.2 Instructions, 4.3 Support for Tile-Level Control-Flow Analysis, 5 The Triton-JIT Compiler, 5.1 Machine-Independent Passes, 5.1.1 Pre-Fetching, 5.1.2 Tile-Level Peephole Optimization, 5.2 Machine-Dependent Passes, 5.2.1 Hierarchical Tiling, 5.2.2 Memory Coalescing, 5.2.3 Shared Memory Allocation, 5.2.4 Shared Memory Synchronization, 5.3 Auto-tuner, 6 Numerical Experiments, 6.1 Matrix Multiplication, 6.2 Convolutions, 6.2.1 Dense Convolutions, 6.2.2 Shift Convolutions, 7 Conclusions深度学习领域新颖研究想法的验证和部署通常受到某些基本原语高效计算内核的可用性限制特别是无法利用现有供应商库例如的操作面临着设备利用率不佳的风险除非由专家编写自定义实现通常以牺牲可移植性为代价因此开发新的编程抽象来以最小的性能成本指定自定义深度学习工作负载变得至关重要我们提出了一种以图块概念为中心的语言和编译器即静态形状的多维子数组我们的方法围绕基于语言和基于的中间表示用于根据参数图块变量的操作来表达张量程序以及一组新颖的图块级优化过程用于将这些程序编译成高效的代码我们将演示如何使用来构建矩阵乘法和卷积核的可移植实现与手工调优的供应商库相当或者高效地实现最近的研究想法如移位卷积深度神经网络最近的复兴很大程度上得益于可编程并行计算设备的广泛使用特别是多核架构例如性能的持续改进发挥了基础性作用使研究人员和工程师能够使用越来越多的数据来探索越来越多越来越大的模型这项工作得到了一系列供应商库的支持旨在尽快为从业者带来最新的硬件创新不幸的是这些库仅支持一组有限的张量运算将新原语的实现留给专家这一观察导致了基于多面体机制例如张量理解和或循环合成技术例如和的的各种特定领域语言的开发但是虽然这些系统通常对于某些类别的问题表现良好例如深度可分离卷积例如但在实践中它们通常比供应商库慢得多参见图并且缺乏实现结构化稀疏模式所需的表达能力无法在嵌套循环中使用仿射数组索引直接指定这些问题通常通过使用微内核来解决即手写的图块级内在函数但这种解决方案需要大量的体力劳动并且缺乏可移植性尽管最近提出了几种用于图块的高级编程抽象但底层编译器后端仍然缺乏对图块级操作和优化的支持为此我们推出图这是一种开源的中间语言和编译器用于指定图块程序并将其编译为高效的代码本文的主要贡献总结如下第节一种类似的语言用于根据参数图块变量表达张量程序该语言的目的是为现有的转编译器例如和熟悉的程序员提供稳定的接口显示了与简单矩阵乘法任务相关的源代码第节基于的中间表示提供适合切片级程序分析转换和优化的环境显示了修正线性单元函数的代码这里程序是在解析过程中直接从构建的但未来也可以探索从嵌入式或更高级别的编译器例如自动生成第节即时编译器和代码生成后端用于将程序编译为高效的位代码这包括一组图块级独立于机器的通道旨在独立于任何编译目标简化输入计算内核一组图块级机器相关通道用于生成高效的就绪一个自动调节器用于优化与上述过程相关的任何元参数第节对的数值评估证明了它的能力在循环神经网络和上生成与相当的矩阵乘法实现并且比替代的快倍重新实现了中用于密集卷积的算法而不损失性能创建新颖的研究思想的有效实现例如模块本文将以对现有相关文献的简要分析作为序言第节并以总结和未来工作方向作为总结第节深度学习框架和库的存在对于新型神经网络架构和算法的出现至关重要但是尽管线性代数编译器的分析和经验启发式方法取得了进步这些软件仍然总是依赖于手动优化的子例程例如和这导致了各种和编译器的开发通常基于三种不同的方法之一和已经使用张量级来使用模式匹配将张量程序转换为预定义的和操作模板例如张量收缩元素级操作等张量理解和使用多面体模型将一个或多个层参数化并自动编译成和程序和已经使用循环合成器来将张量计算转换为可以使用用户定义尽管可能是参数化的调度手动优化的环路嵌套式相比之下依赖于在传统编译管道中添加图块级操作和优化这种方法提供了较和更多的灵活性支持非仿射张量下标与和相反自动推断可能的执行计划否则必须手动指定到或的好处是以增加编程工作为代价的参见了解这些中矩阵乘法的实现的目的是为现有和未来转编译器以及熟悉低级编程的程序员提供稳定的前端在本节中我们将描述的类似的语法第节类似的语义第节及其单程序多数据的编程模型第节的语法基于更具体地说是的语法但进行了修改和扩展参见以适应接下来两小节中描述的语义和编程模型这些变化分为以下几类我们添加了用于声明多维数组的特殊语法例如以强调它们与中的嵌套数组例如的语义差异图块形状必须恒定但也可以使用关键字进行参数化一维整数图块可以使用省略号来初始化例如虽然保留了常见的语法用于逐元素数组操作等等但添加了各种内置函数以支持图块语义第节和编程模型维图块可以使用关键字和常用切片语法沿任何特定轴进行广播例如用于堆叠列的注意在其他情况下禁止将图块切片来检索标量或子数组图块操作第节中的基本控制流是通过使用前缀来实现的中内置图块类型和操作即图块语义的存在提供了两个主要好处首先它通过隐藏与块内内存合并缓存管理和专用硬件利用率相关的重要性能细节来简化张量程序的结构其次它为编译器自动执行这些优化打开了大门如第节所述中的图块是强类型的因为某些指令静态地要求其操作数遵守严格的形状约束例如除非首先适当地广播标量否则不能将标量添加到数组中广播语义提供了一组规则来隐式执行这些转换参见的示例最短操作数的形状用进行左填充直到两个操作数具有相同的维度根据需要多次复制两个操作数的内容直到它们的形状相同如果无法完成此操作则会发出错误上代码的执行由编程模型支持其中每个内核与所谓的启动网格中的可识别线程块相关联编程模型类似但每个内核都是单线程的尽管自动并行化并且与一组因实例而异的全局范围相关联参见图这种方法导致内核更简单其中不存在类似的并发原语共享内存同步线程间通信等可以使用内置函数查询与内核关联的全局范围以便创建指针图块如所示是一种基于的中间表示其目的是提供适合图块级程序分析转换和优化的环境在这项工作中程序是在解析过程中直接从构建的尽管将来它们也可以直接从更高级别的生成和程序共享相同的高级结构第节中回顾但前者还包括图块级数据流第节和控制流第节分析所需的许多扩展这些新颖的扩展对于执行第节中概述的优化以及安全访问第节中所示的任意形状的张量至关重要在最高级别程序由一个或多个称为模块的基本编译单元组成这些模块彼此独立编译并最终由链接器聚合链接器的作用是解析前向声明并充分合并全局定义每个模块本身都由函数全局变量常量和其他杂项符号例如元数据函数属性组成函数定义由返回类型名称和可能为空的参数列表组成如果需要可以添加额外的可见性对齐和链接说明符还可以指定函数属性例如内联提示和参数属性例如只读别名提示从而允许编译器后端执行更积极的优化例如更好地利用只读内存缓存该标头后面是由基本块列表组成的主体这些基本块的相互依赖性形成了函数的控制流图根据定义基本块是直线代码序列其末尾可能仅包含所谓的终止符指令即分支返回使用静态单赋值形式这意味着每个基本块中的每个变量都必须是仅分配一次在使用前定义这样做时每个基本块隐式定义了一个数据流图其不同路径对应于程序表示中的链这种形式可以直接从抽象语法树创建如所示多维图块是中数据流分析的中心可以使用类似于中向量声明的语法进行声明例如是对应于位整数图块的类型请注意中没有关键字因此必须在生成程序之前解析参数形状值在我们的例子中这是由的自动调节器完成的第节引入了一组重绘指令其目的是支持广播语义如第节中所述指令使用来自其输入参数的数据创建指定形状的图块这对于通过用变量填充输入形状以准备隐式或显式广播来将变量重新解释为高维数组特别有用指令通过沿大小为的维度根据需要多次复制其输入参数来创建指定形状的图块如图所示保留并扩展了常用的标量指令以表示对图块操作数进行逐元素操作最后还公开了用于转置和矩阵乘法的专用算术指令中存在图块级操作而产生的一个问题是图块内发散控制流的不可表达性例如程序可能需要部分保护图块级加载免受内存访问冲突但这无法使用分支来实现因为无法单独访问图块元素我们建议通过使用谓词形式和函数来解决这个问题这需要向添加两个指令类参见指令与通常的比较指令类似除了它们返回两个相反的谓词而不是一个指令合并来自不同谓词指令流的指令的目标是通过由自动调整引擎第节支持的一组机器独立第节和机器相关第节传递将程序简化并编译为高效的机器代码循环内的分块级内存操作可能会出现问题因为它们可能会导致严重的延迟而在没有足够的独立指令的情况下这种延迟是无法隐藏的不过可以通过检测循环并在必要时添加足够的预取代码来直接缓解中的这个问题参见中图块级操作的存在为窥视孔优化器提供了新的机会例如对于任何图块可以使用恒等式来简化转置链我们相信与对角线图块相关的其他代数性质在未来也可以被利用现在我们提出了一组遵循图所示高级模型的机器优化过程具体来说执行的优化包括分层图块内存合并共享内存分配共享内存同步嵌套切片策略见图旨在将图块分解为图块并最终分解为图块以便尽可能紧密地适应机器的计算能力和内存层次结构虽然这种技术通常用于自动调整框架但的结构使得可以自动枚举和优化任何可表达程序的有效嵌套图块配置并且不需要多面体机器当相邻线程同时访问附近的内存位置时内存访问被称为合并这很重要因为内存通常是从中以大块的形式检索的由于程序是单线程且自动并行化因此我们的编译器后端能够在每个微块内部对线程进行排序以便尽可能避免未合并的内存访问此策略减少了加载图块列所需的内存事务数量参见图具有高算术强度例如的图块级操作可以受益于将其操作数临时存储在快速共享内存中共享内存分配过程的目的是确定应将图块存储到此空间的时间和位置如图所示这可以通过首先计算每个感兴趣变量的生存范围然后使用中提出的线性时间存储分配算法来完成在我们的机器模型中共享内存的读取和写入是异步的共享内存同步过程的目标是在生成的源代码中自动插入屏障以保持程序的正确性这是通过使用前向数据流分析和以下数据流方程来检测写后读和读后写危险来完成的传统的自动调优器通常依靠手写的参数化代码模板来在预定义的工作负载上实现良好的性能相比之下可以通过简单地连接与上述每个优化过程相关的元参数来直接从程序中提取优化空间在这项工作中仅考虑分层图块通道导致每个图块每个维度的图块参数不超过个然后使用对和之间的的幂进行穷举搜索来优化这些参数以获取图块大小图块尺寸为和和为图块尺寸将来可以使用更好的自动调整方法在本节中我们将根据深度学习文献评估在各种工作负载上的性能我们使用并将我们的系统与最新的供应商库以及相关编译器技术进行比较如果适用我们会按照官方文档指南针对每个单独的问题大小自动调整这些矩阵乘法任务的形式为是神经网络计算的核心在这里我们考虑了来自循环神经网络和的各种任务我们在图中报告了它们的性能和总体上不相上下在某些任务上达到了设备峰值性能以上然而由于使用了算法在浅层上仍然比更快该算法将深度归约分割为独立的块以便在和太小时提供更多并行性否则现有的比我们的解决方案慢倍除了当输入形状是的倍数时的慢倍卷积神经网络是一类重要的机器学习模型应该得到和编译器的良好支持它们基于卷积层图其实现为矩阵乘法图这对于使用专用张量处理硬件是必要的但现有不支持在这里我们对的算法第节的重新实现进行了基准测试并提供了第一个可用于移位卷积的融合内核第节我们使用指针增量查找表来实现这些例程如所示本小节中考虑的卷积层来自深度学习文献如表所示如图所示的性能优于对的实现这可能是因为还为卷积维护了更好的算法即从而几乎没有留下多少工程资源来优化不太重要的内核当快速算法不可用时例如和不相上下最后我们将表中的的实现视为移位卷积一种新颖的方法见图我们将中融合移位转换模块的实现与依赖手写移位内核和单独调用的简单实现进行比较我们还报告了未完成移位即卷积时可达到的最大性能正如我们在图中看到的我们的实现几乎完全隐藏了转移成本在本文中我们介绍了一种开源语言和编译器用于将平铺神经网络计算表达和编译为高效的机器代码我们表明只需向添加一些数据流和控制流扩展就可以实现各种图块级优化过程从而共同实现与供应商库相当的性能我们还提出了这是一种高级语言我们能够在其中为的新型神经网络架构简洁地实现高效的内核未来的工作方向包括对张量核心的支持量化内核的实现以及集成到更高级别的中',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-12-26 20:00:00',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/mycss.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"></script><meta name="generator" content="Hexo 7.0.0"><link rel="alternate" href="/atom.xml" title="Karl的博客" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Karl的博客" type="application/rss+xml">
+</head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><div class="back-home-button"><i class="anzhiyufont anzhiyu-icon-grip-vertical"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" href="https://blog.karltan.com/" title="Karl的博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/logo.png" alt="Karl的博客"/><span class="back-menu-item-text">Karl的博客</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://www.karltan.com/" title="Karl的导航"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://www.karltan.com/favicon.ico" alt="Karl的导航"/><span class="back-menu-item-text">Karl的导航</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">博客分流</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://v.karltan.com/" title="Vercel"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://assets.vercel.com/image/upload/front/favicon/vercel/favicon.ico" alt="Vercel"/><span class="back-menu-item-text">Vercel</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://c.karltan.com/" title="Cloudflare"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://dash.cloudflare.com/favicon-32x32.png" alt="Cloudflare"/><span class="back-menu-item-text">Cloudflare</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">工具</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://npmzjk.karltan.com/" title="NPM"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npmzjk.karltan.com/images/favicons/favicon-32x32.png" alt="NPM"/><span class="back-menu-item-text">NPM</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://paste.karltan.com/" title="Free-Bin"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://paste.karltan.com/static/favicon.ico" alt="Free-Bin"/><span class="back-menu-item-text">Free-Bin</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://tools.karltan.com/" title="IT-TOOLS"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://tools.karltan.com/android-chrome-192x192.png" alt="IT-TOOLS"/><span class="back-menu-item-text">IT-TOOLS</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://memos.karltan.com/" title="Memos"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://memos.karltan.com/logo.png" alt="Memos"/><span class="back-menu-item-text">Memos</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://wbo.karltan.com/" title="WBO"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://wbo.karltan.com/favicon.ico" alt="WBO"/><span class="back-menu-item-text">WBO</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://git.karltan.com/" title="Gitea"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://git.karltan.com/assets/img/logo.svg" alt="Gitea"/><span class="back-menu-item-text">Gitea</span></a></div></div></div></div><a id="site-name" href="/" accesskey="h"><div class="title">Karl的博客</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives"><i class="fa-solid fa-box-archive faa-tada"></i><span> 归档</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories"><i class="fa-solid fa-palette faa-tada"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags"><i class="fa-solid fa-tags faa-tada"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link"><i class="fa-solid fa-link faa-tada"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/fcircle"><i class="fa-brands fa-artstation faa-tada"></i><span> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments"><i class="fa-solid fa-comments faa-tada"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/essay"><i class="fa-solid fa-comment-dots faa-tada"></i><span> 说说</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/music"><i class="fa-solid fa-music faa-tada"></i><span> 音乐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album"><i class="fa-solid fa-images faa-tada"></i><span> 相册</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" target="_blank" rel="noopener" href="https://status.karltan.com/status/1"><i class="fa-solid fa-chart-line faa-tada"></i><span> 网站监控</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="fa-solid fa-shoe-prints faa-tada"></i><span> 随便逛逛</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/about"><i class="fa-solid fa-heart faa-tada"></i><span> 关于我</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button only-home" id="travellings_button" title="随机前往一个开往项目网站"><a class="site-page" onclick="anzhiyu.totraveling()" title="随机前往一个开往项目网站" href="javascript:void(0);" rel="external nofollow" data-pjax-state="external"><i class="anzhiyufont anzhiyu-icon-train"></i></a></div><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><div class="nav-button" id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" title="搜索🔍" accesskey="s"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span> 搜索</span></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" alt="微信" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/wechat.jpg"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" alt="支付宝" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/alipay.jpg"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/AcWing/" style="font-size: 1.05rem;">AcWing<sup>33</sup></a><a href="/tags/CUDA/" style="font-size: 1.05rem;">CUDA<sup>1</sup></a><a href="/tags/CVPR/" style="font-size: 1.05rem;">CVPR<sup>3</sup></a><a href="/tags/ICLR/" style="font-size: 1.05rem;">ICLR<sup>1</sup></a><a href="/tags/Linux/" style="font-size: 1.05rem;">Linux<sup>1</sup></a><a href="/tags/MAPL/" style="font-size: 1.05rem;">MAPL<sup>1</sup></a><a href="/tags/MySQL/" style="font-size: 1.05rem;">MySQL<sup>1</sup></a><a href="/tags/NIPS/" style="font-size: 1.05rem;">NIPS<sup>1</sup></a><a href="/tags/PyTorch/" style="font-size: 1.05rem;">PyTorch<sup>1</sup></a><a href="/tags/Python/" style="font-size: 1.05rem;">Python<sup>1</sup></a><a href="/tags/RSS/" style="font-size: 1.05rem;">RSS<sup>1</sup></a><a href="/tags/Ubuntu/" style="font-size: 1.05rem;">Ubuntu<sup>3</sup></a><a href="/tags/Windows/" style="font-size: 1.05rem;">Windows<sup>1</sup></a><a href="/tags/arXiv/" style="font-size: 1.05rem;">arXiv<sup>1</sup></a><a href="/tags/mAP/" style="font-size: 1.05rem;">mAP<sup>1</sup></a><a href="/tags/tmux/" style="font-size: 1.05rem;">tmux<sup>1</sup></a><a href="/tags/vim/" style="font-size: 1.05rem;">vim<sup>1</sup></a><a href="/tags/%E4%BB%A3%E7%A0%81/" style="font-size: 1.05rem;">代码<sup>1</sup></a><a href="/tags/%E4%BD%8D%E5%A7%BF%E4%BC%B0%E8%AE%A1/" style="font-size: 1.05rem;">位姿估计<sup>1</sup></a><a href="/tags/%E6%89%A9%E5%AE%B9/" style="font-size: 1.05rem;">扩容<sup>1</sup></a><a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 1.05rem;">数学<sup>1</sup></a><a href="/tags/%E6%97%8B%E8%BD%AC%E8%A1%A8%E7%A4%BA/" style="font-size: 1.05rem;">旋转表示<sup>1</sup></a><a href="/tags/%E6%9D%8E%E6%B2%90/" style="font-size: 1.05rem;">李沐<sup>76</sup></a><a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 1.05rem;">深度学习<sup>79</sup></a><a href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/" style="font-size: 1.05rem;">目标检测<sup>1</sup></a><a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 1.05rem;">笔记<sup>77</sup></a><a href="/tags/%E7%AE%97%E6%B3%95%E9%A2%98/" style="font-size: 1.05rem;">算法题<sup>33</sup></a><a href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" style="font-size: 1.05rem;">论文笔记<sup>9</sup></a><a href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91/" style="font-size: 1.05rem;">阿里云<sup>1</sup></a><a href="/tags/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6/" style="font-size: 1.05rem;">高等数学<sup>1</sup></a><a href="/tags/%E9%AD%94%E6%B3%95/" style="font-size: 1.05rem;">魔法<sup>1</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span><a class="card-more-btn" href="/archives/" title="查看更多">
+    <i class="anzhiyufont anzhiyu-icon-angle-right"></i></a></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/04/"><span class="card-archive-list-date">2024年04月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">2</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/03/"><span class="card-archive-list-date">2024年03月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/02/"><span class="card-archive-list-date">2024年02月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/01/"><span class="card-archive-list-date">2024年01月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">10</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/12/"><span class="card-archive-list-date">2023年12月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">48</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/11/"><span class="card-archive-list-date">2023年11月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">7</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/10/"><span class="card-archive-list-date">2023年10月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">32</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/09/"><span class="card-archive-list-date">2023年09月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">6</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item on" id="consoleCommentBarrage" onclick="anzhiyu.switchCommentBarrage()" title="热评开关"><a class="commentBarrage"><i class="anzhiyufont anzhiyu-icon-message"></i></a></div><div class="console-btn-item" id="consoleKeyboard" onclick="anzhiyu.keyboardToggle()" title="快捷键开关"><a class="keyboard-switch"><i class="anzhiyufont anzhiyu-icon-keyboard"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" itemprop="url">论文笔记</a><i class="anzhiyufont anzhiyu-icon-angle-right post-meta-separator"></i><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/2019/" itemprop="url">2019</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>论文笔记</span></a><a class="article-meta__tags" href="/tags/MAPL/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>MAPL</span></a></span></div></div><h1 class="post-title" itemprop="name headline">论文笔记《Triton：An Intermediate Language and Compiler for Tiled Neural Network Computations》</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2023-12-26T11:00:00.000Z" title="发表于 2023-12-26 19:00:00">2023-12-26</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2023-12-26T12:00:00.000Z" title="更新于 2023-12-26 20:00:00">2023-12-26</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-wordcount"><i class="anzhiyufont anzhiyu-icon-file-word post-meta-icon" title="文章字数"></i><span class="post-meta-label" title="文章字数">字数总计:</span><span class="word-count" title="文章字数">6.4k</span><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-clock post-meta-icon" title="阅读时长"></i><span class="post-meta-label" title="阅读时长">阅读时长:</span><span>23分钟</span></span><span class="post-meta-separator"></span><span class="post-meta-pv-cv" id="" data-flag-title="论文笔记《Triton：An Intermediate Language and Compiler for Tiled Neural Network Computations》"><i class="anzhiyufont anzhiyu-icon-fw-eye post-meta-icon"></i><span class="post-meta-label" title="阅读量">阅读量:</span><span id="busuanzi_value_page_pv"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为长沙"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>长沙</span><span class="post-meta-separator"></span><span class="post-meta-commentcount"><i class="anzhiyufont anzhiyu-icon-comments post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/dissertation-notes/2019/Tillet_et_al-2019-Triton/#post-comment" tabindex="-1"><span id="twikoo-count"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></a></span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="https://img.karltan.com/covers/dissertation-notes/2019/Tillet_et_al-2019-Triton.png"></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><div class="post-ai-description"><div class="ai-title"><i class="anzhiyufont anzhiyu-icon-bilibili"></i><div class="ai-title-text">AI-摘要</div><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right"></i><i class="anzhiyufont anzhiyu-icon-circle-dot" title="朗读摘要"></i><div id="ai-tag">Tianli GPT</div></div><div class="ai-explanation">AI初始化中...</div><div class="ai-btn-box"><div class="ai-btn-item">介绍自己 🙈</div><div class="ai-btn-item">生成本文简介 👋</div><div class="ai-btn-item">推荐相关文章 📖</div><div class="ai-btn-item">前往主页 🏠</div><div class="ai-btn-item" id="go-tianli-blog">前往爱发电购买</div></div><script data-pjax src="/js/anzhiyu/ai_abstract.js"></script></div><article class="post-content" id="article-container" itemscope itemtype="http://blog.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/"><header><a class="post-meta-categories" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" itemprop="url">论文笔记</a><a class="post-meta-categories" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/2019/" itemprop="url">2019</a><a href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" tabindex="-1" itemprop="url">论文笔记</a><a href="/tags/MAPL/" tabindex="-1" itemprop="url">MAPL</a><h1 id="CrawlerTitle" itemprop="name headline">论文笔记《Triton：An Intermediate Language and Compiler for Tiled Neural Network Computations》</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">Karl</span><time itemprop="dateCreated datePublished" datetime="2023-12-26T11:00:00.000Z" title="发表于 2023-12-26 19:00:00">2023-12-26</time><time itemprop="dateCreated datePublished" datetime="2023-12-26T12:00:00.000Z" title="更新于 2023-12-26 20:00:00">2023-12-26</time></header><h1 id="Triton-An-Intermediate-Language-and-Compiler-for-Tiled-Neural-Network-Computations"><a href="#Triton-An-Intermediate-Language-and-Compiler-for-Tiled-Neural-Network-Computations" class="headerlink" title="Triton: An Intermediate Language and Compiler for Tiled Neural Network Computations"></a>Triton: An Intermediate Language and Compiler for Tiled Neural Network Computations</h1><h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>深度学习领域新颖研究想法的验证和部署通常受到某些基本原语高效计算内核的可用性限制。特别是，无法利用现有供应商库（例如cuBLAS、cuDNN）的操作面临着设备利用率不佳的风险，除非由专家编写自定义实现——通常以牺牲可移植性为代价。因此，开发新的编程抽象来以最小的性能成本指定自定义深度学习工作负载变得至关重要。</p>
+<p>我们提出了Triton，一种以图块（tile）概念为中心的语言和编译器，即静态形状的多维子数组。我们的方法围绕：</p>
+<ol>
+<li>基于C语言和基于LLVM的中间表示（IR），用于根据参数图块变量的操作来表达张量程序；</li>
+<li>以及一组新颖的图块级优化过程，用于将这些程序编译成高效的GPU代码。</li>
+</ol>
+<p>我们将演示如何使用Triton来构建矩阵乘法和卷积核的可移植实现，与手工调优的供应商库（cuBLAS/cuDNN）相当，或者高效地实现最近的研究想法，如移位卷积。</p>
+<h2 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1 Introduction"></a>1 Introduction</h2><p>深度神经网络（DNN）最近的复兴很大程度上得益于可编程并行计算设备的广泛使用[24]。特别是，多核架构（例如GPU）性能的持续改进发挥了基础性作用，使研究人员和工程师能够使用越来越多的数据来探索越来越多、越来越大的模型。这项工作得到了一系列供应商库（cuBLAS、cuDNN）的支持，旨在尽快为从业者带来最新的硬件创新。不幸的是，这些库仅支持一组有限的张量运算，将新原语的实现留给专家[13, 17, 25]。</p>
+<p>这一观察导致了基于多面体机制（例如张量理解[43]）和/或循环合成技术（例如Halide[37]、TVM[10]和PlaidML[22]）的DNN的各种特定领域语言（Domain-Specific Languages, DSLs）的开发。但是，虽然这些系统通常对于某些类别的问题表现良好，例如深度可分离卷积（例如MobileNet[20]），但在实践中它们通常比供应商库慢得多（参见图1），并且缺乏实现结构化稀疏模式所需的表达能力[28, 31, 47]，无法在嵌套循环中使用仿射数组索引直接指定。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/image-20231226200619856.png" alt="image-20231226200619856"></p>
+<p>这些问题通常通过使用微内核来解决[11, 21]——即手写的图块级内在函数——但这种解决方案需要大量的体力劳动并且缺乏可移植性。尽管最近提出了几种用于图块的高级编程抽象[23, 41]，但底层编译器后端仍然缺乏对图块级操作和优化的支持。为此，我们推出Triton（图2），这是一种<a target="_blank" rel="noopener" href="https://triton-lang.org">开源的</a>中间语言和编译器，用于指定图块程序并将其编译为高效的GPU代码。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/image-20231226200639026.png" alt="image-20231226200639026"></p>
+<p>本文的主要贡献总结如下：</p>
+<ul>
+<li><p><strong>Triton-C</strong>（第3节）：一种类似C的语言，用于根据参数图块变量表达张量程序。该语言的目的是为现有的DNN转编译器（例如PlaidML、Tensor Compressive）和熟悉CUDA的程序员提供稳定的接口。Listing 1显示了与简单矩阵乘法任务相关的Triton-C源代码。</p>
+<p>  <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/image-20231226202413994.png" alt="image-20231226202413994"></p>
+  <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Tile shapes are parametric and can be optimized</span></span><br><span class="line"><span class="comment">// by compilation backends</span></span><br><span class="line"><span class="type">const</span> tunable <span class="type">int</span> TM = &#123;<span class="number">16</span>, <span class="number">32</span>, <span class="number">64</span>, <span class="number">128</span>&#125;</span><br><span class="line"><span class="type">const</span> tunable <span class="type">int</span> TN = &#123;<span class="number">16</span>, <span class="number">32</span>, <span class="number">64</span>, <span class="number">128</span>&#125;</span><br><span class="line"><span class="type">const</span> tunable <span class="type">int</span> TK = &#123;<span class="number">8</span>, <span class="number">16</span>&#125;</span><br><span class="line"><span class="comment">// C = A * B.T</span></span><br><span class="line">kernel <span class="type">void</span> <span class="built_in">matmul_nt</span>(<span class="type">float</span>* a, <span class="type">float</span>* b, <span class="type">float</span>* c,</span><br><span class="line">                     <span class="type">int</span> M, <span class="type">int</span> N, <span class="type">int</span> K)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 1D tile of indices</span></span><br><span class="line">    <span class="type">int</span> rm[TM] = <span class="built_in">get_global_range</span>(<span class="number">0</span>);</span><br><span class="line">    <span class="type">int</span> rn[TN] = <span class="built_in">get_global_range</span>(<span class="number">1</span>);</span><br><span class="line">    <span class="type">int</span> rk[TK] = <span class="number">0</span> ... TK;</span><br><span class="line">    <span class="comment">// 2D tile of pointers</span></span><br><span class="line">    <span class="type">float</span>* pa[TM, TK] = a + rm[:, newaxis] + rk * M;</span><br><span class="line">    <span class="type">float</span>* pb[TN, TK] = b + rn[:, newaxis] + rk * K;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> k = K; k &gt;= <span class="number">0</span>; k -= TK)&#123;</span><br><span class="line">        <span class="type">bool</span> check_k[TK] = rk &lt; k;</span><br><span class="line">        <span class="type">bool</span> check_a[TM, TK] = (rm &lt; M)[:, newaxis] &amp;&amp; check_k;</span><br><span class="line">        <span class="type">bool</span> check_b[TN, TK] = (rn &lt; N)[:, newaxis] &amp;&amp; check_k;</span><br><span class="line">        <span class="comment">// load tile operands</span></span><br><span class="line">        <span class="type">float</span> A[TM, TK] = check_a ? *pa : <span class="number">0</span>;</span><br><span class="line">        <span class="type">float</span> B[TN, TK] = check_b ? *pb : <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// accumulate</span></span><br><span class="line">        C += <span class="built_in">dot</span>(A, <span class="built_in">trans</span>(B));</span><br><span class="line">        <span class="comment">// update pointers</span></span><br><span class="line">        pa = pa + TK * M;</span><br><span class="line">        pb = pb + TK * N;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// write-back accumulators</span></span><br><span class="line">    <span class="type">float</span>* pc[TM, TN] = c + rm[:, newaxis] + rn * M;</span><br><span class="line">    <span class="type">bool</span> check_c[TM, TN] = (rm &lt; M)[:, newaxis] &amp;&amp; (rn &lt; N);</span><br><span class="line">    @check_c *pc = C;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>Triton-IR</strong>（第4节）：基于LLVM的中间表示（IR），提供适合切片级程序分析、转换和优化的环境。Listing 5显示了修正线性单元（ReLU）函数的Triton-IR代码。这里，Triton-IR程序是在解析过程中直接从Triton-C构建的，但未来也可以探索从嵌入式DSL或更高级别的DNN编译器（例如TVM）自动生成。</p>
+<p>  <img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/image-20231226202744799.png" alt="image-20231226202744799"></p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">define kernel void @relu(float* %A, i32 %M, i32 %N) &#123;</span><br><span class="line">prologue:</span><br><span class="line">    %rm = call i32&lt;8&gt; get_global_range(0);</span><br><span class="line">    %rn = call i32&lt;8&gt; get_global_range(1);</span><br><span class="line">    ; broadcast shapes</span><br><span class="line">    %1 = reshape i32&lt;8, 8&gt; %M;</span><br><span class="line">    %M0 = broadcast i32&lt;8, 8&gt; %1;</span><br><span class="line">    %2 = reshape i32&lt;8, 8&gt; %N;</span><br><span class="line">    %N0 = broadcast i32&lt;8, 8&gt; %2;</span><br><span class="line">    ; broadcast global ranges</span><br><span class="line">    %3 = reshape i32&lt;8, 1&gt; %rm;</span><br><span class="line">    %rm_bc = broadcast i32&lt;8, 8&gt; %3;</span><br><span class="line">    %4 = reshape i32&lt;1, 8&gt; %rn;</span><br><span class="line">    %rn_bc = broadcast i32&lt;8, 8&gt; %4;</span><br><span class="line">    ; compute pointer</span><br><span class="line">    %A0 = splat float*&lt;8, 8&gt; %A;</span><br><span class="line">    %5 = getelementptr %A0, %rm_bc;</span><br><span class="line">    %6 = mul %rn_bc, %M0;</span><br><span class="line">    %pa = getelementptr %5, %6;</span><br><span class="line">    ; compute result</span><br><span class="line">    %a = load %pa;</span><br><span class="line">    %_0 = splat float&lt;8, 8&gt; 0;</span><br><span class="line">    %result = max %float %a, %_0;</span><br><span class="line">    ; write back</span><br><span class="line">    store fp32&lt;8, 8&gt; %pa, %result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>Triton-JIT</strong>（第5节）：即时（Just-In-Time, JIT）编译器和代码生成后端，用于将Triton-IR程序编译为高效的LLVM位代码。这包括：</p>
+<ol>
+<li>一组图块级、独立于机器的通道，旨在独立于任何编译目标简化输入计算内核；</li>
+<li>一组图块级机器相关通道，用于生成高效的GPU就绪LLVM-IR；</li>
+<li>一个自动调节器，用于优化与上述过程相关的任何元参数。</li>
+</ol>
+</li>
+<li><p><strong>Numerical Experiments</strong>（第6节）：对Triton的数值评估证明了它的能力：</p>
+<ol>
+<li>在循环神经网络和Transformer上生成与cuBLAS相当的矩阵乘法实现，并且比替代的DSL快3倍；</li>
+<li>重新实现了cuDNN中用于密集卷积的<code>IMPLICIT_GEMM</code>算法，而不损失性能；</li>
+<li>创建新颖的研究思想的有效实现，例如shift-conv[47]模块。</li>
+</ol>
+</li>
+</ul>
+<p>本文将以对现有相关文献的简要分析作为序言（第2节），并以总结和未来工作方向作为总结（第7节）。</p>
+<h2 id="2-Related-Work"><a href="#2-Related-Work" class="headerlink" title="2 Related Work"></a>2 Related Work</h2><p>深度学习框架[1, 9, 36]和库的存在对于新型神经网络架构和算法的出现至关重要。但是，尽管线性代数编译器的分析[5, 48]和经验[6, 30]启发式方法取得了进步，这些软件仍然总是依赖于手动优化的子例程（例如cuBLAS和cuDNN）。这导致了各种DSL和DNN编译器的开发，通常基于三种不同的方法之一：</p>
+<ul>
+<li><strong>Tensor-level IRs</strong>：XLA[16]和Glow[38]已经使用张量级IRs来使用模式匹配将张量程序转换为预定义的LLVM-IR和CUDA-C操作模板(例如，张量收缩、元素级操作等)。</li>
+<li><strong>The polyhedral model</strong>：张量理解（TC）[43]和Diesel[14]使用多面体模型[18]，将一个或多个DNN层参数化并自动编译成LLVM-IR和CUDA-C程序。</li>
+<li><strong>Loop synthesizers</strong>：Halide[37]和TVM[10]已经使用循环合成器来将张量计算转换为可以使用用户定义（尽管可能是参数化的[11]）调度手动优化的环路嵌套式。</li>
+</ul>
+<p>相比之下，Triton依赖于在传统编译管道中添加图块级操作和优化。这种方法提供了：</p>
+<ol>
+<li>较XLA和Glow更多的灵活性；</li>
+<li>支持非仿射张量下标，与TC和Diesel相反；</li>
+<li>自动推断可能的执行计划，否则必须手动指定到Halide或TVM。</li>
+</ol>
+<p>Triton的好处是以增加编程工作为代价的——参见Listing 2，了解这些DSL中矩阵乘法的实现。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/image-20231226203345242.png" alt="image-20231226203345242"></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">C = tf.<span class="built_in">matmul</span>(A, tf.<span class="built_in">transpose</span>(B))		<span class="comment">// TF</span></span><br><span class="line">C[i, j: I, J] = +(A[i, k] * B[j, k]);	<span class="comment">// PlaidML</span></span><br><span class="line"><span class="built_in">C</span>(i, j) +=! <span class="built_in">A</span>(i, k) * <span class="built_in">B</span>(j, k)			<span class="comment">// TC</span></span><br><span class="line">tvm.<span class="built_in">sum</span>(A[i, k] * B[j, k], axis=k)		<span class="comment">// TVM</span></span><br></pre></td></tr></table></figure>
+<h2 id="3-The-Triton-C-Language"><a href="#3-The-Triton-C-Language" class="headerlink" title="3 The Triton-C Language"></a>3 The Triton-C Language</h2><p>Triton-C的目的是为现有（和未来）DNN转编译器以及熟悉低级GPU编程的程序员提供稳定的前端。在本节中，我们将描述Triton-C的类似CUDA的语法（第3.1节）、类似Numpy[35]的语义（第3.2节）及其“单程序、多数据”（SPMD）的编程模型（第3.3节） 。</p>
+<h3 id="3-1-Syntax"><a href="#3-1-Syntax" class="headerlink" title="3.1 Syntax"></a>3.1 Syntax</h3><p>Triton-C的语法基于ANSI C（更具体地说是CUDA-C）的语法，但进行了修改和扩展（参见Listing 3）以适应接下来两小节中描述的语义和编程模型。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/image-20231226204252233.png" alt="image-20231226204252233"></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Broadcasting semantics</span></span><br><span class="line">slice			: <span class="string">&#x27;:&#x27;</span> | <span class="string">&#x27;newaxis&#x27;</span></span><br><span class="line">slice_list		: slice | slice_list <span class="string">&#x27;,&#x27;</span> slice</span><br><span class="line">slice_expr		: postfix_expr | expr <span class="string">&#x27;[&#x27;</span> slice_list <span class="string">&#x27;]&#x27;</span></span><br><span class="line"><span class="comment">// Range initialization</span></span><br><span class="line">constant_range	: expr <span class="string">&#x27;...&#x27;</span> expr</span><br><span class="line"><span class="comment">// Intrinsics</span></span><br><span class="line">global_range	: <span class="string">&#x27;get_global_range&#x27;</span> <span class="string">&#x27;(&#x27;</span> constant <span class="string">&#x27;get_global_range&#x27;</span></span><br><span class="line">dot				: <span class="string">&#x27;dot&#x27;</span> <span class="string">&#x27;(&#x27;</span> expr <span class="string">&#x27;,&#x27;</span> expr <span class="string">&#x27;)&#x27;</span></span><br><span class="line">trans			: <span class="string">&#x27;trans&#x27;</span> <span class="string">&#x27;(&#x27;</span> expr <span class="string">&#x27;,&#x27;</span> expr <span class="string">&#x27;)&#x27;</span></span><br><span class="line">intrinsic_expr	: global_range | dot | trans</span><br><span class="line"><span class="comment">// Predication</span></span><br><span class="line">predicate_expr	: <span class="string">&#x27;@&#x27;</span> expr</span><br><span class="line"><span class="comment">// Tile extensions for abstract declarators</span></span><br><span class="line">abstract_decl	: abstract_decl | <span class="string">&#x27;[&#x27;</span> constant_list <span class="string">&#x27;]&#x27;</span></span><br><span class="line"><span class="comment">// Extensions of C expressions</span></span><br><span class="line">expr			: expr | constant_range | slice_expr | intrinsic_expr</span><br><span class="line"><span class="comment">// Extensions of C specifiers</span></span><br><span class="line">storage_spec	: storage_spec | <span class="string">&#x27;kernel&#x27;</span></span><br><span class="line">type_spec		: type_spec | <span class="string">&#x27;tunable&#x27;</span></span><br><span class="line"><span class="comment">// Extensions of C statements</span></span><br><span class="line">statement		: statement | predicate_expr statement</span><br></pre></td></tr></table></figure>
+<p>这些变化分为以下几类：</p>
+<ul>
+<li><strong>Tile declarations</strong>：我们添加了用于声明多维数组的特殊语法（例如<code>int tile[16, 16]</code>）以强调它们与ANSI C中的嵌套数组（例如<code>int tile[16][16]</code>）的语义差异。图块形状必须恒定，但也可以使用<code>tunable</code>关键字进行参数化。一维整数图块可以使用省略号来初始化（例如<code>int range[8] = 0 ... 8</code>）。</li>
+<li><strong>Built-in function</strong>：虽然保留了常见的C语法用于逐元素数组操作（<code>+, -, &amp;&amp;, *</code>等等），但添加了各种内置函数（<code>dot, trans, get_global_range</code>）以支持图块语义（第3.2.1节）和SPMD编程模型。</li>
+<li><strong>Broadcasting</strong>：N维图块可以使用<code>newaxis</code>关键字和常用切片语法沿任何特定轴进行广播（例如，用于堆叠列的<code>int Broadcast [8, 8] = range[:, newaxis]</code>）。注意，在其他情况下，禁止将图块切片来检索标量或子数组。</li>
+<li><strong>Predication</strong>：图块操作（第4.3节）中的基本控制流是通过使用“@”前缀来实现的。</li>
+</ul>
+<h3 id="3-2-Semantics"><a href="#3-2-Semantics" class="headerlink" title="3.2 Semantics"></a>3.2 Semantics</h3><h4 id="3-2-1-Tile-Semantics"><a href="#3-2-1-Tile-Semantics" class="headerlink" title="3.2.1 Tile Semantics"></a>3.2.1 Tile Semantics</h4><p>Triton-C中内置图块类型和操作（即图块语义）的存在提供了两个主要好处。首先，它通过隐藏与块内内存合并[12]、缓存管理[32]和专用硬件利用率[27]相关的重要性能细节来简化张量程序的结构。其次，它为编译器自动执行这些优化打开了大门，如第5节所述。</p>
+<h4 id="3-2-2-Broadcasting-Semantics"><a href="#3-2-2-Broadcasting-Semantics" class="headerlink" title="3.2.2 Broadcasting Semantics"></a>3.2.2 Broadcasting Semantics</h4><p>Triton-C中的图块是强类型的，因为某些指令静态地要求其操作数遵守严格的形状约束。例如，除非首先适当地广播标量，否则不能将标量添加到数组中。广播语义[35]提供了一组规则来隐式执行这些转换（参见Listing 4的示例）：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/image-20231226205354247.png" alt="image-20231226205354247"></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> a[<span class="number">16</span>], b[<span class="number">32</span>, <span class="number">16</span>], c[<span class="number">16</span>, <span class="number">1</span>];</span><br><span class="line"><span class="comment">// a is first reshaped to [1, 16]</span></span><br><span class="line"><span class="comment">// and then broadcast to [32, 16]</span></span><br><span class="line"><span class="type">int</span> x_l[<span class="number">32</span>, <span class="number">16</span>] = a[newaxis, :] + b;</span><br><span class="line"><span class="comment">// Same as above but implicitly</span></span><br><span class="line"><span class="type">int</span> x_2[<span class="number">32</span>, <span class="number">16</span>] = a + b;</span><br><span class="line"><span class="comment">// a is first reshaped to [1, 16]</span></span><br><span class="line"><span class="comment">// a is broadcast to [16, 16]</span></span><br><span class="line"><span class="comment">// c is broadcast to [16, 16]</span></span><br><span class="line"><span class="type">int</span> y[<span class="number">16</span>, <span class="number">16</span>] = a + c;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><strong>Padding</strong>：最短操作数的形状用1进行左填充，直到两个操作数具有相同的维度。</li>
+<li><strong>Broadcasting</strong>：根据需要，多次复制两个操作数的内容，直到它们的形状相同；如果无法完成此操作，则会发出错误。</li>
+</ol>
+<h3 id="3-3-Programming-Model"><a href="#3-3-Programming-Model" class="headerlink" title="3.3 Programming Model"></a>3.3 Programming Model</h3><p>GPU上CUDA[33]代码的执行由SPMD[4]编程模型支持，其中每个内核与所谓的启动网格中的可识别线程块相关联。Triton编程模型类似，但每个内核都是单线程的（尽管自动并行化），并且与一组因实例而异的全局范围相关联（参见图3）。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/image-20231226205549047.png" alt="image-20231226205549047"></p>
+<p>这种方法导致内核更简单，其中不存在类似CUDA的并发原语（共享内存同步、线程间通信等）。</p>
+<p>可以使用<code>get_global_range(axis)</code>内置函数查询与内核关联的全局范围，以便创建指针图块，如Listing 1所示。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/image-20231226202413994.png" alt="image-20231226202413994"></p>
+<h2 id="4-The-Triton-IR"><a href="#4-The-Triton-IR" class="headerlink" title="4 The Triton IR"></a>4 The Triton IR</h2><p>Triton-IR是一种基于LLVM的中间表示（IR），其目的是提供适合图块级程序分析、转换和优化的环境。在这项工作中，Triton-IR程序是在解析过程中直接从Triton-C构建的，尽管将来它们也可以直接从更高级别的DSL生成。</p>
+<p>Triton-IR和LLVM-IR程序共享相同的高级结构（第4.1节中回顾），但前者还包括图块级数据流（第4.2节）和控制流（第4.3节）分析所需的许多扩展。这些新颖的扩展对于执行第5节中概述的优化以及安全访问第6节中所示的任意形状的张量至关重要。</p>
+<h3 id="4-1-Structure"><a href="#4-1-Structure" class="headerlink" title="4.1 Structure"></a>4.1 Structure</h3><h4 id="4-1-1-Modules"><a href="#4-1-1-Modules" class="headerlink" title="4.1.1 Modules"></a>4.1.1 Modules</h4><p>在最高级别，Triton-IR程序由一个或多个称为模块的基本编译单元组成。这些模块彼此独立编译，并最终由链接器聚合，链接器的作用是解析前向声明并充分合并全局定义。</p>
+<p>每个模块本身都由函数、全局变量、常量和其他杂项符号（例如元数据、函数属性）组成。</p>
+<h4 id="4-1-2-Functions"><a href="#4-1-2-Functions" class="headerlink" title="4.1.2 Functions"></a>4.1.2 Functions</h4><p>Triton-IR函数定义由返回类型、名称和可能为空的参数列表组成。如果需要，可以添加额外的可见性、对齐和链接说明符。还可以指定函数属性（例如内联提示）和参数属性（例如只读、别名提示），从而允许编译器后端执行更积极的优化，例如更好地利用只读内存缓存。</p>
+<p>该标头后面是由基本块列表组成的主体，这些基本块的相互依赖性形成了函数的控制流图（Control Flow Graph, CFG）。</p>
+<h4 id="4-1-3-Basic-Blocks"><a href="#4-1-3-Basic-Blocks" class="headerlink" title="4.1.3 Basic Blocks"></a>4.1.3 Basic Blocks</h4><p>根据定义，基本块是直线代码序列，其末尾可能仅包含所谓的终止符指令（即分支、返回）。</p>
+<p>Triton-IR使用静态单赋值（Static Single Assignment, SSA）形式，这意味着每个基本块中的每个变量都必须是：</p>
+<ol>
+<li>仅分配一次；</li>
+<li>在使用前定义。</li>
+</ol>
+<p>这样做时，每个基本块隐式定义了一个数据流图（Data-Flow Graph, DFG），其不同路径对应于程序SSA表示中的use-def链。这种形式可以直接从抽象语法树（Abstract Syntax Trees, AST）创建，如[7]所示。</p>
+<h3 id="4-2-Support-for-Tile-Level-Data-Flow-Analysis"><a href="#4-2-Support-for-Tile-Level-Data-Flow-Analysis" class="headerlink" title="4.2 Support for Tile-Level Data-Flow Analysis"></a>4.2 Support for Tile-Level Data-Flow Analysis</h3><h4 id="4-2-1-Types"><a href="#4-2-1-Types" class="headerlink" title="4.2.1 Types"></a>4.2.1 Types</h4><p>多维图块是Triton-IR中数据流分析的中心，可以使用类似于LLVM-IR中向量声明的语法进行声明。例如，<code>i32&lt;8, 8&gt;</code>是对应于$8 \times 8$ 32位整数图块的类型。请注意，Triton-IR中没有<code>tunable</code>关键字，因此必须在生成程序之前解析参数形状值。在我们的例子中，这是由Triton-JIT的自动调节器完成的（第5.3节）。</p>
+<h4 id="4-2-2-Instructions"><a href="#4-2-2-Instructions" class="headerlink" title="4.2.2 Instructions"></a>4.2.2 Instructions</h4><p>Triton-IR引入了一组重绘指令，其目的是支持广播语义，如第3.2.2节中所述：</p>
+<ul>
+<li><code>reshape</code>指令使用来自其输入参数的数据创建指定形状的图块。这对于通过用变量填充输入形状以准备隐式或显式广播来将变量重新解释为高维数组特别有用。</li>
+<li><code>broadcast</code>指令通过沿大小为1的维度根据需要多次复制其输入参数来创建指定形状的图块——如图4所示。</li>
+</ul>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/image-20231226210454984.png" alt="image-20231226210454984"></p>
+<p>保留并扩展了常用的标量指令（<code>cmp, getelementptr, add, load...</code>），以表示对图块操作数进行逐元素操作。最后，Triton-IR还公开了用于转置（<code>trans</code>）和矩阵乘法（<code>dot</code>）的专用算术指令。</p>
+<h3 id="4-3-Support-for-Tile-Level-Control-Flow-Analysis"><a href="#4-3-Support-for-Tile-Level-Control-Flow-Analysis" class="headerlink" title="4.3 Support for Tile-Level Control-Flow Analysis"></a>4.3 Support for Tile-Level Control-Flow Analysis</h3><p>Triton-IR中存在图块级操作而产生的一个问题是图块内发散控制流的不可表达性。例如，程序可能需要部分保护图块级加载免受内存访问冲突，但这无法使用分支来实现，因为无法单独访问图块元素。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/image-20231226210823092.png" alt="image-20231226210823092"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">;pt[i, j], pf[i, j] = (true, false) if x[i, j] &lt; 5</span><br><span class="line">;pt[i, j], pf[i, j] = (false, true) if x[i, j] &gt;= 5</span><br><span class="line">%pt, %pf = icmpp slt %x, 5</span><br><span class="line">@%pt %x1 = add &amp;y, 1</span><br><span class="line">@%pf %x2 = sub %y, 1</span><br><span class="line">; merge values from different predicates</span><br><span class="line">%x = psi i32&lt;8, 8&gt; [%pt, %x1], [%pf, %x2]</span><br><span class="line">%z = mul i32&lt;8, 8&gt; %x, 2</span><br></pre></td></tr></table></figure>
+<p>我们建议通过使用谓词SSA（Predicated SSA, PSSA）形式[8]和$\psi$函数[39]来解决这个问题。这需要向Triton-IR添加两个指令类（参见Listing 6）：</p>
+<ul>
+<li><code>cmpp</code>指令[8]与通常的比较（<code>cmp</code>）指令类似，除了它们返回两个相反的谓词而不是一个。</li>
+<li><code>psi</code>指令合并来自不同谓词指令流的指令。</li>
+</ul>
+<h2 id="5-The-Triton-JIT-Compiler"><a href="#5-The-Triton-JIT-Compiler" class="headerlink" title="5 The Triton-JIT Compiler"></a>5 The Triton-JIT Compiler</h2><p>Triton-JIT的目标是通过由自动调整引擎（第5.3节）支持的一组机器独立（第5.1节）和机器相关（第5.2节）传递，将Triton-IR程序简化并编译为高效的机器代码。</p>
+<h3 id="5-1-Machine-Independent-Passes"><a href="#5-1-Machine-Independent-Passes" class="headerlink" title="5.1 Machine-Independent Passes"></a>5.1 Machine-Independent Passes</h3><h4 id="5-1-1-Pre-Fetching"><a href="#5-1-1-Pre-Fetching" class="headerlink" title="5.1.1 Pre-Fetching"></a>5.1.1 Pre-Fetching</h4><p>循环内的分块级内存操作可能会出现问题，因为它们可能会导致严重的延迟，而在没有足够的独立指令的情况下，这种延迟是无法隐藏的。不过，可以通过检测循环并在必要时添加足够的预取代码来直接缓解Triton-IR中的这个问题（参见Listing 7）。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/image-20231226211028623.png" alt="image-20231226211028623"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">B0:</span><br><span class="line">	%p0 = getelementptr %1, %2</span><br><span class="line">B1:</span><br><span class="line">	%p = phi [%p0, B0], [%p1, B1]</span><br><span class="line">	%x = load %p</span><br><span class="line">	; increment pointer</span><br><span class="line">	%p1 = getelementptr %p, %3</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">B0:</span><br><span class="line">	%p0 = getelementptr %1, %2</span><br><span class="line">	%x0 = load %p0</span><br><span class="line">B1:</span><br><span class="line">	%p = phi [%p0, B0], [%p1, B1]</span><br><span class="line">	%x = phi [%x0, B0], [%p1, B1]</span><br><span class="line">	; increment pointer</span><br><span class="line">	%p1 = getelementptr %p, %3</span><br><span class="line">	; prefetching</span><br><span class="line">	%x1 = load %p</span><br></pre></td></tr></table></figure>
+<h4 id="5-1-2-Tile-Level-Peephole-Optimization"><a href="#5-1-2-Tile-Level-Peephole-Optimization" class="headerlink" title="5.1.2 Tile-Level Peephole Optimization"></a>5.1.2 Tile-Level Peephole Optimization</h4><p>Triton-IR中图块级操作的存在为窥视孔[29]优化器提供了新的机会。例如，对于任何图块$X$，可以使用恒等式$X = (X^T)^T$来简化转置链。我们相信，与对角线图块相关的其他代数性质在未来也可以被利用。</p>
+<h3 id="5-2-Machine-Dependent-Passes"><a href="#5-2-Machine-Dependent-Passes" class="headerlink" title="5.2 Machine-Dependent Passes"></a>5.2 Machine-Dependent Passes</h3><p>现在，我们提出了一组遵循图5所示高级模型的机器优化过程。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/image-20231226211223843.png" alt="image-20231226211223843"></p>
+<p>具体来说，Triton-JIT执行的优化包括：</p>
+<ol>
+<li>分层图块；</li>
+<li>内存合并；</li>
+<li>共享内存分配；</li>
+<li>共享内存同步。</li>
+</ol>
+<h4 id="5-2-1-Hierarchical-Tiling"><a href="#5-2-1-Hierarchical-Tiling" class="headerlink" title="5.2.1 Hierarchical Tiling"></a>5.2.1 Hierarchical Tiling</h4><p>嵌套切片策略（见图5）旨在将图块分解为micro图块并最终分解为nano图块，以便尽可能紧密地适应机器的计算能力和内存层次结构。虽然这种技术通常用于自动调整框架[34, 40]，但Triton-IR的结构使得可以自动枚举和优化任何可表达程序的有效嵌套图块配置（并且不需要多面体机器）。</p>
+<h4 id="5-2-2-Memory-Coalescing"><a href="#5-2-2-Memory-Coalescing" class="headerlink" title="5.2.2 Memory Coalescing"></a>5.2.2 Memory Coalescing</h4><p>当相邻线程同时访问附近的内存位置时，内存访问被称为合并。这很重要，因为内存通常是从DRAM中以大块的形式检索的。</p>
+<p>由于Triton-IR程序是单线程且自动并行化，因此我们的编译器后端能够在每个微块内部对线程进行排序，以便尽可能避免未合并的内存访问。此策略减少了加载图块列所需的内存事务数量（参见图6）。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/image-20231226211606560.png" alt="image-20231226211606560"></p>
+<h4 id="5-2-3-Shared-Memory-Allocation"><a href="#5-2-3-Shared-Memory-Allocation" class="headerlink" title="5.2.3 Shared Memory Allocation"></a>5.2.3 Shared Memory Allocation</h4><p>具有高算术强度（例如<code>dot</code>）的图块级操作可以受益于将其操作数临时存储在快速共享内存中。共享内存分配过程的目的是确定应将图块存储到此空间的时间和位置。如图7所示，这可以通过首先计算每个感兴趣变量的生存范围，然后使用[15]中提出的线性时间存储分配算法来完成。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/image-20231226211657655.png" alt="image-20231226211657655"></p>
+<h4 id="5-2-4-Shared-Memory-Synchronization"><a href="#5-2-4-Shared-Memory-Synchronization" class="headerlink" title="5.2.4 Shared Memory Synchronization"></a>5.2.4 Shared Memory Synchronization</h4><p>在我们的机器模型中，共享内存的读取和写入是异步的。共享内存同步过程的目标是在生成的GPU源代码中自动插入屏障，以保持程序的正确性。这是通过使用前向数据流分析和以下数据流方程来检测写后读（RAW）和读后写（WAR）危险来完成的：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+in_s^{(RAW)} &= \bigcup_{p \in \text{pred}(s)}out_p^{(RAW)} \\
+in_s^{(WAR)} &= \bigcup_{p \in \text{pred}(s)}out_p^{(WAR)} \\
+out_s^{(RAW)} &=
+\begin{cases}
+\begin{array}{ll}
+\emptyset & \mathbf{if}\ in_s^{(RAW)} \cap read(s) \ne \emptyset\ (\text{barrier}) \\
+in_s^{(RAW)} \cup write(s) & \mathbf{otherwise}
+\end{array}
+\end{cases} \\
+out_s^{(WAR)} &=
+\begin{cases}
+\begin{array}{ll}
+\emptyset & \mathbf{if}\ in_s^{(WAR)} \cap write(s) \ne \emptyset\ (\text{barrier}) \\
+in_s^{(WAR)} \cup read(s) & \mathbf{otherwise}
+\end{array}
+\end{cases}
+\end{aligned}</script><h3 id="5-3-Auto-tuner"><a href="#5-3-Auto-tuner" class="headerlink" title="5.3 Auto-tuner"></a>5.3 Auto-tuner</h3><p>传统的自动调优器[42, 45]通常依靠手写的参数化代码模板来在预定义的工作负载上实现良好的性能。相比之下，Triton-JIT可以通过简单地连接与上述每个优化过程相关的元参数来直接从Triton-IR程序中提取优化空间。</p>
+<p>在这项工作中，仅考虑分层图块通道，导致每个图块每个维度的图块参数不超过3个。然后使用对：</p>
+<ol>
+<li>32和128之间的2的幂进行穷举搜索来优化这些参数，以获取图块大小；</li>
+<li>micro图块尺寸为8和32；</li>
+<li>1和4为nano图块尺寸。</li>
+</ol>
+<p>将来可以使用更好的自动调整方法。</p>
+<h2 id="6-Numerical-Experiments"><a href="#6-Numerical-Experiments" class="headerlink" title="6 Numerical Experiments"></a>6 Numerical Experiments</h2><p>在本节中，我们将根据深度学习文献评估Triton在各种工作负载上的性能。我们使用NVIDIA GeForce GTX1070，并将我们的系统与最新的供应商库（cuBLAS 10.0、cuDNN 7.0）以及相关编译器技术（AutoTVM、TC、PlaidML）进行比较。如果适用，我们会按照官方文档指南针对每个单独的问题大小自动调整这些DSL。</p>
+<h3 id="6-1-Matrix-Multiplication"><a href="#6-1-Matrix-Multiplication" class="headerlink" title="6.1 Matrix Multiplication"></a>6.1 Matrix Multiplication</h3><p>矩阵乘法任务的形式为：$A = D \times W^T(D \in \mathbb{R}^{M \times K}, W \in \mathbb{R}^{N \times K})$是神经网络计算的核心。在这里，我们考虑了来自循环神经网络（DeepSpeech2[3]）和Transformer[44]的各种任务；我们在图8中报告了它们的性能。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/image-20231226212751497.png" alt="image-20231226212751497"></p>
+<p>Triton和cuBLAS总体上不相上下，在某些任务上达到了设备峰值性能90%以上。然而，由于使用了3D算法[2]，cuBLAS在浅层Transformer上仍然比Triton更快，该算法将深度归约分割为独立的块，以便在M和N太小时提供更多并行性。否则，现有的DSL比我们的解决方案慢2-3倍——除了当输入形状是32的倍数时的TVM（慢$&lt; 2$倍）。</p>
+<h3 id="6-2-Convolutions"><a href="#6-2-Convolutions" class="headerlink" title="6.2 Convolutions"></a>6.2 Convolutions</h3><p>卷积神经网络（CNN）是一类重要的机器学习模型，应该得到DSL和编译器的良好支持。它们基于卷积层（图9a），其实现为矩阵乘法（图9b），这对于使用专用张量处理硬件是必要的——但现有DSL不支持。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/image-20231226213137298.png" alt="image-20231226213137298"></p>
+<p>在这里，我们对cuDNN的“IMPLICIT_GEMM”算法（第6.2.1节）的Triton重新实现进行了基准测试，并提供了第一个可用于移位卷积的融合内核（第6.2.2节）。我们使用指针增量查找表来实现这些例程，如Listing 8所示。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/image-20231226213310752.png" alt="image-20231226213310752"></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> tunable <span class="type">int</span> TM = &#123;<span class="number">16</span>, <span class="number">32</span>, <span class="number">64</span>, <span class="number">128</span>&#125;;</span><br><span class="line"><span class="type">const</span> tunable <span class="type">int</span> TN = &#123;<span class="number">16</span>, <span class="number">32</span>, <span class="number">64</span>, <span class="number">128</span>&#125;;</span><br><span class="line"><span class="type">const</span> tunable <span class="type">int</span> TK = &#123;<span class="number">8</span>&#125;;</span><br><span class="line"></span><br><span class="line">__constant__ <span class="type">int</span>* delta = alloc_const <span class="type">int</span>[<span class="number">512</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> c = <span class="number">0</span>; c &lt; C; c ++)</span><br><span class="line">    delta[c] = c * H * W + shift_h[c] * W + shift_w[c]</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="built_in">shift_conv</span>(restrict read_only <span class="type">float</span> *a,</span><br><span class="line">                restrict read_only <span class="type">float</span> *b, <span class="type">float</span> *c,</span><br><span class="line">                <span class="type">int</span> M, <span class="type">int</span> N, <span class="type">int</span> K)&#123;</span><br><span class="line">    <span class="type">int</span> rxa[TM] = get_global_range[TM](<span class="number">0</span>);</span><br><span class="line">    <span class="type">int</span> rxb[TN] = get_global_range[TM](<span class="number">1</span>);</span><br><span class="line">    <span class="type">int</span> rka[TK] = <span class="number">0</span> ... TK;</span><br><span class="line">    <span class="type">int</span> rkb[TK] = <span class="number">0</span> ... TK;</span><br><span class="line">    <span class="type">float</span> C[TM, TN] = <span class="number">0</span>;</span><br><span class="line">    <span class="type">float</span>* pxa[TM, TN] = a + rxa[:, newaxis];</span><br><span class="line">    <span class="type">float</span>* pb[TN, TK] = b + ryb[:, newaxis] + rkb * N;</span><br><span class="line">    __constant__ <span class="type">int</span>* pd[TK] = delta + rka;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> k = K; k &gt; <span class="number">0</span>; k = k - TK)&#123;</span><br><span class="line">        <span class="type">int</span> delta[TK] = *pd;</span><br><span class="line">        <span class="type">float</span> *pa[TM, TK] = pxa + delta[newaxis, :];</span><br><span class="line">        <span class="type">float</span> a[TM, TK] = *pa;</span><br><span class="line">        <span class="type">float</span> b[TN, TK] = *pb;</span><br><span class="line">        C = <span class="built_in">dot</span>(a, <span class="built_in">trans</span>(b), C);</span><br><span class="line">        pb = pb + TK * N;</span><br><span class="line">        pd = pd + TK;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> rxc[TM] = get_global_range[TM](<span class="number">0</span>);</span><br><span class="line">    <span class="type">int</span> ryx[TN] = get_global_range[TM](<span class="number">1</span>);</span><br><span class="line">    <span class="type">float</span>* pc[TM, TN] = c + rxc[:, newaxis] + ryc * M;</span><br><span class="line">    <span class="type">bool</span> checkc0[TM] = rxc &lt; M;</span><br><span class="line">    <span class="type">bool</span> checkc1[TN] = ryc &lt; N;</span><br><span class="line">    <span class="type">bool</span> checkc[TM, TN] = checkc0[:, newaxis] &amp;&amp; checkc1;</span><br><span class="line">    @checkc *pc = C;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="6-2-1-Dense-Convolutions"><a href="#6-2-1-Dense-Convolutions" class="headerlink" title="6.2.1 Dense Convolutions"></a>6.2.1 Dense Convolutions</h4><p>本小节中考虑的卷积层来自深度学习文献，如表1所示。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/image-20231226213353580.png" alt="image-20231226213353580"></p>
+<p>如图10所示，Triton的性能优于cuDNN对ResNet的IMPLICIT_GEMM实现。这可能是因为cuDNN还为$3 \times 3$卷积维护了更好的算法（即 Winograd[25]），从而几乎没有留下多少工程资源来优化不太重要的内核。当快速算法不可用时（例如DeepSpeech2），cuDNN和Triton不相上下。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/image-20231226213517661.png" alt="image-20231226213517661"></p>
+<h4 id="6-2-2-Shift-Convolutions"><a href="#6-2-2-Shift-Convolutions" class="headerlink" title="6.2.2 Shift Convolutions"></a>6.2.2 Shift Convolutions</h4><p>最后，我们将表1中的Task1-5的实现视为移位卷积——一种新颖的CNN方法（见图9a）。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/image-20231226213137298.png" alt="image-20231226213137298"></p>
+<p>我们将Triton中融合移位转换模块的实现（Listing 8）与依赖手写移位内核和单独调用cuBLAS的简单实现进行比较。我们还报告了未完成移位（即$1 \times 1$卷积）时可达到的最大性能。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/image-20231226213310752.png" alt="image-20231226213310752"></p>
+<p>正如我们在图11中看到的，我们的Triton实现几乎完全隐藏了转移成本。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/image-20231226213715793.png" alt="image-20231226213715793"></p>
+<h2 id="7-Conclusions"><a href="#7-Conclusions" class="headerlink" title="7 Conclusions"></a>7 Conclusions</h2><p>在本文中，我们介绍了Triton，一种开源语言和编译器，用于将平铺神经网络计算表达和编译为高效的机器代码。我们表明，只需向LLVM-IR添加一些数据流和控制流扩展就可以实现各种图块级优化过程，从而共同实现与供应商库相当的性能。我们还提出了Triton-C，这是一种高级语言，我们能够在其中为CNN的新型神经网络架构简洁地实现高效的内核。</p>
+<p>未来的工作方向包括对张量核心的支持、量化内核的实现[26]以及集成到更高级别的DSL中。</p>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/profile.jpg" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/profile.jpg" title="头像" alt="头像"></a><div class="post-copyright__author_name">Karl</div><div class="post-copyright__author_desc">日拱一卒，功不唐捐</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="http://blog.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('http://blog.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/')">论文笔记《Triton：An Intermediate Language and Compiler for Tiled Neural Network Computations》</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="赞赏作者"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>打赏作者</div><div class="reward-main"><div class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/wechat.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/alipay.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="http://blog.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=论文笔记《Triton：An Intermediate Language and Compiler for Tiled Neural Network Computations》&amp;url=http://blog.karltan.com/dissertation-notes/2019/Tillet_et_al-2019-Triton/&amp;pic=https://img.karltan.com/covers/dissertation-notes/2019/Tillet_et_al-2019-Triton.png" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://blog.karltan.com" target="_blank">Karl的博客</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__category-list"><a class="post-meta__box__categoryes" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/"><span class="categoryes-punctuation"> <i class="anzhiyufont anzhiyu-icon-inbox"></i></span>论文笔记<span class="categoryesPageCount">9</span></a><a class="post-meta__box__categoryes" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/2019/"><span class="categoryes-punctuation"> <i class="anzhiyufont anzhiyu-icon-inbox"></i></span>2019<span class="categoryesPageCount">2</span></a></div><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>论文笔记<span class="tagsPageCount">9</span></a><a class="post-meta__box__tags" href="/tags/MAPL/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>MAPL<span class="tagsPageCount">1</span></a></div></div><div class="post_share"><div class="social-share" data-image="https://img.karltan.com/covers/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/bugs/bugs-while-running-code/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/bugs/bugs-while-running-code.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">跑代码中的bug</div></div></a></div><div class="next-post pull-right"><a href="/ac-diary/acwing/autumn-daily-question-2023/acwing5166/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/ac-diary/acwing/autumn-daily-question-2023.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">AcWing 5166. 对称山脉</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="anzhiyufont anzhiyu-icon-thumbs-up fa-fw" style="font-size: 1.5rem; margin-right: 4px"></i><span>喜欢这篇文章的人也看了</span></div><div class="relatedPosts-list"><div><a href="/dissertation-notes/dissertation-summary/" title="论文总结"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/dissertation-summary.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-10-28</div><div class="title">论文总结</div></div></a></div><div><a href="/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/" title="论文笔记《Attention Is All You Need》"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2024-02-09</div><div class="title">论文笔记《Attention Is All You Need》</div></div></a></div><div><a href="/dissertation-notes/2018/Xiang_et_al-2018-PoseCNN/" title="论文笔记《PoseCNN：A Convolutional Neural Network for 6D Object Pose Estimation in Cluttered Scenes》"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2018/Xiang_et_al-2018-PoseCNN.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-10-19</div><div class="title">论文笔记《PoseCNN：A Convolutional Neural Network for 6D Object Pose Estimation in Cluttered Scenes》</div></div></a></div><div><a href="/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/" title="论文笔记《Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation》"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-10-25</div><div class="title">论文笔记《Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation》</div></div></a></div><div><a href="/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/" title="论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2024-04-15</div><div class="title">论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》</div></div></a></div><div><a href="/dissertation-notes/2023/Fan_et_al-2023-POPE/" title="论文笔记《POPE：6-DoF Promptable Pose Estimation of Any Object, in Any Scene, with One Reference》"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2023/Fan_et_al-2023-POPE.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-11-15</div><div class="title">论文笔记《POPE：6-DoF Promptable Pose Estimation of Any Object, in Any Scene, with One Reference》</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="anzhiyufont anzhiyu-icon-comments"></i><span> 评论</span></div><div class="comment-randomInfo"><a onclick="anzhiyu.addRandomCommentInfo()" href="javascript:void(0)">匿名评论</a><a href="/privacy" style="margin-left: 4px">隐私政策</a></div><div class="comment-tips" id="comment-tips"><span>✅ 你无需删除空行，直接评论以获取最佳展示效果</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div><div class="comment-barrage"></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info__sayhi" id="author-info__sayhi" onclick="anzhiyu.changeSayHelloText()"></div><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/profile.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-status"><img class="g-status" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/chuoyichuo.gif" alt="status"/></div></div><div class="author-info__description"><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">直博狗一枚，日常会在博客上分享自己的学习笔记，希望可以帮到你。</div><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">相信你可以在这里找到对你有用的<b style="color:#fff">知识</b>和<b style="color:#fff">教程</b>。</div></div><div class="author-info__bottom-group"><a class="author-info__bottom-group-left" href="/"><h1 class="author-info__name">Karl</h1><div class="author-info__desc">日拱一卒，功不唐捐</div></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://github.com/karltan0328" target="_blank" title="Github"><i class="fa-brands fa-github faa-tada"></i></a><a class="social-icon faa-parent animated-hover" href="mailto:admin@karltan.com" target="_blank" title="Email"><i class="fa-solid fa-envelope faa-tada"></i></a></div></div></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bullhorn anzhiyu-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来看我的博客鸭~</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Triton-An-Intermediate-Language-and-Compiler-for-Tiled-Neural-Network-Computations"><span class="toc-text">Triton: An Intermediate Language and Compiler for Tiled Neural Network Computations</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Abstract"><span class="toc-text">Abstract</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Introduction"><span class="toc-text">1 Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Related-Work"><span class="toc-text">2 Related Work</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-The-Triton-C-Language"><span class="toc-text">3 The Triton-C Language</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-Syntax"><span class="toc-text">3.1 Syntax</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-Semantics"><span class="toc-text">3.2 Semantics</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-1-Tile-Semantics"><span class="toc-text">3.2.1 Tile Semantics</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-2-Broadcasting-Semantics"><span class="toc-text">3.2.2 Broadcasting Semantics</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-Programming-Model"><span class="toc-text">3.3 Programming Model</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-The-Triton-IR"><span class="toc-text">4 The Triton IR</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-Structure"><span class="toc-text">4.1 Structure</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-1-Modules"><span class="toc-text">4.1.1 Modules</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-2-Functions"><span class="toc-text">4.1.2 Functions</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-3-Basic-Blocks"><span class="toc-text">4.1.3 Basic Blocks</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-Support-for-Tile-Level-Data-Flow-Analysis"><span class="toc-text">4.2 Support for Tile-Level Data-Flow Analysis</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-1-Types"><span class="toc-text">4.2.1 Types</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-2-Instructions"><span class="toc-text">4.2.2 Instructions</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-Support-for-Tile-Level-Control-Flow-Analysis"><span class="toc-text">4.3 Support for Tile-Level Control-Flow Analysis</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-The-Triton-JIT-Compiler"><span class="toc-text">5 The Triton-JIT Compiler</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-Machine-Independent-Passes"><span class="toc-text">5.1 Machine-Independent Passes</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-1-Pre-Fetching"><span class="toc-text">5.1.1 Pre-Fetching</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-2-Tile-Level-Peephole-Optimization"><span class="toc-text">5.1.2 Tile-Level Peephole Optimization</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-Machine-Dependent-Passes"><span class="toc-text">5.2 Machine-Dependent Passes</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-1-Hierarchical-Tiling"><span class="toc-text">5.2.1 Hierarchical Tiling</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-2-Memory-Coalescing"><span class="toc-text">5.2.2 Memory Coalescing</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-3-Shared-Memory-Allocation"><span class="toc-text">5.2.3 Shared Memory Allocation</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-2-4-Shared-Memory-Synchronization"><span class="toc-text">5.2.4 Shared Memory Synchronization</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-Auto-tuner"><span class="toc-text">5.3 Auto-tuner</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-Numerical-Experiments"><span class="toc-text">6 Numerical Experiments</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-Matrix-Multiplication"><span class="toc-text">6.1 Matrix Multiplication</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-Convolutions"><span class="toc-text">6.2 Convolutions</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#6-2-1-Dense-Convolutions"><span class="toc-text">6.2.1 Dense Convolutions</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-2-2-Shift-Convolutions"><span class="toc-text">6.2.2 Shift Convolutions</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-Conclusions"><span class="toc-text">7 Conclusions</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/" title="论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》"/></a><div class="content"><a class="title" href="/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/" title="论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》">论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》</a><time datetime="2024-04-15T07:00:00.000Z" title="发表于 2024-04-15 15:00:00">2024-04-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/dissertation-notes/2023/Woo_et_al-2023-ConvNeXt_V2/" title="论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2023/Woo_et_al-2023-ConvNeXt_V2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》"/></a><div class="content"><a class="title" href="/dissertation-notes/2023/Woo_et_al-2023-ConvNeXt_V2/" title="论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》">论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》</a><time datetime="2024-04-04T05:00:00.000Z" title="发表于 2024-04-04 13:00:00">2024-04-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/" title="论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2023/Nguyen_et_al-2023-NOPE.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》"/></a><div class="content"><a class="title" href="/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/" title="论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》">论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》</a><time datetime="2024-03-28T04:00:00.000Z" title="发表于 2024-03-28 12:00:00">2024-03-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/" title="论文笔记《Attention Is All You Need》"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文笔记《Attention Is All You Need》"/></a><div class="content"><a class="title" href="/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/" title="论文笔记《Attention Is All You Need》">论文笔记《Attention Is All You Need》</a><time datetime="2024-02-09T02:00:00.000Z" title="发表于 2024-02-09 10:00:00">2024-02-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/ac-diary/acwing/autumn-daily-question-2023/acwing5199/" title="AcWing 5199. 现代艺术"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/ac-diary/acwing/autumn-daily-question-2023.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AcWing 5199. 现代艺术"/></a><div class="content"><a class="title" href="/ac-diary/acwing/autumn-daily-question-2023/acwing5199/" title="AcWing 5199. 现代艺术">AcWing 5199. 现代艺术</a><time datetime="2024-01-18T08:00:00.000Z" title="发表于 2024-01-18 16:00:00">2024-01-18</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div id="footer_deal"><a class="deal_link" href="mailto:admin@karltan.com" title="email"><i class="fa-solid fa-envelope"></i></a><a class="deal_link" href="/atom.xml" title="RSS"><i class="fa-solid fa-rss"></i></a><img class="footer_mini_logo" title="返回顶部" alt="返回顶部" onclick="anzhiyu.scrollToDest(0, 500)" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/profile.jpg" size="50px"/><a class="deal_link" target="_blank" rel="noopener" href="https://github.com/karltan0328" title="Github"><i class="fa-brands fa-github"></i></a><a class="deal_link" target="_blank" rel="noopener" href="https://blog.csdn.net/karltan0328" title="CSDN"><i class="fa-solid fa-c"></i></a></div><div id="workboard"><img class="workSituationImg boardsign" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/work_img.svg" alt="paper快来，idea快来，我要毕业🥹" title="paper快来，idea快来，我要毕业🥹"/><div id="runtimeTextTip"></div></div><div id="anzhiyu-footer"><div class="footer-group"><div class="footer-title">服务</div><div class="footer-links"><a class="footer-item" title="51la统计" target="_blank" rel="noopener" href="https://v6.51.la/">51la统计</a><a class="footer-item" title="十年之约" target="_blank" rel="noopener" href="https://www.foreverblog.cn/">十年之约</a><a class="footer-item" title="开往" target="_blank" rel="noopener" href="https://github.com/travellings-link/travellings">开往</a></div></div><div class="footer-group"><div class="footer-title">主题</div><div class="footer-links"><a class="footer-item" title="文档" target="_blank" rel="noopener" href="https://docs.anheyu.com/">文档</a><a class="footer-item" title="源码" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu">源码</a><a class="footer-item" title="更新日志" target="_blank" rel="noopener" href="https://blog.anheyu.com/update/">更新日志</a></div></div><div class="footer-group"><div class="footer-title">导航</div><div class="footer-links"><a class="footer-item" title="即刻短文" href="/essay">即刻短文</a><a class="footer-item" title="友链文章" href="/fcircle">友链文章</a><a class="footer-item" title="留言板" href="/comments">留言板</a></div></div><div class="footer-group"><div class="footer-title">协议</div><div class="footer-links"><a class="footer-item" title="隐私协议" href="/privacy">隐私协议</a><a class="footer-item" title="Cookies" href="/cookies">Cookies</a><a class="footer-item" title="版权协议" href="/copyright">版权协议</a></div></div><div class="footer-group"><div class="footer-title-group"><div class="footer-title">友链</div><a class="random-friends-btn" id="footer-random-friends-btn" href="javascript:addFriendLinksInFooter();" title="换一批友情链接"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right"></i></a></div><div class="footer-links" id="friend-links-in-footer"></div></div></div><p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" data-title="博客框架为Hexo 7.0.0" title="博客框架为Hexo 7.0.0"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/frame-hexo.svg" alt="博客框架为Hexo 7.0.0"/></a><a class="github-badge" target="_blank" href="https://blog.anheyu.com/" style="margin-inline:5px" data-title="本站使用AnZhiYu主题" title="本站使用AnZhiYu主题"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/theme-anzhiyu.svg" alt="本站使用AnZhiYu主题"/></a><a class="github-badge" target="_blank" href="https://console.upyun.com/register/?invite=nVONH00RJ" style="margin-inline:5px" data-title="本网站由又拍云提供CDN加速/云储存服务" title="本网站由又拍云提供CDN加速/云储存服务"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/upyun.svg" alt="本网站由又拍云提供CDN加速/云储存服务"/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/copyright-by-nc-sa.svg" alt="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"/></a></p></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2023 - 2024 By <a class="footer-bar-link" href="/" title="Karl" target="_blank">Karl</a></div></div><div id="footer-type-tips"></div><div class="js-pjax"><script>function subtitleType () {
+  if (true) { 
+    window.typed = new Typed("#footer-type-tips", {
+      strings: ["不积跬步无以至千里","今日事，今日毕","有善始者实繁，能克终者盖寡","穷且益坚，不坠青云之志","若无闲事挂心头，便是人间好时节"],
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: true,
+      backSpeed: 50
+    })
+  } else {
+    document.getElementById("footer-type-tips").innerHTML = '不积跬步无以至千里'
+  }
+}
+
+if (true) {
+  if (typeof Typed === 'function') {
+    subtitleType()
+  } else {
+    getScript('https://cdn.cbd.int/typed.js@2.0.15/dist/typed.umd.js').then(subtitleType)
+  }
+} else {
+  subtitleType()
+}</script></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu" title="主题">主题</a><a class="footer-bar-link" target="_blank" rel="noopener" href="https://beian.miit.gov.cn/" title="湘ICP备2023018619号-1">湘ICP备2023018619号-1</a><a class="footer-bar-link cc" href="/copyright" title="cc协议"><i class="anzhiyufont anzhiyu-icon-copyright-line"></i><i class="anzhiyufont anzhiyu-icon-creative-commons-by-line"></i><i class="anzhiyufont anzhiyu-icon-creative-commons-nc-line"></i><i class="anzhiyufont anzhiyu-icon-creative-commons-nd-line"></i></a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">130</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">16</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" href="https://blog.karltan.com/" title="Karl的博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/logo.png" alt="Karl的博客"/><span class="back-menu-item-text">Karl的博客</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://www.karltan.com/" title="Karl的导航"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://www.karltan.com/favicon.ico" alt="Karl的导航"/><span class="back-menu-item-text">Karl的导航</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">博客分流</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://v.karltan.com/" title="Vercel"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://assets.vercel.com/image/upload/front/favicon/vercel/favicon.ico" alt="Vercel"/><span class="back-menu-item-text">Vercel</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://c.karltan.com/" title="Cloudflare"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://dash.cloudflare.com/favicon-32x32.png" alt="Cloudflare"/><span class="back-menu-item-text">Cloudflare</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">工具</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://npmzjk.karltan.com/" title="NPM"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npmzjk.karltan.com/images/favicons/favicon-32x32.png" alt="NPM"/><span class="back-menu-item-text">NPM</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://paste.karltan.com/" title="Free-Bin"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://paste.karltan.com/static/favicon.ico" alt="Free-Bin"/><span class="back-menu-item-text">Free-Bin</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://tools.karltan.com/" title="IT-TOOLS"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://tools.karltan.com/android-chrome-192x192.png" alt="IT-TOOLS"/><span class="back-menu-item-text">IT-TOOLS</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://memos.karltan.com/" title="Memos"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://memos.karltan.com/logo.png" alt="Memos"/><span class="back-menu-item-text">Memos</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://wbo.karltan.com/" title="WBO"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://wbo.karltan.com/favicon.ico" alt="WBO"/><span class="back-menu-item-text">WBO</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://git.karltan.com/" title="Gitea"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://git.karltan.com/assets/img/logo.svg" alt="Gitea"/><span class="back-menu-item-text">Gitea</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives"><i class="fa-solid fa-box-archive faa-tada"></i><span> 归档</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories"><i class="fa-solid fa-palette faa-tada"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags"><i class="fa-solid fa-tags faa-tada"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link"><i class="fa-solid fa-link faa-tada"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/fcircle"><i class="fa-brands fa-artstation faa-tada"></i><span> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments"><i class="fa-solid fa-comments faa-tada"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/essay"><i class="fa-solid fa-comment-dots faa-tada"></i><span> 说说</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/music"><i class="fa-solid fa-music faa-tada"></i><span> 音乐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album"><i class="fa-solid fa-images faa-tada"></i><span> 相册</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" target="_blank" rel="noopener" href="https://status.karltan.com/status/1"><i class="fa-solid fa-chart-line faa-tada"></i><span> 网站监控</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="fa-solid fa-shoe-prints faa-tada"></i><span> 随便逛逛</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/about"><i class="fa-solid fa-heart faa-tada"></i><span> 关于我</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/AcWing/" style="font-size: 0.88rem; color: rgb(85, 23, 91);">AcWing<sup>33</sup></a><a href="/tags/CUDA/" style="font-size: 0.88rem; color: rgb(12, 161, 160);">CUDA<sup>1</sup></a><a href="/tags/CVPR/" style="font-size: 0.88rem; color: rgb(147, 94, 197);">CVPR<sup>3</sup></a><a href="/tags/ICLR/" style="font-size: 0.88rem; color: rgb(43, 82, 180);">ICLR<sup>1</sup></a><a href="/tags/Linux/" style="font-size: 0.88rem; color: rgb(122, 113, 29);">Linux<sup>1</sup></a><a href="/tags/MAPL/" style="font-size: 0.88rem; color: rgb(36, 174, 170);">MAPL<sup>1</sup></a><a href="/tags/MySQL/" style="font-size: 0.88rem; color: rgb(181, 7, 113);">MySQL<sup>1</sup></a><a href="/tags/NIPS/" style="font-size: 0.88rem; color: rgb(7, 27, 3);">NIPS<sup>1</sup></a><a href="/tags/PyTorch/" style="font-size: 0.88rem; color: rgb(150, 37, 10);">PyTorch<sup>1</sup></a><a href="/tags/Python/" style="font-size: 0.88rem; color: rgb(141, 141, 197);">Python<sup>1</sup></a><a href="/tags/RSS/" style="font-size: 0.88rem; color: rgb(112, 22, 153);">RSS<sup>1</sup></a><a href="/tags/Ubuntu/" style="font-size: 0.88rem; color: rgb(19, 93, 120);">Ubuntu<sup>3</sup></a><a href="/tags/Windows/" style="font-size: 0.88rem; color: rgb(164, 101, 25);">Windows<sup>1</sup></a><a href="/tags/arXiv/" style="font-size: 0.88rem; color: rgb(9, 118, 154);">arXiv<sup>1</sup></a><a href="/tags/mAP/" style="font-size: 0.88rem; color: rgb(199, 124, 62);">mAP<sup>1</sup></a><a href="/tags/tmux/" style="font-size: 0.88rem; color: rgb(13, 185, 37);">tmux<sup>1</sup></a><a href="/tags/vim/" style="font-size: 0.88rem; color: rgb(4, 144, 16);">vim<sup>1</sup></a><a href="/tags/%E4%BB%A3%E7%A0%81/" style="font-size: 0.88rem; color: rgb(151, 15, 28);">代码<sup>1</sup></a><a href="/tags/%E4%BD%8D%E5%A7%BF%E4%BC%B0%E8%AE%A1/" style="font-size: 0.88rem; color: rgb(130, 27, 45);">位姿估计<sup>1</sup></a><a href="/tags/%E6%89%A9%E5%AE%B9/" style="font-size: 0.88rem; color: rgb(110, 175, 30);">扩容<sup>1</sup></a><a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 0.88rem; color: rgb(158, 42, 1);">数学<sup>1</sup></a><a href="/tags/%E6%97%8B%E8%BD%AC%E8%A1%A8%E7%A4%BA/" style="font-size: 0.88rem; color: rgb(11, 137, 41);">旋转表示<sup>1</sup></a><a href="/tags/%E6%9D%8E%E6%B2%90/" style="font-size: 0.88rem; color: rgb(109, 78, 54);">李沐<sup>76</sup></a><a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 0.88rem; color: rgb(99, 94, 68);">深度学习<sup>79</sup></a><a href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/" style="font-size: 0.88rem; color: rgb(141, 161, 139);">目标检测<sup>1</sup></a><a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 0.88rem; color: rgb(57, 29, 124);">笔记<sup>77</sup></a><a href="/tags/%E7%AE%97%E6%B3%95%E9%A2%98/" style="font-size: 0.88rem; color: rgb(153, 5, 199);">算法题<sup>33</sup></a><a href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" style="font-size: 0.88rem; color: rgb(186, 192, 126);">论文笔记<sup>9</sup></a><a href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91/" style="font-size: 0.88rem; color: rgb(159, 79, 86);">阿里云<sup>1</sup></a><a href="/tags/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6/" style="font-size: 0.88rem; color: rgb(7, 133, 128);">高等数学<sup>1</sup></a><a href="/tags/%E9%AD%94%E6%B3%95/" style="font-size: 0.88rem; color: rgb(99, 91, 1);">魔法<sup>1</sup></a></div></div><hr/></div></div><div id="keyboard-tips"><div class="keyboardTitle">博客快捷键</div><div class="keybordList"><div class="keybordItem"><div class="keyGroup"><div class="key">shift K</div></div><div class="keyContent"><div class="content">关闭快捷键功能</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift A</div></div><div class="keyContent"><div class="content">打开/关闭中控台</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift M</div></div><div class="keyContent"><div class="content">播放/暂停音乐</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift D</div></div><div class="keyContent"><div class="content">深色/浅色显示模式</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift S</div></div><div class="keyContent"><div class="content">站内搜索</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift R</div></div><div class="keyContent"><div class="content">随机访问</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift H</div></div><div class="keyContent"><div class="content">返回首页</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift F</div></div><div class="keyContent"><div class="content">友链鱼塘</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift L</div></div><div class="keyContent"><div class="content">友链页面</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift P</div></div><div class="keyContent"><div class="content">关于本站</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift I</div></div><div class="keyContent"><div class="content">原版/本站右键菜单</div></div></div></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="anzhiyufont anzhiyu-icon-comment-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="anzhiyufont anzhiyu-icon-comments"></i></a><a id="switch-commentBarrage" href="javascript:anzhiyu.switchCommentBarrage();" title="开关弹幕"><i class="anzhiyufont anzhiyu-icon-danmu"></i></a><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="anzhiyufont anzhiyu-icon-xmark"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.20/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.4/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script async src="/anzhiyu/random.js"></script><script async="async">(function () {
+  var grt = new Date("07/15/2023 00:00:00"); //设置网站上线时间
+  var now = new Date();
+  var dnum;
+  var hnum;
+  var mnum;
+  var snum;
+  var nowHour;
+
+  // 计算并更新天数、小时数、分钟数和秒数
+  function updateTime() {
+    now = new Date(); // 更新 now 的值
+    nowHour = now.getHours(); // 更新 nowHour 的值
+    var days = (now - grt) / 1000 / 60 / 60 / 24;
+    dnum = Math.floor(days);
+    var hours = (now - grt) / 1000 / 60 / 60 - 24 * dnum;
+    hnum = Math.floor(hours);
+    if (String(hnum).length == 1) {
+      hnum = "0" + hnum;
+    }
+    var minutes = (now - grt) / 1000 / 60 - 24 * 60 * dnum - 60 * hnum;
+    mnum = Math.floor(minutes);
+    if (String(mnum).length == 1) {
+      mnum = "0" + mnum;
+    }
+    var seconds = (now - grt) / 1000 - 24 * 60 * 60 * dnum - 60 * 60 * hnum - 60 * mnum;
+    snum = Math.round(seconds);
+    if (String(snum).length == 1) {
+      snum = "0" + snum;
+    }
+  }
+
+  // 更新网页中显示的网站运行时间
+  function updateHtml() {
+    const footer = document.getElementById("footer");
+    if (!footer) return
+    let currentTimeHtml = "";
+    if (nowHour < 18 && nowHour >= 9) {
+      // 如果是上班时间，默认就是"安知鱼-上班摸鱼中.svg"图片，不需要更改
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    } else {
+      // 如果是下班时间，插入"安知鱼-下班啦.svg"图片
+      let img = document.querySelector("#workboard .workSituationImg");
+      if (img != null) {
+        img.src = "/img/label/offduty_img.svg";
+        img.title = "延毕就延毕，我先玩了再说🤡";
+        img.alt = "延毕就延毕，我先玩了再说🤡";
+      }
+
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    }
+
+    if (document.getElementById("runtimeTextTip")) {
+      document.getElementById("runtimeTextTip").innerHTML = currentTimeHtml;
+    }
+  }
+
+  setInterval(() => {
+    updateTime();
+    updateHtml();
+  }, 1000);
+})();</script><script src="https://cdn.cbd.int/algoliasearch@4.18.0/dist/algoliasearch-lite.umd.js"></script><script src="https://cdn.cbd.int/instantsearch.js@4.56.5/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.cbd.int/mathjax@3.2.2/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.cbd.int/mermaid@10.2.4/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  anzhiyu.addGlobalFn('themeChange', runMermaid, 'mermaid')
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo.karltan.com/.netlify/functions/twikoo',
+      region: '',
+      onCommentLoaded: () => {
+        anzhiyu.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') setTimeout(runFn,0)
+    else getScript('https://cdn.cbd.int/twikoo@1.6.25/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo.karltan.com/.netlify/functions/twikoo',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const runFn = () => {
+    init();
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) anzhiyu.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else {
+      loadTwikoo()
+    }
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script><input type="hidden" name="page-type" id="page-type" value="post"><script async src="/js/anzhiyu/comment_barrage.js"></script></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://twikoo.karltan.com/.netlify/functions/twikoo',
+        region: '',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.textContent= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn.cbd.int/twikoo@1.6.25/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'><div class='name'><span>${array[i].nick} </span></div></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <time datetime="${array[i].date}">${anzhiyu.diffDate(array[i].date, true)}</time></div>
+        </div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script async data-pjax src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.1/bubble/bubble.js"></script><script>var visitorMail = "visitor@karltan.com";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><script src="/js/anzhiyu/right_click_menu.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script><script defer src="/_vercel/insights/script.js"></script><script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script src="https://sdk.51.la/perf/js-sdk-perf.min.js" crossorigin="anonymous"></script><script>LA.init({id:"{3GbfAYtZPDEan7kS}",ck:"{3Gbf0O9t4EtAOhf1}"})</script><script>new LingQue.Monitor().init({id:"3GbfAYtZPDEan7kS",sendSuspicious:true});</script><script>(() => {
+  window.$crisp = [];
+  window.CRISP_WEBSITE_ID = "99975f47-0cf6-4a4b-8088-49fd5cb33ab0";
+  (function () {
+    d = document;
+    s = d.createElement("script");
+    s.src = "https://client.crisp.chat/l.js";
+    s.async = 1;
+    d.getElementsByTagName("head")[0].appendChild(s);
+  })();
+  $crisp.push(["safe", true])
+
+  const isChatBtn = true
+  const isChatHideShow = false
+
+  if (isChatBtn) {
+    const open = () => {
+      $crisp.push(["do", "chat:show"])
+      $crisp.push(["do", "chat:open"])
+    }
+
+    const close = () => {
+      $crisp.push(["do", "chat:hide"])
+    }
+
+    close()
+    $crisp.push(["on", "chat:closed", function() {
+      close()
+    }])
+
+    window.chatBtnFn = () => {
+      $crisp.is("chat:visible") ? close() : open()
+    }
+  } else if (isChatHideShow) {
+    window.chatBtn = {
+      hide: () => {
+        $crisp.push(["do", "chat:hide"])
+      },
+      show: () => {
+        $crisp.push(["do", "chat:show"])
+      }
+    }
+  }
+})()</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:type\"]","meta[property=\"og:site_name\"]","meta[property=\"og:description\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>

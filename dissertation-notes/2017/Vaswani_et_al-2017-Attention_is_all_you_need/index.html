@@ -1,0 +1,691 @@
+<!-- ./node_modules/hexo-theme-anzhiyu/layout/includes/layout.pug--><!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>论文笔记《Attention Is All You Need》 | Karl的博客</title><meta name="keywords" content="论文笔记,NIPS"><meta name="author" content="Karl"><meta name="copyright" content="Karl"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="论文笔记《Attention Is All You Need》"><meta name="application-name" content="论文笔记《Attention Is All You Need》"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="论文笔记《Attention Is All You Need》"><meta property="og:url" content="http://blog.karltan.com/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/index.html"><meta property="og:site_name" content="Karl的博客"><meta property="og:description" content="Attention Is All You Need：Transformer开山之作。"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://img.karltan.com/covers/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need.png"><meta property="article:author" content="Karl"><meta property="article:tag"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://img.karltan.com/covers/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need.png"><meta name="description" content="Attention Is All You Need：Transformer开山之作。"><link rel="shortcut icon" href="/img/logo.png"><link rel="canonical" href="http://blog.karltan.com/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/"><link rel="preconnect" href="//cdn.cbd.int"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//static.cloudflareinsights.com"/><link rel="preconnect" href="//www.clarity.ms"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="ItAgqL0bGv4TvuAzDl6nNhCuwt5RdBLYRkwae25qGzU"/><meta name="baidu-site-verification" content="codeva-Y7ehYLkADp"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@1.0.17/lib/assets/font-awesome-animation.min.css"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.20/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?0f2c96ab05c3c6d77e2d8fbf3240e404";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script defer="defer" data-pjax="data-pjax" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon="{&quot;token&quot;: &quot;758e166757ec488583caf56b7dd7f095&quot;}"></script><script>(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "i0moouu8jj");</script><script>const GLOBAL_CONFIG = {
+  linkPageTop: {"enable":true,"title":"与数百名博主无限进步","addFriendPlaceholder":"昵称（请勿包含博客等字样）：\n网站地址（要求博客地址，请勿提交个人主页）：\n头像图片url（请提供尽可能清晰的图片）：\n描述：\n站点截图（可选）：\n"},
+  peoplecanvas: undefined,
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"tianli","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"a93a787ee06b121647ed","Referer":"https://blog.karltan.com/"},
+  diytitle: undefined,
+  LA51: {"enable":true,"ck":"3Gbf0O9t4EtAOhf1","LingQueMonitorID":"3GbfAYtZPDEan7kS"},
+  greetingBox: {"enable":true,"default":"晚上好👋","list":[{"greeting":"晚安😴","startTime":0,"endTime":5},{"greeting":"早上好鸭👋, 祝你一天好心情！","startTime":6,"endTime":9},{"greeting":"上午好👋, 状态很好，鼓励一下～","startTime":10,"endTime":10},{"greeting":"11点多啦, 在坚持一下就吃饭啦～","startTime":11,"endTime":11},{"greeting":"午安👋, 宝贝","startTime":12,"endTime":13},{"greeting":"🌈充实的一天辛苦啦！","startTime":14,"endTime":17},{"greeting":"18点喽, 奖励一顿丰盛的大餐吧🍔。","startTime":18,"endTime":19},{"greeting":"晚上好👋, 在属于自己的时间好好放松😌~","startTime":20,"endTime":24}]},
+  twikooEnvId: 'https://twikoo.karltan.com/.netlify/functions/twikoo',
+  commentBarrageConfig:{"enable":true,"maxBarrage":1,"barrageTime":4000,"accessToken":"6f88301de4664d9d9a7cadf39a9f6e5a","mailMd5":""},
+  root: '/',
+  preloader: {"source":2},
+  friends_vue_info: {"apiurl":"https://fcircle.karltan.com/"},
+  navMusic: false,
+  mainTone: undefined,
+  authorStatus: {"skills":["🤖️ 数码科技爱好者","🔍 分享与热心帮助","🏠 智能家居小能手","🔨 设计开发一条龙","🤝 专修交互与设计","🏃 脚踏实地行动派","🧱 团队小组发动机","💢 壮汉人狠话不多"]},
+  algolia: {"appId":"8C3UHN3LPN","apiKey":"e00dcc69cdc423d89a288bc784a14012","indexName":"blog-search","hits":{"per_page":6},"languages":{"input_placeholder":"输入关键词后按下回车查找","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: {"limitDay":1,"position":"top","messagePrev":"本文距上次修改已经","messageNext":"天，其中的内容可能已经不再适用。"},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"作者: Karl","link":"链接: ","source":"来源: Karl的博客","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-right"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: {"enable":true,"delay":100,"shiftDelay":200},
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: 'Karl的博客',
+  title: '论文笔记《Attention Is All You Need》',
+  postAI: 'true',
+  pageFillDescription: 'Attention Is All You Need, Abstract, 1 Introduction, 2 Background, 3 Model Architecture, 3.1 Encoder and Decoder Stacks, 3.2 Attention, 3.2.1 Scaled Dot-Product Attention, 3.2.2 Multi-Head Attention, 3.2.3 Applications of Attention in our Model, 3.3 Position-wise Feed-Forward Networks, 3.4 Embeddings and Softmax, 3.5 Positional Encoding, 4 Why Self-Attention, 5 Training, 5.1 Training Data and Batching, 5.2 Hardware and Schedule, 5.3 Optimizer, 5.4 Regularization, 6 Results, 6.1 Machine Translation, 6.2 Model Variations, 7 Conclusion原文链接论文笔记的博客链接论文笔记博客论文链接代码链接现阶段占主导地位的序列转换模型基于复杂的循环或卷积神经网络包括编码器和解码器性能最好的模型还通过注意力机制连接编码器和解码器我们提出了一种新的简单网络架构它完全基于注意力机制完全摒弃了递归和卷积在两个机器翻译任务上的实验表明这些模型在质量上更优同时具有更强的并行性需要的训练时间显著减少我们的模型在英德翻译任务中的值为比现有的最佳值包括集合提高了在英法翻译任务中我们的模型在个上经过天的训练后建立了一个新的单模型其得分为这只是文献中最好的模型的一小部分循环神经网络特别是长短期记忆和门控循环神经网络已被牢固地确立为序列建模和转换问题例如语言建模和机器翻译中最先进的方法此后人们做出了许多努力不断突破循环语言模型和编码器解码器架构的边界循环模型通常根据输入和输出序列的符号位置进行计算将位置与计算时间中的步骤对齐它们生成一个隐藏状态序列作为前一个隐藏状态和位置的输入的函数这种固有的顺序性妨碍了训练样例中的并行化这在较长的序列长度时变得非常关键因为内存限制限制了样例之间的批处理最近的工作通过分解技巧和条件计算在计算效率上取得了显著的提高同时也提高了后者的模型性能然而顺序计算的基本约束仍然存在注意力机制已经成为各种任务中引人注目的序列建模和转换模型的组成部分允许对依赖关系进行建模而不考虑它们在输入或输出序列中的距离然而除了少数情况外这种注意力机制都是与循环网络结合使用的在本工作中我们提出了它是一种模型架构避免了递归完全依赖于注意力机制来绘制输入和输出之间的全局依赖关系支持更多的并行化在个上经过个小时的训练后可以在翻译质量上达到一个新的水平减少顺序计算的目标也构成了和的基础它们都使用卷积神经网络作为基本的构建块并行计算所有输入和输出位置的隐藏表示在这些模型中将来自两个任意输入或输出位置的信号关联起来所需的操作数量按照位置之间的距离增长对来说是线性增长对来说是对数增长这使得学习遥远位置之间的依赖关系变得更加困难在中这被减少为一个固定数量的操作尽管因为平均注意力加权位置的影响有效分辨率会降低所以我们会用节中描述的多头注意力抵消这一影响自注意力有时也被称为内部注意力是一种将单个序列的不同位置联系起来以计算序列的表示形式的注意力机制自注意力已成功地应用于各种任务包括阅读理解抽象摘要文本蕴涵和学习任务独立的句子表征端到端记忆网络基于循环注意力机制而不是序列对齐循环并且在简单语言问答和语言建模任务中表现良好然而据我们所知是第一个完全依赖自注意力来计算其输入和输出表示而不使用序列对齐或卷积的转换模型在接下来的章节中我们将描述自注意力的动机并讨论其相对于和等模型的优势大多数具有竞争力的神经序列转换模型都有编码器解码器结构这里编码器将符号表示的输入序列映射到连续表示序列给定解码器每次生成一个元素的符号输出序列在每个步骤中模型都是自回归的在生成下一个步骤时使用之前生成的符号作为附加输入遵循这种整体架构为编码器和解码器使用堆叠的自注意力层和逐点完全连接的层分别如图的左右两部分所示编码器由个相同的层堆叠而成每个层有两个子层第一个子层是多头自注意力机制第二个子层是简单的位置明智的全连接前馈网络我们在每个子层都使用了一个残差连接然后是层归一化也就是说每个子层的输出都是其中是子层本身实现的函数为了便于这些残差连接模型中的所有子层以及嵌入层都产生了维度为的输出解码器也由个相同的层堆叠而成除了每个编码器层中的两个子层外解码器还插入了第三个子层该子层对编码器的输出执行多头注意力与编码器类似我们在每个子层周围使用残差连接然后进行层归一化我们还修改了解码器中的自注意力子层以防止位置对后续位置的影响这种掩蔽结合输出嵌入偏移一个位置的事实确保了位置的预测只能依赖于位置小于的已知输出注意力函数可以描述为将查询和一组键值对映射到输出其中查询键值和输出都是向量输出是作为值的加权和计算的其中分配给每个值的权重是通过查询与相应键的兼容性函数计算的我们称我们的特别注意力为缩放的点积注意力图输入由维度的查询键和维度的值组成我们计算查询与所有键的点积每个键除以并应用函数来获得值的权重在实践中我们同时计算一组查询的注意力函数这些查询被打包成一个矩阵键和值也打包成矩阵和我们计算输出矩阵如下最常用的两个注意力函数是加性注意力和点积乘法注意力点积注意力与我们的算法相同除了比例因子为加性注意力使用带有单个隐藏层的前馈网络计算兼容性函数虽然两者在理论上的复杂性相似但点积注意力在实践中要快得多而且空间效率更高因为它可以使用高度优化的矩阵乘法代码来实现当值较小时两种机制表现相似当值较大时不需缩放的加性注意力优于点积注意力我们猜想当值较大时点积的幅度会变大从而使函数进入其梯度极小的区域为了抵消这种影响我们将点积乘以我们发现将查询键和值分别用不同的学习过的线性投影投影到和维次后比用单个维度为的注意力函数更有效然后在查询键和值的每一个投影版本上我们并行执行注意力函数产生维的输出值这些输出被连接起来并再次投影最终得到图所示的值多头注意力允许模型在不同位置共同注意来自不同表示子空间的信息对于单一注意力头后续的平均操作就会抑制这一点其中投影是参数矩阵在这项工作中我们采用了个并行注意力层或头对于每一个注意力层或头我们使用由于每个头的维度减小了总的计算成本与全维度的单头注意力相似以三种不同的方式使用多头注意力在编码器解码器注意力层中查询来自先前的解码器层而记忆键和值来自编码器的输出这使得解码器中的每个位置都能处理输入序列中的所有位置这模仿了序列到序列模型中典型的编码器解码器注意力机制如编码器包含自注意力层在自注意力层中所有的键值和查询都来自同一个地方在本例中即编码器中前一层的输出编码器中的每个位置可以处理所述编码器的前一层中的所有位置类似地解码器中的自注意力层允许解码器中的每个位置注意到解码器中的所有位置直至并包括该位置我们需要防止信息在解码器中向左流动以保持自回归特性我们通过屏蔽设置为输入中与非法连接对应的所有值来实现缩放点乘注意力参见图除了注意力子层外我们的编码器和解码器中的每一层都包含一个全连接的前馈网络该网络分别和相同地应用于每个位置这包括两个线性转换中间有一个激活虽然在不同的位置上线性转换是相同的但它们在不同的层中使用不同的参数另一种描述它的方法是两个卷积卷积核大小为输入输出维数为内层维数为与其他序列转换模型类似我们使用学习过的嵌入将输入和输出转换为维数为的向量我们还使用通常学到的线性变换和函数将解码器输出转换为预测的下一概率在我们的模型中我们共享两个嵌入层之间的权值矩阵和线性变换类似于在嵌入层中我们将这些权重乘以由于我们的模型不包含递归和卷积为了让模型利用序列的顺序我们必须注入一些关于序列中的相对或绝对位置的信息为此我们将位置编码添加到编码器和解码器底部的输入嵌入中位置编码与嵌入具有相同的维度因此可以将两者相加有许多位置编码的选择比如可学习的位置编码和固定的位置编码在这项工作中我们使用不同频率的正弦和余弦函数其中是位置是维数也就是说位置编码的每个维度都对应一个正弦信号波长从到呈几何级数我们选择这个函数是因为我们假设它可以让模型很容易通过相对位置进行学习因为对于任何固定偏移量可以表示为的线性函数我们还使用学习过的位置嵌入进行了实验发现两个版本产生了几乎相同的结果见表行我们选择正弦版本是因为它可以让模型外推到比训练中遇到的序列更长的序列长度在本节中我们将自注意力层的各个方面与循环层和卷积层进行比较这些层通常用于将符号表示的一个可变长度序列映射到另一个等长度序列其中例如典型序列转换编码器或解码器中的隐藏层关于使用自注意力的动机我们考虑三个需求一个是每一层的总计算复杂度另一个是可以并行化的计算量由所需的最小顺序操作数来衡量第三个是网络中远程依赖关系之间的路径长度在许多序列转换任务中学习长期依赖是一个关键的挑战影响学习这种依赖关系的能力的一个关键因素是信号在网络中必须穿越的前向和后向路径的长度输入和输出序列中任意位置组合之间的路径越短学习远程依赖关系就越容易因此我们也比较了由不同层类型组成的网络中任意两个输入和输出位置之间的最大路径长度如表所示自注意力层用固定数量的顺序执行操作连接所有位置而循环层需要个顺序操作在计算复杂度方面当序列长度小于表示维数时自注意力层比循环层更快这是最常用的情况在最先进的机器翻译模型中使用的句子表示如词块和字节对表示为了提高涉及非常长的序列的任务的计算性能可以将自注意力限制在只考虑输入序列中大小为的以各自输出位置为中心的邻域这将增加最大路径长度到我们计划在未来的工作中进一步研究这种方法核宽度为的单个卷积层并不连接所有的输入和输出位置对在相邻核的情况下这样做需要个卷积层的堆叠在扩张卷积的情况下需要个卷积层的堆叠增加网络中任意两个位置之间的最长路径的长度卷积层通常比递归层贵倍而可分离卷积则大大降低了卷积的复杂度达到然而即使在的情况下可分离卷积的复杂性也等于自注意力层和点前馈层的结合这是我们在模型中采用的方法作为附加的好处自注意力可以产生更多可解释的模型我们检查了我们模型中的注意力分布并在附录中展示和讨论了一些例子不仅个别注意力头清楚地学会了执行不同的任务许多注意力头似乎表现出与句子的句法和语义结构有关的行为本节描述了我们模型的训练方法我们使用由万对句子组成的英德标准数据集进行训练使用编码的字节对对句子进行编码该编码具有大约个标记的共享源目标词汇表对于英法两种语言我们使用更大的英法数据集其中包含万个句子并将分解为个单词块词汇句子对按照近似的序列长度进行分组每个训练批包含一组句子对其中包含大约个源标记和个目标标记我们在一台装有个的机器上训练我们的模型对于使用本文中描述的超参数的基本模型每个训练步骤大约需要秒我们对基本模型进行了总共万步或小时的训练对于我们的大型模型如表所示步长为秒这些大型模型被训练了万步天我们使用了优化器其中根据公式我们在训练过程中改变学习率这对应于第一个训练步骤的学习速率线性增加然后与步骤数的平方根倒数成比例减少我们使用在训练过程中我们采用了三种正则化方法我们对每个子层的输出应用然后将其添加到子层输入并进行规范化此外我们在编码器和解码器中对嵌入和位置编码的和应用了对于基础模型我们使用的速率在训练过程中我们使用了的标签平滑这会降低模型的困惑度因为模型会变得更加不确定但会提高准确性和分数在年英德翻译任务中模型表中的的性能比之前报告的最佳模型包括集成模型在评分上高出了分以上从而达到了一个的评分该模型的配置列于表的底部在个上训练了天甚至我们的基础模型超过了所有以前发表的模型和集成模型而训练成本只是任何竞争模型的一小部分在英法翻译任务中我们的大模型获得了的分数超过了之前发布的所有单个模型而训练成本不到之前最先进的模型的模型的英语法语训练的概率为而不是对于基本模型我们使用了通过平均最后个检查点获得的单个模型这些检查点每分钟记录一次对于大型模型我们计算了最后个检查点的平均值我们采用了束大小为长度惩罚的束搜索这些超参数是在开发集上经过实验后选定的在推理期间我们将最大输出长度设置为输入长度但在可能的情况下提前终止表总结了我们的结果并将我们的翻译质量和训练成本与文献中的其他模型架构进行了比较我们通过将训练时间所使用的数量和每个的持续单精度浮点容量相乘来估计用于训练一个模型的浮点运算的数量为了评估不同组件的重要性我们以不同的方式改变了我们的基本模型并在开发集上测量了英语到德语翻译的性能变化我们使用了前一节所描述的束搜索但没有使用检查点平均我们在表中展示了这些结果在表行中我们改变注意力头的数量以及注意力键和值维度保持计算量不变如章节所述虽然单头注意力比最好的设置差但过多的头也会降低质量在表行中我们观察到降低注意力键大小会影响模型质量这表明确定兼容性并不容易一个比点积更复杂的兼容性函数可能是有益的我们在和行进一步观察到正如预期的那样更大的模型更好并且在避免过拟合方面非常有帮助在行中我们将正弦位置编码替换为学习过的位置嵌入并观察到与基础模型几乎相同的结果在本工作中我们提出了这是第一个完全基于注意力的序列转换模型用多头自注意力替换了编码器解码器架构中最常用的循环层对于翻译任务的训练速度比基于循环或卷积层的体系结构快得多在英语到德语和英语到法语的翻译任务中我们都达到了一个新的水平在前一个任务中我们的最佳模型甚至优于所有之前报告模型的集成我们对基于注意力的模型的未来感到兴奋并计划将其应用于其他任务我们计划将扩展到涉及文本以外的输入和输出模式的问题并研究局部受限的注意力机制以有效地处理图像音频和视频等大型输入和输出使生成过程更少地依赖于序列是我们的另一个研究目标我们用来训练和评估模型的代码可以在中找到',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-02-09 20:00:00',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/mycss.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"></script><meta name="generator" content="Hexo 7.0.0"><link rel="alternate" href="/atom.xml" title="Karl的博客" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Karl的博客" type="application/rss+xml">
+</head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><div class="back-home-button"><i class="anzhiyufont anzhiyu-icon-grip-vertical"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" href="https://blog.karltan.com/" title="Karl的博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/logo.png" alt="Karl的博客"/><span class="back-menu-item-text">Karl的博客</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://www.karltan.com/" title="Karl的导航"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://www.karltan.com/favicon.ico" alt="Karl的导航"/><span class="back-menu-item-text">Karl的导航</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">博客分流</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://v.karltan.com/" title="Vercel"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://assets.vercel.com/image/upload/front/favicon/vercel/favicon.ico" alt="Vercel"/><span class="back-menu-item-text">Vercel</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://c.karltan.com/" title="Cloudflare"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://dash.cloudflare.com/favicon-32x32.png" alt="Cloudflare"/><span class="back-menu-item-text">Cloudflare</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">工具</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://npmzjk.karltan.com/" title="NPM"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npmzjk.karltan.com/images/favicons/favicon-32x32.png" alt="NPM"/><span class="back-menu-item-text">NPM</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://paste.karltan.com/" title="Free-Bin"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://paste.karltan.com/static/favicon.ico" alt="Free-Bin"/><span class="back-menu-item-text">Free-Bin</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://tools.karltan.com/" title="IT-TOOLS"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://tools.karltan.com/android-chrome-192x192.png" alt="IT-TOOLS"/><span class="back-menu-item-text">IT-TOOLS</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://memos.karltan.com/" title="Memos"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://memos.karltan.com/logo.png" alt="Memos"/><span class="back-menu-item-text">Memos</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://wbo.karltan.com/" title="WBO"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://wbo.karltan.com/favicon.ico" alt="WBO"/><span class="back-menu-item-text">WBO</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://git.karltan.com/" title="Gitea"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://git.karltan.com/assets/img/logo.svg" alt="Gitea"/><span class="back-menu-item-text">Gitea</span></a></div></div></div></div><a id="site-name" href="/" accesskey="h"><div class="title">Karl的博客</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives"><i class="fa-solid fa-box-archive faa-tada"></i><span> 归档</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories"><i class="fa-solid fa-palette faa-tada"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags"><i class="fa-solid fa-tags faa-tada"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link"><i class="fa-solid fa-link faa-tada"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/fcircle"><i class="fa-brands fa-artstation faa-tada"></i><span> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments"><i class="fa-solid fa-comments faa-tada"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/essay"><i class="fa-solid fa-comment-dots faa-tada"></i><span> 说说</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/music"><i class="fa-solid fa-music faa-tada"></i><span> 音乐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album"><i class="fa-solid fa-images faa-tada"></i><span> 相册</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" target="_blank" rel="noopener" href="https://status.karltan.com/status/1"><i class="fa-solid fa-chart-line faa-tada"></i><span> 网站监控</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="fa-solid fa-shoe-prints faa-tada"></i><span> 随便逛逛</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/about"><i class="fa-solid fa-heart faa-tada"></i><span> 关于我</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button only-home" id="travellings_button" title="随机前往一个开往项目网站"><a class="site-page" onclick="anzhiyu.totraveling()" title="随机前往一个开往项目网站" href="javascript:void(0);" rel="external nofollow" data-pjax-state="external"><i class="anzhiyufont anzhiyu-icon-train"></i></a></div><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><div class="nav-button" id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" title="搜索🔍" accesskey="s"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span> 搜索</span></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" alt="微信" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/wechat.jpg"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" alt="支付宝" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/alipay.jpg"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/AcWing/" style="font-size: 1.05rem;">AcWing<sup>33</sup></a><a href="/tags/CUDA/" style="font-size: 1.05rem;">CUDA<sup>1</sup></a><a href="/tags/CVPR/" style="font-size: 1.05rem;">CVPR<sup>3</sup></a><a href="/tags/ICLR/" style="font-size: 1.05rem;">ICLR<sup>1</sup></a><a href="/tags/Linux/" style="font-size: 1.05rem;">Linux<sup>1</sup></a><a href="/tags/MAPL/" style="font-size: 1.05rem;">MAPL<sup>1</sup></a><a href="/tags/MySQL/" style="font-size: 1.05rem;">MySQL<sup>1</sup></a><a href="/tags/NIPS/" style="font-size: 1.05rem;">NIPS<sup>1</sup></a><a href="/tags/PyTorch/" style="font-size: 1.05rem;">PyTorch<sup>1</sup></a><a href="/tags/Python/" style="font-size: 1.05rem;">Python<sup>1</sup></a><a href="/tags/RSS/" style="font-size: 1.05rem;">RSS<sup>1</sup></a><a href="/tags/Ubuntu/" style="font-size: 1.05rem;">Ubuntu<sup>3</sup></a><a href="/tags/Windows/" style="font-size: 1.05rem;">Windows<sup>1</sup></a><a href="/tags/arXiv/" style="font-size: 1.05rem;">arXiv<sup>1</sup></a><a href="/tags/mAP/" style="font-size: 1.05rem;">mAP<sup>1</sup></a><a href="/tags/tmux/" style="font-size: 1.05rem;">tmux<sup>1</sup></a><a href="/tags/vim/" style="font-size: 1.05rem;">vim<sup>1</sup></a><a href="/tags/%E4%BB%A3%E7%A0%81/" style="font-size: 1.05rem;">代码<sup>1</sup></a><a href="/tags/%E4%BD%8D%E5%A7%BF%E4%BC%B0%E8%AE%A1/" style="font-size: 1.05rem;">位姿估计<sup>1</sup></a><a href="/tags/%E6%89%A9%E5%AE%B9/" style="font-size: 1.05rem;">扩容<sup>1</sup></a><a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 1.05rem;">数学<sup>1</sup></a><a href="/tags/%E6%97%8B%E8%BD%AC%E8%A1%A8%E7%A4%BA/" style="font-size: 1.05rem;">旋转表示<sup>1</sup></a><a href="/tags/%E6%9D%8E%E6%B2%90/" style="font-size: 1.05rem;">李沐<sup>76</sup></a><a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 1.05rem;">深度学习<sup>79</sup></a><a href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/" style="font-size: 1.05rem;">目标检测<sup>1</sup></a><a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 1.05rem;">笔记<sup>77</sup></a><a href="/tags/%E7%AE%97%E6%B3%95%E9%A2%98/" style="font-size: 1.05rem;">算法题<sup>33</sup></a><a href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" style="font-size: 1.05rem;">论文笔记<sup>9</sup></a><a href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91/" style="font-size: 1.05rem;">阿里云<sup>1</sup></a><a href="/tags/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6/" style="font-size: 1.05rem;">高等数学<sup>1</sup></a><a href="/tags/%E9%AD%94%E6%B3%95/" style="font-size: 1.05rem;">魔法<sup>1</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span><a class="card-more-btn" href="/archives/" title="查看更多">
+    <i class="anzhiyufont anzhiyu-icon-angle-right"></i></a></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/04/"><span class="card-archive-list-date">2024年04月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">2</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/03/"><span class="card-archive-list-date">2024年03月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/02/"><span class="card-archive-list-date">2024年02月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/01/"><span class="card-archive-list-date">2024年01月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">10</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/12/"><span class="card-archive-list-date">2023年12月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">48</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/11/"><span class="card-archive-list-date">2023年11月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">7</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/10/"><span class="card-archive-list-date">2023年10月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">32</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/09/"><span class="card-archive-list-date">2023年09月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">6</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item on" id="consoleCommentBarrage" onclick="anzhiyu.switchCommentBarrage()" title="热评开关"><a class="commentBarrage"><i class="anzhiyufont anzhiyu-icon-message"></i></a></div><div class="console-btn-item" id="consoleKeyboard" onclick="anzhiyu.keyboardToggle()" title="快捷键开关"><a class="keyboard-switch"><i class="anzhiyufont anzhiyu-icon-keyboard"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" itemprop="url">论文笔记</a><i class="anzhiyufont anzhiyu-icon-angle-right post-meta-separator"></i><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/2017/" itemprop="url">2017</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>论文笔记</span></a><a class="article-meta__tags" href="/tags/NIPS/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>NIPS</span></a></span></div></div><h1 class="post-title" itemprop="name headline">论文笔记《Attention Is All You Need》</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2024-02-09T02:00:00.000Z" title="发表于 2024-02-09 10:00:00">2024-02-09</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2024-02-09T12:00:00.000Z" title="更新于 2024-02-09 20:00:00">2024-02-09</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-wordcount"><i class="anzhiyufont anzhiyu-icon-file-word post-meta-icon" title="文章字数"></i><span class="post-meta-label" title="文章字数">字数总计:</span><span class="word-count" title="文章字数">5.9k</span><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-clock post-meta-icon" title="阅读时长"></i><span class="post-meta-label" title="阅读时长">阅读时长:</span><span>18分钟</span></span><span class="post-meta-separator"></span><span class="post-meta-pv-cv" id="" data-flag-title="论文笔记《Attention Is All You Need》"><i class="anzhiyufont anzhiyu-icon-fw-eye post-meta-icon"></i><span class="post-meta-label" title="阅读量">阅读量:</span><span id="busuanzi_value_page_pv"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为长沙"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>长沙</span><span class="post-meta-separator"></span><span class="post-meta-commentcount"><i class="anzhiyufont anzhiyu-icon-comments post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/#post-comment" tabindex="-1"><span id="twikoo-count"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></a></span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="https://img.karltan.com/covers/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need.png"></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><div class="post-ai-description"><div class="ai-title"><i class="anzhiyufont anzhiyu-icon-bilibili"></i><div class="ai-title-text">AI-摘要</div><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right"></i><i class="anzhiyufont anzhiyu-icon-circle-dot" title="朗读摘要"></i><div id="ai-tag">Tianli GPT</div></div><div class="ai-explanation">AI初始化中...</div><div class="ai-btn-box"><div class="ai-btn-item">介绍自己 🙈</div><div class="ai-btn-item">生成本文简介 👋</div><div class="ai-btn-item">推荐相关文章 📖</div><div class="ai-btn-item">前往主页 🏠</div><div class="ai-btn-item" id="go-tianli-blog">前往爱发电购买</div></div><script data-pjax src="/js/anzhiyu/ai_abstract.js"></script></div><article class="post-content" id="article-container" itemscope itemtype="http://blog.karltan.com/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/"><header><a class="post-meta-categories" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" itemprop="url">论文笔记</a><a class="post-meta-categories" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/2017/" itemprop="url">2017</a><a href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" tabindex="-1" itemprop="url">论文笔记</a><a href="/tags/NIPS/" tabindex="-1" itemprop="url">NIPS</a><h1 id="CrawlerTitle" itemprop="name headline">论文笔记《Attention Is All You Need》</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">Karl</span><time itemprop="dateCreated datePublished" datetime="2024-02-09T02:00:00.000Z" title="发表于 2024-02-09 10:00:00">2024-02-09</time><time itemprop="dateCreated datePublished" datetime="2024-02-09T12:00:00.000Z" title="更新于 2024-02-09 20:00:00">2024-02-09</time></header><h1 id="Attention-Is-All-You-Need"><a href="#Attention-Is-All-You-Need" class="headerlink" title="Attention Is All You Need"></a>Attention Is All You Need</h1><p>原文链接：<a href="https://blog.karltan.com/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/">论文笔记《Attention Is All You Need》 | Karl的博客</a></p>
+<p>CSDN链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/karltan0328/article/details/136089101">论文笔记《Attention Is All You Need》-CSDN博客</a></p>
+<p>论文链接：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1706.03762">[1706.03762] Attention Is All You Need (arxiv.org)</a></p>
+<p>代码链接：<a target="_blank" rel="noopener" href="https://github.com/tensorflow/tensor2tensor">tensorflow/tensor2tensor: Library of deep learning models and datasets designed to make deep learning more accessible and accelerate ML research. (github.com)</a></p>
+<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>现阶段，占主导地位的序列转换模型基于复杂的循环或卷积神经网络，包括编码器和解码器。性能最好的模型还通过注意力机制连接编码器和解码器。我们提出了一种新的简单网络架构——Transformer，它完全基于注意力机制，完全摒弃了递归和卷积。在两个机器翻译任务上的实验表明，这些模型在质量上更优，同时具有更强的并行性，需要的训练时间显著减少。我们的模型在WMT 2014英德翻译任务中的BLEU值为28.4，比现有的最佳BLEU值（包括集合）提高了2。在WMT 2014英法翻译任务中，我们的模型在8个GPU上经过3.5天的训练后，建立了一个新的SOTA单模型，其BLEU得分为41.0，这只是文献中最好的模型的一小部分。</p>
+<h2 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1 Introduction"></a>1 Introduction</h2><p>循环神经网络，特别是长短期记忆[12]和门控循环[7]神经网络，已被牢固地确立为序列建模和转换问题（例如语言建模和机器翻译）中最先进的方法[29, 2, 5]。此后，人们做出了许多努力，不断突破循环语言模型和编码器-解码器架构的边界[31, 21, 13]。</p>
+<p>循环模型通常根据输入和输出序列的符号位置进行计算。将位置与计算时间中的步骤对齐，它们生成一个隐藏状态序列$h_t$，作为前一个隐藏状态$h_{t − 1}$和位置$t$的输入的函数。这种固有的顺序性妨碍了训练样例中的并行化，这在较长的序列长度时变得非常关键，因为内存限制限制了样例之间的批处理。最近的工作通过分解技巧[18]和条件计算[26]在计算效率上取得了显著的提高，同时也提高了后者的模型性能。然而，顺序计算的基本约束仍然存在。</p>
+<p>注意力机制已经成为各种任务中引人注目的序列建模和转换模型的组成部分，允许对依赖关系进行建模，而不考虑它们在输入或输出序列中的距离[2, 16]。然而，除了少数情况外[22]，这种注意力机制都是与循环网络结合使用的。</p>
+<p>在本工作中，我们提出了Transformer，它是一种模型架构，避免了递归，完全依赖于注意力机制来绘制输入和输出之间的全局依赖关系。Transformer支持更多的并行化，在8个P100 GPU上经过12个小时的训练后，可以在翻译质量上达到一个新的水平。</p>
+<h2 id="2-Background"><a href="#2-Background" class="headerlink" title="2 Background"></a>2 Background</h2><p>减少顺序计算的目标也构成了Extended Neural GPU[20]、ByteNet[15]和ConvS2S[8]的基础，它们都使用卷积神经网络作为基本的构建块，并行计算所有输入和输出位置的隐藏表示。在这些模型中，将来自两个任意输入或输出位置的信号关联起来所需的操作数量，按照位置之间的距离增长，对ConvS2S来说是线性增长，对ByteNet来说是对数增长。这使得学习遥远位置[11]之间的依赖关系变得更加困难。在Transformer中，这被减少为一个固定数量的操作，尽管因为平均注意力加权位置的影响，有效分辨率会降低，所以我们会用3.2节中描述的多头注意力抵消这一影响。</p>
+<p>自注意力，有时也被称为内部注意力，是一种将单个序列的不同位置联系起来以计算序列的表示形式的注意力机制。自注意力已成功地应用于各种任务，包括阅读理解、抽象摘要、文本蕴涵和学习任务独立的句子表征[4, 22, 23, 19]。</p>
+<p>端到端记忆网络基于循环注意力机制而不是序列对齐循环，并且在简单语言问答和语言建模任务[28]中表现良好。</p>
+<p>然而，据我们所知，Transformer是第一个完全依赖自注意力来计算其输入和输出表示而不使用序列对齐RNN或卷积的转换模型。在接下来的章节中，我们将描述Transformer，自注意力的动机并讨论其相对于[14, 15]和[8]等模型的优势。</p>
+<h2 id="3-Model-Architecture"><a href="#3-Model-Architecture" class="headerlink" title="3 Model Architecture"></a>3 Model Architecture</h2><p>大多数具有竞争力的神经序列转换模型都有编码器-解码器结构[5, 2, 29]。这里，编码器将符号表示的输入序列$(x_1, \cdots, x_n)$映射到连续表示序列$\mathbf{z} = (z_1, \cdots, z_n)$，给定$\mathbf{z}$，解码器每次生成一个元素的符号输出序列$(y_1, \cdots, y_m)$。在每个步骤中，模型都是自回归的[9]，在生成下一个步骤时，使用之前生成的符号作为附加输入。</p>
+<p>Transformer遵循这种整体架构，为编码器和解码器使用堆叠的自注意力层和逐点完全连接的层，分别如图1的左、右两部分所示。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/image-20240209112650024.png" alt="image-20240209112650024"></p>
+<h3 id="3-1-Encoder-and-Decoder-Stacks"><a href="#3-1-Encoder-and-Decoder-Stacks" class="headerlink" title="3.1 Encoder and Decoder Stacks"></a>3.1 Encoder and Decoder Stacks</h3><p><strong>Encoder：</strong>编码器由$N = 6$个相同的层堆叠而成。每个层有两个子层。第一个子层是多头自注意力机制，第二个子层是简单的、位置明智的全连接前馈网络。我们在每个子层都使用了一个残差连接[10]，然后是层归一化[1]。也就是说，每个子层的输出都是$\text{LayerNorm}(x + \text{Sublayer}(x))$，其中$\text{Sublayer}(x)$是子层本身实现的函数。为了便于这些残差连接，模型中的所有子层以及嵌入层都产生了维度为$d_{\text{model}} = 512$的输出。</p>
+<p><strong>Decoder：</strong>解码器也由$N = 6$个相同的层堆叠而成。除了每个编码器层中的两个子层外，解码器还插入了第三个子层，该子层对编码器的输出执行多头注意力。与编码器类似，我们在每个子层周围使用残差连接，然后进行层归一化。我们还修改了解码器中的自注意力子层，以防止位置对后续位置的影响。这种掩蔽，结合输出嵌入偏移一个位置的事实，确保了位置$i$的预测只能依赖于位置小于$i$的已知输出。</p>
+<h3 id="3-2-Attention"><a href="#3-2-Attention" class="headerlink" title="3.2 Attention"></a>3.2 Attention</h3><p>注意力函数可以描述为将查询和一组键值对映射到输出，其中查询、键、值和输出都是向量。输出是作为值的加权和计算的，其中分配给每个值的权重是通过查询与相应键的兼容性函数计算的。</p>
+<h4 id="3-2-1-Scaled-Dot-Product-Attention"><a href="#3-2-1-Scaled-Dot-Product-Attention" class="headerlink" title="3.2.1 Scaled Dot-Product Attention"></a>3.2.1 Scaled Dot-Product Attention</h4><p>我们称我们的特别注意力为“缩放的点积注意力”（图2）。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/image-20240209115434068.png" alt="image-20240209115434068"></p>
+<p>输入由维度$d_k$的查询、键和维度$d_v$的值组成。我们计算查询与所有键的点积，每个键除以$\sqrt{d_k}$，并应用softmax函数来获得值的权重。</p>
+<p>在实践中，我们同时计算一组查询的注意力函数，这些查询被打包成一个矩阵$Q$。键和值也打包成矩阵$K$和$V$，我们计算输出矩阵如下：</p>
+<script type="math/tex; mode=display">
+\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V</script><p>最常用的两个注意力函数是加性注意力[2]和点积（乘法）注意力。点积注意力与我们的算法相同，除了比例因子为$\frac{1}{\sqrt{d_k}}$。加性注意力使用带有单个隐藏层的前馈网络计算兼容性函数。虽然两者在理论上的复杂性相似，但点积注意力在实践中要快得多，而且空间效率更高，因为它可以使用高度优化的矩阵乘法代码来实现。</p>
+<p>当$d_k$值较小时，两种机制表现相似，当$d_k$值较大时，不需缩放的加性注意力优于点积注意力[3]。我们猜想，当$d_k$值较大时，点积的幅度会变大，从而使softmax函数进入其梯度极小的区域。为了抵消这种影响，我们将点积乘以$\frac{1}{\sqrt{d_k}}$。</p>
+<h4 id="3-2-2-Multi-Head-Attention"><a href="#3-2-2-Multi-Head-Attention" class="headerlink" title="3.2.2 Multi-Head Attention"></a>3.2.2 Multi-Head Attention</h4><p>我们发现，将查询、键和值分别用不同的、学习过的线性投影投影到$d_k$、$d_k$和$d_v$维$h$次后，比用单个维度为$d_{\text{model}}$的注意力函数更有效。然后，在查询、键和值的每一个投影版本上，我们并行执行注意力函数，产生$d_v$维的输出值。这些输出被连接起来并再次投影，最终得到图2所示的值。</p>
+<p>多头注意力允许模型在不同位置共同注意来自不同表示子空间的信息。对于单一注意力头，后续的平均操作就会抑制这一点。</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\text{MultiHead}(Q, K, V) &= \text{Concat}(\text{head}_1, \cdots, \text{head}_h)W^O \\
+\text{where } \text{head}_\text{i} &= \text{Attention}(QW_i^Q, KW_i^K, VW_i^V)
+\end{aligned}</script><p>其中投影是参数矩阵$W_i^Q \in \mathbb{R}^{d_\text{model} \times d_k}, W_i^K \in \mathbb{R}^{d_\text{model} \times d_k}, W_i^V \in \mathbb{R}^{d_\text{model} \times d_v}$，$W^O \in \mathbb{R}^{hd_v \times d_\text{model}}$。</p>
+<p>在这项工作中，我们采用了$h = 8$个并行注意力层或头。对于每一个注意力层或头，我们使用$d_k = d_v = \frac{d_\text{model}}{h} = 64$。由于每个头的维度减小了，总的计算成本与全维度的单头注意力相似。</p>
+<h4 id="3-2-3-Applications-of-Attention-in-our-Model"><a href="#3-2-3-Applications-of-Attention-in-our-Model" class="headerlink" title="3.2.3 Applications of Attention in our Model"></a>3.2.3 Applications of Attention in our Model</h4><p>Transformer以三种不同的方式使用多头注意力：</p>
+<ul>
+<li>在“编码器-解码器注意力”层中，查询来自先前的解码器层，而记忆键和值来自编码器的输出。这使得解码器中的每个位置都能处理输入序列中的所有位置。这模仿了序列到序列模型中典型的编码器-解码器注意力机制，如[31, 2, 8]。</li>
+<li>编码器包含自注意力层。在自注意力层中，所有的键、值和查询都来自同一个地方，在本例中，即编码器中前一层的输出。编码器中的每个位置可以处理所述编码器的前一层中的所有位置。</li>
+<li>类似地，解码器中的自注意力层允许解码器中的每个位置注意到解码器中的所有位置直至并包括该位置。我们需要防止信息在解码器中向左流动，以保持自回归特性。我们通过屏蔽（设置为$-\infty$）softmax输入中与非法连接对应的所有值来实现缩放点乘注意力。参见图2。</li>
+</ul>
+<h3 id="3-3-Position-wise-Feed-Forward-Networks"><a href="#3-3-Position-wise-Feed-Forward-Networks" class="headerlink" title="3.3 Position-wise Feed-Forward Networks"></a>3.3 Position-wise Feed-Forward Networks</h3><p>除了注意力子层外，我们的编码器和解码器中的每一层都包含一个全连接的前馈网络，该网络分别和相同地应用于每个位置。这包括两个线性转换，中间有一个ReLU激活。</p>
+<script type="math/tex; mode=display">
+\text{FFN}(x) = \max(0, xW_1 + b_1)W_2 + b_2</script><p>虽然在不同的位置上线性转换是相同的，但它们在不同的层中使用不同的参数。另一种描述它的方法是两个卷积，卷积核大小为1。输入输出维数为$d_{model} = 512$，内层维数为$d_{ff} = 2048$。</p>
+<h3 id="3-4-Embeddings-and-Softmax"><a href="#3-4-Embeddings-and-Softmax" class="headerlink" title="3.4 Embeddings and Softmax"></a>3.4 Embeddings and Softmax</h3><p>与其他序列转换模型类似，我们使用学习过的嵌入将输入token和输出token转换为维数为$d_\text{model}$的向量。我们还使用通常学到的线性变换和softmax函数将解码器输出转换为预测的下一token概率。在我们的模型中，我们共享两个嵌入层之间的权值矩阵和pre-softmax线性变换，类似于[24]。在嵌入层中，我们将这些权重乘以$\sqrt{d_\text{model}}$。</p>
+<h3 id="3-5-Positional-Encoding"><a href="#3-5-Positional-Encoding" class="headerlink" title="3.5 Positional Encoding"></a>3.5 Positional Encoding</h3><p>由于我们的模型不包含递归和卷积，为了让模型利用序列的顺序，我们必须注入一些关于序列中token的相对或绝对位置的信息。为此，我们将“位置编码”添加到编码器和解码器底部的输入嵌入中。位置编码与嵌入具有相同的维度$d_\text{model}$，因此可以将两者相加。有许多位置编码的选择，比如可学习的位置编码和固定的位置编码[8]。</p>
+<p>在这项工作中，我们使用不同频率的正弦和余弦函数：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+PE_{(pos, 2i)} &= \sin(\frac{pos}{10000^{\frac{2i}{d_\text{model}}}}) \\
+PE_{(pos, 2i + 1)} &= \cos(\frac{pos}{10000^{\frac{2i}{d_\text{model}}}})
+\end{aligned}</script><p>其中$pos$是位置，$i$是维数。也就是说，位置编码的每个维度都对应一个正弦信号。波长从$2\pi$到$10000 \cdot 2\pi$，呈几何级数。我们选择这个函数是因为我们假设它可以让模型很容易通过相对位置进行学习，因为对于任何固定偏移量$k$，$PE_{pos + k}$可以表示为$PE_{pos}$的线性函数。</p>
+<p>我们还使用学习过的位置嵌入[8]进行了实验，发现两个版本产生了几乎相同的结果（见表3行(E)）。我们选择正弦版本是因为它可以让模型外推到比训练中遇到的序列更长的序列长度。</p>
+<h2 id="4-Why-Self-Attention"><a href="#4-Why-Self-Attention" class="headerlink" title="4 Why Self-Attention"></a>4 Why Self-Attention</h2><p>在本节中，我们将自注意力层的各个方面与循环层和卷积层进行比较，这些层通常用于将符号表示的一个可变长度序列$(x_1, \cdots, x_n)$映射到另一个等长度序列$(z_1, \cdots, z_n)$，其中$x_i, z_i \in \mathbb{R}^d$，例如典型序列转换编码器或解码器中的隐藏层。关于使用自注意力的动机，我们考虑三个需求。</p>
+<p>一个是每一层的总计算复杂度。另一个是可以并行化的计算量，由所需的最小顺序操作数来衡量。</p>
+<p>第三个是网络中远程依赖关系之间的路径长度。在许多序列转换任务中，学习长期依赖是一个关键的挑战。影响学习这种依赖关系的能力的一个关键因素是信号在网络中必须穿越的前向和后向路径的长度。输入和输出序列中任意位置组合之间的路径越短，学习远程依赖关系[11]就越容易。因此，我们也比较了由不同层类型组成的网络中，任意两个输入和输出位置之间的最大路径长度。</p>
+<p>如表1所示，自注意力层用固定数量的顺序执行操作连接所有位置，而循环层需要$O(n)$个顺序操作。在计算复杂度方面，当序列长度$n$小于表示维数$d$时，自注意力层比循环层更快，这是最常用的情况，在最先进的机器翻译模型中使用的句子表示，如词块[31]和字节对[25]表示。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/image-20240209132432948.png" alt="image-20240209132432948"></p>
+<p>为了提高涉及非常长的序列的任务的计算性能，可以将自注意力限制在只考虑输入序列中大小为$r$的以各自输出位置为中心的邻域。这将增加最大路径长度到$O(\frac{n}{r})$。我们计划在未来的工作中进一步研究这种方法。</p>
+<p>核宽度为$k &lt; n$的单个卷积层并不连接所有的输入和输出位置对。在相邻核的情况下，这样做需要$O(\frac{n}{k})$个卷积层的堆叠，在扩张卷积[15]的情况下，需要$O(\log_k(n))$个卷积层的堆叠，增加网络中任意两个位置之间的最长路径的长度。卷积层通常比递归层贵$k$倍。而可分离卷积[6]则大大降低了卷积的复杂度，达到$O(k \cdot n \cdot d + n \cdot d^2)$。然而，即使在$k = n$的情况下，可分离卷积的复杂性也等于自注意力层和点前馈层的结合，这是我们在模型中采用的方法。</p>
+<p>作为附加的好处，自注意力可以产生更多可解释的模型。我们检查了我们模型中的注意力分布，并在附录中展示和讨论了一些例子。不仅个别注意力头清楚地学会了执行不同的任务，许多注意力头似乎表现出与句子的句法和语义结构有关的行为。</p>
+<h2 id="5-Training"><a href="#5-Training" class="headerlink" title="5 Training"></a>5 Training</h2><p>本节描述了我们模型的训练方法。</p>
+<h3 id="5-1-Training-Data-and-Batching"><a href="#5-1-Training-Data-and-Batching" class="headerlink" title="5.1 Training Data and Batching"></a>5.1 Training Data and Batching</h3><p>我们使用由450万对句子组成的WMT 2014英德标准数据集进行训练。使用[3]编码的字节对对句子进行编码，该编码具有大约37000个标记的共享源目标词汇表。对于英法两种语言，我们使用更大的WMT 2014英法数据集，其中包含3600万个句子，并将token分解为32000个单词块词汇[31]。句子对按照近似的序列长度进行分组。每个训练批包含一组句子对，其中包含大约25000个源标记和25000个目标标记。</p>
+<h3 id="5-2-Hardware-and-Schedule"><a href="#5-2-Hardware-and-Schedule" class="headerlink" title="5.2 Hardware and Schedule"></a>5.2 Hardware and Schedule</h3><p>我们在一台装有8个NVIDIA P100 GPU的机器上训练我们的模型。对于使用本文中描述的超参数的基本模型，每个训练步骤大约需要0.4秒。我们对基本模型进行了总共10万步或12小时的训练。对于我们的大型模型（如表3所示），步长为1.0秒。这些大型模型被训练了30万步（3.5天）。</p>
+<h3 id="5-3-Optimizer"><a href="#5-3-Optimizer" class="headerlink" title="5.3 Optimizer"></a>5.3 Optimizer</h3><p>我们使用了Adam优化器[17]，其中$\beta_1 = 0.9, \beta_2 = 0.98, \epsilon = 10^{-9}$。根据公式，我们在训练过程中改变学习率：</p>
+<script type="math/tex; mode=display">
+lrate = d_{\text{model}}^{-0.5} \cdot \min(step\_num^{-0.5}, step\_num \cdot warmup\_steps^{-1.5})</script><p>这对应于第一个$warmup_steps$训练步骤的学习速率线性增加，然后与步骤数的平方根倒数成比例减少。我们使用$warmup_steps = 4000$。</p>
+<h3 id="5-4-Regularization"><a href="#5-4-Regularization" class="headerlink" title="5.4 Regularization"></a>5.4 Regularization</h3><p>在训练过程中，我们采用了三种正则化方法：</p>
+<p><strong>Residual Dropout</strong>，我们对每个子层的输出应用dropout[27]，然后将其添加到子层输入并进行规范化。此外，我们在编码器和解码器中对嵌入和位置编码的和应用了dropout。对于基础模型，我们使用$P_{drop} = 0.1$的速率。</p>
+<p><strong>Label Smoothing</strong>，在训练过程中，我们使用了$\epsilon_{ls} = 0.1$[30]的标签平滑。这会降低模型的困惑度，因为模型会变得更加不确定，但会提高准确性和BLEU分数。</p>
+<h2 id="6-Results"><a href="#6-Results" class="headerlink" title="6 Results"></a>6 Results</h2><h3 id="6-1-Machine-Translation"><a href="#6-1-Machine-Translation" class="headerlink" title="6.1 Machine Translation"></a>6.1 Machine Translation</h3><p>在2014年WMT英德翻译任务中，big transformer模型（表2中的Transformer (big)）的性能比之前报告的最佳模型（包括集成模型）在BLEU评分上高出了2.0分以上，从而达到了一个SOTA的BLEU评分28.4。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/image-20240209170517873.png" alt="image-20240209170517873"></p>
+<p>该模型的配置列于表3的底部。在8个P100 GPU上训练了3.5天。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/image-20240209170606266.png" alt="image-20240209170606266"></p>
+<p>甚至我们的基础模型超过了所有以前发表的模型和集成模型，而训练成本只是任何竞争模型的一小部分。</p>
+<p>在WMT 2014英法翻译任务中，我们的大模型获得了41.0的BLEU分数，超过了之前发布的所有单个模型，而训练成本不到之前最先进的模型的$\frac{1}{4}$。Transformer (big)模型的英语-法语训练的dropout概率为$P_{drop} = 0.1$，而不是$0.3$。</p>
+<p>对于基本模型，我们使用了通过平均最后5个检查点获得的单个模型，这些检查点每10分钟记录一次。对于大型模型，我们计算了最后20个检查点的平均值。我们采用了束大小为4，长度惩罚$\alpha = 0.6$[31]的束搜索。这些超参数是在开发集上经过实验后选定的。在推理期间，我们将最大输出长度设置为输入长度$+50$，但在可能的情况下提前终止[31]。</p>
+<p>表2总结了我们的结果，并将我们的翻译质量和训练成本与文献中的其他模型架构进行了比较。我们通过将训练时间、所使用的GPU数量和每个GPU的持续单精度浮点容量相乘，来估计用于训练一个模型的浮点运算的数量。</p>
+<h3 id="6-2-Model-Variations"><a href="#6-2-Model-Variations" class="headerlink" title="6.2 Model Variations"></a>6.2 Model Variations</h3><p>为了评估Transformer不同组件的重要性，我们以不同的方式改变了我们的基本模型，并在开发集（newstest2013）上测量了英语到德语翻译的性能变化。我们使用了前一节所描述的束搜索，但没有使用检查点平均。我们在表3中展示了这些结果。</p>
+<p>在表3行(A)中，我们改变注意力头的数量以及注意力键和值维度，保持计算量不变，如章节3.2.2所述。虽然单头注意力比最好的设置差0.9 BLEU，但过多的头也会降低质量。</p>
+<p>在表3行(B)中，我们观察到降低注意力键大小$d_k$会影响模型质量。这表明确定兼容性并不容易，一个比点积更复杂的兼容性函数可能是有益的。我们在(C)和(D)行进一步观察到，正如预期的那样，更大的模型更好，并且dropout在避免过拟合方面非常有帮助。在行(E)中，我们将正弦位置编码替换为学习过的位置嵌入[8]，并观察到与基础模型几乎相同的结果。</p>
+<h2 id="7-Conclusion"><a href="#7-Conclusion" class="headerlink" title="7 Conclusion"></a>7 Conclusion</h2><p>在本工作中，我们提出了Transformer，这是第一个完全基于注意力的序列转换模型，用多头自注意力替换了编码器-解码器架构中最常用的循环层。</p>
+<p>对于翻译任务，Transformer的训练速度比基于循环或卷积层的体系结构快得多。在WMT 2014英语到德语和WMT 2014英语到法语的翻译任务中，我们都达到了一个新的水平。在前一个任务中，我们的最佳模型甚至优于所有之前报告模型的集成。</p>
+<p>我们对基于注意力的模型的未来感到兴奋，并计划将其应用于其他任务。我们计划将Transformer扩展到涉及文本以外的输入和输出模式的问题，并研究局部受限的注意力机制，以有效地处理图像、音频和视频等大型输入和输出。使生成过程更少地依赖于序列是我们的另一个研究目标。</p>
+<p>我们用来训练和评估模型的代码可以在<a target="_blank" rel="noopener" href="https://github.com/tensorflow/tensor2tensor">https://github.com/tensorflow/tensor2tensor</a>中找到。</p>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/profile.jpg" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/profile.jpg" title="头像" alt="头像"></a><div class="post-copyright__author_name">Karl</div><div class="post-copyright__author_desc">日拱一卒，功不唐捐</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="http://blog.karltan.com/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('http://blog.karltan.com/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/')">论文笔记《Attention Is All You Need》</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="赞赏作者"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>打赏作者</div><div class="reward-main"><div class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/wechat.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/alipay.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="http://blog.karltan.com/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=论文笔记《Attention Is All You Need》&amp;url=http://blog.karltan.com/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/&amp;pic=https://img.karltan.com/covers/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need.png" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://blog.karltan.com" target="_blank">Karl的博客</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__category-list"><a class="post-meta__box__categoryes" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/"><span class="categoryes-punctuation"> <i class="anzhiyufont anzhiyu-icon-inbox"></i></span>论文笔记<span class="categoryesPageCount">9</span></a><a class="post-meta__box__categoryes" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/2017/"><span class="categoryes-punctuation"> <i class="anzhiyufont anzhiyu-icon-inbox"></i></span>2017<span class="categoryesPageCount">1</span></a></div><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>论文笔记<span class="tagsPageCount">9</span></a><a class="post-meta__box__tags" href="/tags/NIPS/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>NIPS<span class="tagsPageCount">1</span></a></div></div><div class="post_share"><div class="social-share" data-image="https://img.karltan.com/covers/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/ac-diary/acwing/autumn-daily-question-2023/acwing5199/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/ac-diary/acwing/autumn-daily-question-2023.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">AcWing 5199. 现代艺术</div></div></a></div><div class="next-post pull-right"><a href="/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2023/Nguyen_et_al-2023-NOPE.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="anzhiyufont anzhiyu-icon-thumbs-up fa-fw" style="font-size: 1.5rem; margin-right: 4px"></i><span>喜欢这篇文章的人也看了</span></div><div class="relatedPosts-list"><div><a href="/dissertation-notes/dissertation-summary/" title="论文总结"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/dissertation-summary.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-10-28</div><div class="title">论文总结</div></div></a></div><div><a href="/dissertation-notes/2018/Xiang_et_al-2018-PoseCNN/" title="论文笔记《PoseCNN：A Convolutional Neural Network for 6D Object Pose Estimation in Cluttered Scenes》"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2018/Xiang_et_al-2018-PoseCNN.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-10-19</div><div class="title">论文笔记《PoseCNN：A Convolutional Neural Network for 6D Object Pose Estimation in Cluttered Scenes》</div></div></a></div><div><a href="/dissertation-notes/2019/Tillet_et_al-2019-Triton/" title="论文笔记《Triton：An Intermediate Language and Compiler for Tiled Neural Network Computations》"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2019/Tillet_et_al-2019-Triton.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-12-26</div><div class="title">论文笔记《Triton：An Intermediate Language and Compiler for Tiled Neural Network Computations》</div></div></a></div><div><a href="/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/" title="论文笔记《Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation》"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-10-25</div><div class="title">论文笔记《Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation》</div></div></a></div><div><a href="/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/" title="论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2024-04-15</div><div class="title">论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》</div></div></a></div><div><a href="/dissertation-notes/2023/Fan_et_al-2023-POPE/" title="论文笔记《POPE：6-DoF Promptable Pose Estimation of Any Object, in Any Scene, with One Reference》"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2023/Fan_et_al-2023-POPE.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-11-15</div><div class="title">论文笔记《POPE：6-DoF Promptable Pose Estimation of Any Object, in Any Scene, with One Reference》</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="anzhiyufont anzhiyu-icon-comments"></i><span> 评论</span></div><div class="comment-randomInfo"><a onclick="anzhiyu.addRandomCommentInfo()" href="javascript:void(0)">匿名评论</a><a href="/privacy" style="margin-left: 4px">隐私政策</a></div><div class="comment-tips" id="comment-tips"><span>✅ 你无需删除空行，直接评论以获取最佳展示效果</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div><div class="comment-barrage"></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info__sayhi" id="author-info__sayhi" onclick="anzhiyu.changeSayHelloText()"></div><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/profile.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-status"><img class="g-status" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/chuoyichuo.gif" alt="status"/></div></div><div class="author-info__description"><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">直博狗一枚，日常会在博客上分享自己的学习笔记，希望可以帮到你。</div><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">相信你可以在这里找到对你有用的<b style="color:#fff">知识</b>和<b style="color:#fff">教程</b>。</div></div><div class="author-info__bottom-group"><a class="author-info__bottom-group-left" href="/"><h1 class="author-info__name">Karl</h1><div class="author-info__desc">日拱一卒，功不唐捐</div></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://github.com/karltan0328" target="_blank" title="Github"><i class="fa-brands fa-github faa-tada"></i></a><a class="social-icon faa-parent animated-hover" href="mailto:admin@karltan.com" target="_blank" title="Email"><i class="fa-solid fa-envelope faa-tada"></i></a></div></div></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bullhorn anzhiyu-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来看我的博客鸭~</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Attention-Is-All-You-Need"><span class="toc-text">Attention Is All You Need</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Abstract"><span class="toc-text">Abstract</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Introduction"><span class="toc-text">1 Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Background"><span class="toc-text">2 Background</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Model-Architecture"><span class="toc-text">3 Model Architecture</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-Encoder-and-Decoder-Stacks"><span class="toc-text">3.1 Encoder and Decoder Stacks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-Attention"><span class="toc-text">3.2 Attention</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-1-Scaled-Dot-Product-Attention"><span class="toc-text">3.2.1 Scaled Dot-Product Attention</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-2-Multi-Head-Attention"><span class="toc-text">3.2.2 Multi-Head Attention</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-3-Applications-of-Attention-in-our-Model"><span class="toc-text">3.2.3 Applications of Attention in our Model</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-Position-wise-Feed-Forward-Networks"><span class="toc-text">3.3 Position-wise Feed-Forward Networks</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-4-Embeddings-and-Softmax"><span class="toc-text">3.4 Embeddings and Softmax</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-5-Positional-Encoding"><span class="toc-text">3.5 Positional Encoding</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Why-Self-Attention"><span class="toc-text">4 Why Self-Attention</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Training"><span class="toc-text">5 Training</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-Training-Data-and-Batching"><span class="toc-text">5.1 Training Data and Batching</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-Hardware-and-Schedule"><span class="toc-text">5.2 Hardware and Schedule</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-Optimizer"><span class="toc-text">5.3 Optimizer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-Regularization"><span class="toc-text">5.4 Regularization</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-Results"><span class="toc-text">6 Results</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-Machine-Translation"><span class="toc-text">6.1 Machine Translation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-Model-Variations"><span class="toc-text">6.2 Model Variations</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-Conclusion"><span class="toc-text">7 Conclusion</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/" title="论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》"/></a><div class="content"><a class="title" href="/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/" title="论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》">论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》</a><time datetime="2024-04-15T07:00:00.000Z" title="发表于 2024-04-15 15:00:00">2024-04-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/dissertation-notes/2023/Woo_et_al-2023-ConvNeXt_V2/" title="论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2023/Woo_et_al-2023-ConvNeXt_V2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》"/></a><div class="content"><a class="title" href="/dissertation-notes/2023/Woo_et_al-2023-ConvNeXt_V2/" title="论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》">论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》</a><time datetime="2024-04-04T05:00:00.000Z" title="发表于 2024-04-04 13:00:00">2024-04-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/" title="论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2023/Nguyen_et_al-2023-NOPE.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》"/></a><div class="content"><a class="title" href="/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/" title="论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》">论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》</a><time datetime="2024-03-28T04:00:00.000Z" title="发表于 2024-03-28 12:00:00">2024-03-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/" title="论文笔记《Attention Is All You Need》"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文笔记《Attention Is All You Need》"/></a><div class="content"><a class="title" href="/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/" title="论文笔记《Attention Is All You Need》">论文笔记《Attention Is All You Need》</a><time datetime="2024-02-09T02:00:00.000Z" title="发表于 2024-02-09 10:00:00">2024-02-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/ac-diary/acwing/autumn-daily-question-2023/acwing5199/" title="AcWing 5199. 现代艺术"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/ac-diary/acwing/autumn-daily-question-2023.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AcWing 5199. 现代艺术"/></a><div class="content"><a class="title" href="/ac-diary/acwing/autumn-daily-question-2023/acwing5199/" title="AcWing 5199. 现代艺术">AcWing 5199. 现代艺术</a><time datetime="2024-01-18T08:00:00.000Z" title="发表于 2024-01-18 16:00:00">2024-01-18</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div id="footer_deal"><a class="deal_link" href="mailto:admin@karltan.com" title="email"><i class="fa-solid fa-envelope"></i></a><a class="deal_link" href="/atom.xml" title="RSS"><i class="fa-solid fa-rss"></i></a><img class="footer_mini_logo" title="返回顶部" alt="返回顶部" onclick="anzhiyu.scrollToDest(0, 500)" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/profile.jpg" size="50px"/><a class="deal_link" target="_blank" rel="noopener" href="https://github.com/karltan0328" title="Github"><i class="fa-brands fa-github"></i></a><a class="deal_link" target="_blank" rel="noopener" href="https://blog.csdn.net/karltan0328" title="CSDN"><i class="fa-solid fa-c"></i></a></div><div id="workboard"><img class="workSituationImg boardsign" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/work_img.svg" alt="paper快来，idea快来，我要毕业🥹" title="paper快来，idea快来，我要毕业🥹"/><div id="runtimeTextTip"></div></div><div id="anzhiyu-footer"><div class="footer-group"><div class="footer-title">服务</div><div class="footer-links"><a class="footer-item" title="51la统计" target="_blank" rel="noopener" href="https://v6.51.la/">51la统计</a><a class="footer-item" title="十年之约" target="_blank" rel="noopener" href="https://www.foreverblog.cn/">十年之约</a><a class="footer-item" title="开往" target="_blank" rel="noopener" href="https://github.com/travellings-link/travellings">开往</a></div></div><div class="footer-group"><div class="footer-title">主题</div><div class="footer-links"><a class="footer-item" title="文档" target="_blank" rel="noopener" href="https://docs.anheyu.com/">文档</a><a class="footer-item" title="源码" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu">源码</a><a class="footer-item" title="更新日志" target="_blank" rel="noopener" href="https://blog.anheyu.com/update/">更新日志</a></div></div><div class="footer-group"><div class="footer-title">导航</div><div class="footer-links"><a class="footer-item" title="即刻短文" href="/essay">即刻短文</a><a class="footer-item" title="友链文章" href="/fcircle">友链文章</a><a class="footer-item" title="留言板" href="/comments">留言板</a></div></div><div class="footer-group"><div class="footer-title">协议</div><div class="footer-links"><a class="footer-item" title="隐私协议" href="/privacy">隐私协议</a><a class="footer-item" title="Cookies" href="/cookies">Cookies</a><a class="footer-item" title="版权协议" href="/copyright">版权协议</a></div></div><div class="footer-group"><div class="footer-title-group"><div class="footer-title">友链</div><a class="random-friends-btn" id="footer-random-friends-btn" href="javascript:addFriendLinksInFooter();" title="换一批友情链接"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right"></i></a></div><div class="footer-links" id="friend-links-in-footer"></div></div></div><p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" data-title="博客框架为Hexo 7.0.0" title="博客框架为Hexo 7.0.0"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/frame-hexo.svg" alt="博客框架为Hexo 7.0.0"/></a><a class="github-badge" target="_blank" href="https://blog.anheyu.com/" style="margin-inline:5px" data-title="本站使用AnZhiYu主题" title="本站使用AnZhiYu主题"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/theme-anzhiyu.svg" alt="本站使用AnZhiYu主题"/></a><a class="github-badge" target="_blank" href="https://console.upyun.com/register/?invite=nVONH00RJ" style="margin-inline:5px" data-title="本网站由又拍云提供CDN加速/云储存服务" title="本网站由又拍云提供CDN加速/云储存服务"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/upyun.svg" alt="本网站由又拍云提供CDN加速/云储存服务"/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/copyright-by-nc-sa.svg" alt="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"/></a></p></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2023 - 2024 By <a class="footer-bar-link" href="/" title="Karl" target="_blank">Karl</a></div></div><div id="footer-type-tips"></div><div class="js-pjax"><script>function subtitleType () {
+  if (true) { 
+    window.typed = new Typed("#footer-type-tips", {
+      strings: ["不积跬步无以至千里","今日事，今日毕","有善始者实繁，能克终者盖寡","穷且益坚，不坠青云之志","若无闲事挂心头，便是人间好时节"],
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: true,
+      backSpeed: 50
+    })
+  } else {
+    document.getElementById("footer-type-tips").innerHTML = '不积跬步无以至千里'
+  }
+}
+
+if (true) {
+  if (typeof Typed === 'function') {
+    subtitleType()
+  } else {
+    getScript('https://cdn.cbd.int/typed.js@2.0.15/dist/typed.umd.js').then(subtitleType)
+  }
+} else {
+  subtitleType()
+}</script></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu" title="主题">主题</a><a class="footer-bar-link" target="_blank" rel="noopener" href="https://beian.miit.gov.cn/" title="湘ICP备2023018619号-1">湘ICP备2023018619号-1</a><a class="footer-bar-link cc" href="/copyright" title="cc协议"><i class="anzhiyufont anzhiyu-icon-copyright-line"></i><i class="anzhiyufont anzhiyu-icon-creative-commons-by-line"></i><i class="anzhiyufont anzhiyu-icon-creative-commons-nc-line"></i><i class="anzhiyufont anzhiyu-icon-creative-commons-nd-line"></i></a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">130</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">16</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" href="https://blog.karltan.com/" title="Karl的博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/logo.png" alt="Karl的博客"/><span class="back-menu-item-text">Karl的博客</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://www.karltan.com/" title="Karl的导航"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://www.karltan.com/favicon.ico" alt="Karl的导航"/><span class="back-menu-item-text">Karl的导航</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">博客分流</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://v.karltan.com/" title="Vercel"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://assets.vercel.com/image/upload/front/favicon/vercel/favicon.ico" alt="Vercel"/><span class="back-menu-item-text">Vercel</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://c.karltan.com/" title="Cloudflare"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://dash.cloudflare.com/favicon-32x32.png" alt="Cloudflare"/><span class="back-menu-item-text">Cloudflare</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">工具</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://npmzjk.karltan.com/" title="NPM"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npmzjk.karltan.com/images/favicons/favicon-32x32.png" alt="NPM"/><span class="back-menu-item-text">NPM</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://paste.karltan.com/" title="Free-Bin"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://paste.karltan.com/static/favicon.ico" alt="Free-Bin"/><span class="back-menu-item-text">Free-Bin</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://tools.karltan.com/" title="IT-TOOLS"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://tools.karltan.com/android-chrome-192x192.png" alt="IT-TOOLS"/><span class="back-menu-item-text">IT-TOOLS</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://memos.karltan.com/" title="Memos"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://memos.karltan.com/logo.png" alt="Memos"/><span class="back-menu-item-text">Memos</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://wbo.karltan.com/" title="WBO"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://wbo.karltan.com/favicon.ico" alt="WBO"/><span class="back-menu-item-text">WBO</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://git.karltan.com/" title="Gitea"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://git.karltan.com/assets/img/logo.svg" alt="Gitea"/><span class="back-menu-item-text">Gitea</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives"><i class="fa-solid fa-box-archive faa-tada"></i><span> 归档</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories"><i class="fa-solid fa-palette faa-tada"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags"><i class="fa-solid fa-tags faa-tada"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link"><i class="fa-solid fa-link faa-tada"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/fcircle"><i class="fa-brands fa-artstation faa-tada"></i><span> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments"><i class="fa-solid fa-comments faa-tada"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/essay"><i class="fa-solid fa-comment-dots faa-tada"></i><span> 说说</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/music"><i class="fa-solid fa-music faa-tada"></i><span> 音乐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album"><i class="fa-solid fa-images faa-tada"></i><span> 相册</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" target="_blank" rel="noopener" href="https://status.karltan.com/status/1"><i class="fa-solid fa-chart-line faa-tada"></i><span> 网站监控</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="fa-solid fa-shoe-prints faa-tada"></i><span> 随便逛逛</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/about"><i class="fa-solid fa-heart faa-tada"></i><span> 关于我</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/AcWing/" style="font-size: 0.88rem; color: rgb(85, 23, 91);">AcWing<sup>33</sup></a><a href="/tags/CUDA/" style="font-size: 0.88rem; color: rgb(12, 161, 160);">CUDA<sup>1</sup></a><a href="/tags/CVPR/" style="font-size: 0.88rem; color: rgb(147, 94, 197);">CVPR<sup>3</sup></a><a href="/tags/ICLR/" style="font-size: 0.88rem; color: rgb(43, 82, 180);">ICLR<sup>1</sup></a><a href="/tags/Linux/" style="font-size: 0.88rem; color: rgb(122, 113, 29);">Linux<sup>1</sup></a><a href="/tags/MAPL/" style="font-size: 0.88rem; color: rgb(36, 174, 170);">MAPL<sup>1</sup></a><a href="/tags/MySQL/" style="font-size: 0.88rem; color: rgb(181, 7, 113);">MySQL<sup>1</sup></a><a href="/tags/NIPS/" style="font-size: 0.88rem; color: rgb(7, 27, 3);">NIPS<sup>1</sup></a><a href="/tags/PyTorch/" style="font-size: 0.88rem; color: rgb(150, 37, 10);">PyTorch<sup>1</sup></a><a href="/tags/Python/" style="font-size: 0.88rem; color: rgb(141, 141, 197);">Python<sup>1</sup></a><a href="/tags/RSS/" style="font-size: 0.88rem; color: rgb(112, 22, 153);">RSS<sup>1</sup></a><a href="/tags/Ubuntu/" style="font-size: 0.88rem; color: rgb(19, 93, 120);">Ubuntu<sup>3</sup></a><a href="/tags/Windows/" style="font-size: 0.88rem; color: rgb(164, 101, 25);">Windows<sup>1</sup></a><a href="/tags/arXiv/" style="font-size: 0.88rem; color: rgb(9, 118, 154);">arXiv<sup>1</sup></a><a href="/tags/mAP/" style="font-size: 0.88rem; color: rgb(199, 124, 62);">mAP<sup>1</sup></a><a href="/tags/tmux/" style="font-size: 0.88rem; color: rgb(13, 185, 37);">tmux<sup>1</sup></a><a href="/tags/vim/" style="font-size: 0.88rem; color: rgb(4, 144, 16);">vim<sup>1</sup></a><a href="/tags/%E4%BB%A3%E7%A0%81/" style="font-size: 0.88rem; color: rgb(151, 15, 28);">代码<sup>1</sup></a><a href="/tags/%E4%BD%8D%E5%A7%BF%E4%BC%B0%E8%AE%A1/" style="font-size: 0.88rem; color: rgb(130, 27, 45);">位姿估计<sup>1</sup></a><a href="/tags/%E6%89%A9%E5%AE%B9/" style="font-size: 0.88rem; color: rgb(110, 175, 30);">扩容<sup>1</sup></a><a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 0.88rem; color: rgb(158, 42, 1);">数学<sup>1</sup></a><a href="/tags/%E6%97%8B%E8%BD%AC%E8%A1%A8%E7%A4%BA/" style="font-size: 0.88rem; color: rgb(11, 137, 41);">旋转表示<sup>1</sup></a><a href="/tags/%E6%9D%8E%E6%B2%90/" style="font-size: 0.88rem; color: rgb(109, 78, 54);">李沐<sup>76</sup></a><a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 0.88rem; color: rgb(99, 94, 68);">深度学习<sup>79</sup></a><a href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/" style="font-size: 0.88rem; color: rgb(141, 161, 139);">目标检测<sup>1</sup></a><a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 0.88rem; color: rgb(57, 29, 124);">笔记<sup>77</sup></a><a href="/tags/%E7%AE%97%E6%B3%95%E9%A2%98/" style="font-size: 0.88rem; color: rgb(153, 5, 199);">算法题<sup>33</sup></a><a href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" style="font-size: 0.88rem; color: rgb(186, 192, 126);">论文笔记<sup>9</sup></a><a href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91/" style="font-size: 0.88rem; color: rgb(159, 79, 86);">阿里云<sup>1</sup></a><a href="/tags/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6/" style="font-size: 0.88rem; color: rgb(7, 133, 128);">高等数学<sup>1</sup></a><a href="/tags/%E9%AD%94%E6%B3%95/" style="font-size: 0.88rem; color: rgb(99, 91, 1);">魔法<sup>1</sup></a></div></div><hr/></div></div><div id="keyboard-tips"><div class="keyboardTitle">博客快捷键</div><div class="keybordList"><div class="keybordItem"><div class="keyGroup"><div class="key">shift K</div></div><div class="keyContent"><div class="content">关闭快捷键功能</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift A</div></div><div class="keyContent"><div class="content">打开/关闭中控台</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift M</div></div><div class="keyContent"><div class="content">播放/暂停音乐</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift D</div></div><div class="keyContent"><div class="content">深色/浅色显示模式</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift S</div></div><div class="keyContent"><div class="content">站内搜索</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift R</div></div><div class="keyContent"><div class="content">随机访问</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift H</div></div><div class="keyContent"><div class="content">返回首页</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift F</div></div><div class="keyContent"><div class="content">友链鱼塘</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift L</div></div><div class="keyContent"><div class="content">友链页面</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift P</div></div><div class="keyContent"><div class="content">关于本站</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift I</div></div><div class="keyContent"><div class="content">原版/本站右键菜单</div></div></div></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="anzhiyufont anzhiyu-icon-comment-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="anzhiyufont anzhiyu-icon-comments"></i></a><a id="switch-commentBarrage" href="javascript:anzhiyu.switchCommentBarrage();" title="开关弹幕"><i class="anzhiyufont anzhiyu-icon-danmu"></i></a><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="anzhiyufont anzhiyu-icon-xmark"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.20/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.4/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script async src="/anzhiyu/random.js"></script><script async="async">(function () {
+  var grt = new Date("07/15/2023 00:00:00"); //设置网站上线时间
+  var now = new Date();
+  var dnum;
+  var hnum;
+  var mnum;
+  var snum;
+  var nowHour;
+
+  // 计算并更新天数、小时数、分钟数和秒数
+  function updateTime() {
+    now = new Date(); // 更新 now 的值
+    nowHour = now.getHours(); // 更新 nowHour 的值
+    var days = (now - grt) / 1000 / 60 / 60 / 24;
+    dnum = Math.floor(days);
+    var hours = (now - grt) / 1000 / 60 / 60 - 24 * dnum;
+    hnum = Math.floor(hours);
+    if (String(hnum).length == 1) {
+      hnum = "0" + hnum;
+    }
+    var minutes = (now - grt) / 1000 / 60 - 24 * 60 * dnum - 60 * hnum;
+    mnum = Math.floor(minutes);
+    if (String(mnum).length == 1) {
+      mnum = "0" + mnum;
+    }
+    var seconds = (now - grt) / 1000 - 24 * 60 * 60 * dnum - 60 * 60 * hnum - 60 * mnum;
+    snum = Math.round(seconds);
+    if (String(snum).length == 1) {
+      snum = "0" + snum;
+    }
+  }
+
+  // 更新网页中显示的网站运行时间
+  function updateHtml() {
+    const footer = document.getElementById("footer");
+    if (!footer) return
+    let currentTimeHtml = "";
+    if (nowHour < 18 && nowHour >= 9) {
+      // 如果是上班时间，默认就是"安知鱼-上班摸鱼中.svg"图片，不需要更改
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    } else {
+      // 如果是下班时间，插入"安知鱼-下班啦.svg"图片
+      let img = document.querySelector("#workboard .workSituationImg");
+      if (img != null) {
+        img.src = "/img/label/offduty_img.svg";
+        img.title = "延毕就延毕，我先玩了再说🤡";
+        img.alt = "延毕就延毕，我先玩了再说🤡";
+      }
+
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    }
+
+    if (document.getElementById("runtimeTextTip")) {
+      document.getElementById("runtimeTextTip").innerHTML = currentTimeHtml;
+    }
+  }
+
+  setInterval(() => {
+    updateTime();
+    updateHtml();
+  }, 1000);
+})();</script><script src="https://cdn.cbd.int/algoliasearch@4.18.0/dist/algoliasearch-lite.umd.js"></script><script src="https://cdn.cbd.int/instantsearch.js@4.56.5/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.cbd.int/mathjax@3.2.2/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.cbd.int/mermaid@10.2.4/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  anzhiyu.addGlobalFn('themeChange', runMermaid, 'mermaid')
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo.karltan.com/.netlify/functions/twikoo',
+      region: '',
+      onCommentLoaded: () => {
+        anzhiyu.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') setTimeout(runFn,0)
+    else getScript('https://cdn.cbd.int/twikoo@1.6.25/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo.karltan.com/.netlify/functions/twikoo',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const runFn = () => {
+    init();
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) anzhiyu.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else {
+      loadTwikoo()
+    }
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script><input type="hidden" name="page-type" id="page-type" value="post"><script async src="/js/anzhiyu/comment_barrage.js"></script></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://twikoo.karltan.com/.netlify/functions/twikoo',
+        region: '',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.textContent= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn.cbd.int/twikoo@1.6.25/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'><div class='name'><span>${array[i].nick} </span></div></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <time datetime="${array[i].date}">${anzhiyu.diffDate(array[i].date, true)}</time></div>
+        </div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script async data-pjax src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.1/bubble/bubble.js"></script><script>var visitorMail = "visitor@karltan.com";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><script src="/js/anzhiyu/right_click_menu.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script><script defer src="/_vercel/insights/script.js"></script><script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script src="https://sdk.51.la/perf/js-sdk-perf.min.js" crossorigin="anonymous"></script><script>LA.init({id:"{3GbfAYtZPDEan7kS}",ck:"{3Gbf0O9t4EtAOhf1}"})</script><script>new LingQue.Monitor().init({id:"3GbfAYtZPDEan7kS",sendSuspicious:true});</script><script>(() => {
+  window.$crisp = [];
+  window.CRISP_WEBSITE_ID = "99975f47-0cf6-4a4b-8088-49fd5cb33ab0";
+  (function () {
+    d = document;
+    s = d.createElement("script");
+    s.src = "https://client.crisp.chat/l.js";
+    s.async = 1;
+    d.getElementsByTagName("head")[0].appendChild(s);
+  })();
+  $crisp.push(["safe", true])
+
+  const isChatBtn = true
+  const isChatHideShow = false
+
+  if (isChatBtn) {
+    const open = () => {
+      $crisp.push(["do", "chat:show"])
+      $crisp.push(["do", "chat:open"])
+    }
+
+    const close = () => {
+      $crisp.push(["do", "chat:hide"])
+    }
+
+    close()
+    $crisp.push(["on", "chat:closed", function() {
+      close()
+    }])
+
+    window.chatBtnFn = () => {
+      $crisp.is("chat:visible") ? close() : open()
+    }
+  } else if (isChatHideShow) {
+    window.chatBtn = {
+      hide: () => {
+        $crisp.push(["do", "chat:hide"])
+      },
+      show: () => {
+        $crisp.push(["do", "chat:show"])
+      }
+    }
+  }
+})()</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:type\"]","meta[property=\"og:site_name\"]","meta[property=\"og:description\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>

@@ -1,0 +1,866 @@
+<!-- ./node_modules/hexo-theme-anzhiyu/layout/includes/layout.pug--><!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>动手学深度学习v2 09 Softmax回归 + 损失函数 + 图片分类数据集 | Karl的博客</title><meta name="keywords" content="深度学习,笔记,李沐"><meta name="author" content="Karl"><meta name="copyright" content="Karl"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="动手学深度学习v2 09 Softmax回归 + 损失函数 + 图片分类数据集"><meta name="application-name" content="动手学深度学习v2 09 Softmax回归 + 损失函数 + 图片分类数据集"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="动手学深度学习v2 09 Softmax回归 + 损失函数 + 图片分类数据集"><meta property="og:url" content="http://blog.karltan.com/notes-out-class/d2l/09/index.html"><meta property="og:site_name" content="Karl的博客"><meta property="og:description" content="李沐《动手学深度学习v2》 09 Softmax回归 + 损失函数 + 图片分类数据集。"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://img.karltan.com/covers/notes-out-class/d2l/09.jpg"><meta property="article:author" content="Karl"><meta property="article:tag"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://img.karltan.com/covers/notes-out-class/d2l/09.jpg"><meta name="description" content="李沐《动手学深度学习v2》 09 Softmax回归 + 损失函数 + 图片分类数据集。"><link rel="shortcut icon" href="/img/logo.png"><link rel="canonical" href="http://blog.karltan.com/notes-out-class/d2l/09/"><link rel="preconnect" href="//cdn.cbd.int"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//static.cloudflareinsights.com"/><link rel="preconnect" href="//www.clarity.ms"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="ItAgqL0bGv4TvuAzDl6nNhCuwt5RdBLYRkwae25qGzU"/><meta name="baidu-site-verification" content="codeva-Y7ehYLkADp"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@1.0.17/lib/assets/font-awesome-animation.min.css"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.20/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?0f2c96ab05c3c6d77e2d8fbf3240e404";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script defer="defer" data-pjax="data-pjax" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon="{&quot;token&quot;: &quot;758e166757ec488583caf56b7dd7f095&quot;}"></script><script>(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "i0moouu8jj");</script><script>const GLOBAL_CONFIG = {
+  linkPageTop: {"enable":true,"title":"与数百名博主无限进步","addFriendPlaceholder":"昵称（请勿包含博客等字样）：\n网站地址（要求博客地址，请勿提交个人主页）：\n头像图片url（请提供尽可能清晰的图片）：\n描述：\n站点截图（可选）：\n"},
+  peoplecanvas: undefined,
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"tianli","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"a93a787ee06b121647ed","Referer":"https://blog.karltan.com/"},
+  diytitle: undefined,
+  LA51: {"enable":true,"ck":"3Gbf0O9t4EtAOhf1","LingQueMonitorID":"3GbfAYtZPDEan7kS"},
+  greetingBox: {"enable":true,"default":"晚上好👋","list":[{"greeting":"晚安😴","startTime":0,"endTime":5},{"greeting":"早上好鸭👋, 祝你一天好心情！","startTime":6,"endTime":9},{"greeting":"上午好👋, 状态很好，鼓励一下～","startTime":10,"endTime":10},{"greeting":"11点多啦, 在坚持一下就吃饭啦～","startTime":11,"endTime":11},{"greeting":"午安👋, 宝贝","startTime":12,"endTime":13},{"greeting":"🌈充实的一天辛苦啦！","startTime":14,"endTime":17},{"greeting":"18点喽, 奖励一顿丰盛的大餐吧🍔。","startTime":18,"endTime":19},{"greeting":"晚上好👋, 在属于自己的时间好好放松😌~","startTime":20,"endTime":24}]},
+  twikooEnvId: 'https://twikoo.karltan.com/.netlify/functions/twikoo',
+  commentBarrageConfig:{"enable":true,"maxBarrage":1,"barrageTime":4000,"accessToken":"6f88301de4664d9d9a7cadf39a9f6e5a","mailMd5":""},
+  root: '/',
+  preloader: {"source":2},
+  friends_vue_info: {"apiurl":"https://fcircle.karltan.com/"},
+  navMusic: false,
+  mainTone: undefined,
+  authorStatus: {"skills":["🤖️ 数码科技爱好者","🔍 分享与热心帮助","🏠 智能家居小能手","🔨 设计开发一条龙","🤝 专修交互与设计","🏃 脚踏实地行动派","🧱 团队小组发动机","💢 壮汉人狠话不多"]},
+  algolia: {"appId":"8C3UHN3LPN","apiKey":"e00dcc69cdc423d89a288bc784a14012","indexName":"blog-search","hits":{"per_page":6},"languages":{"input_placeholder":"输入关键词后按下回车查找","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: {"limitDay":1,"position":"top","messagePrev":"本文距上次修改已经","messageNext":"天，其中的内容可能已经不再适用。"},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"作者: Karl","link":"链接: ","source":"来源: Karl的博客","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-right"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: {"enable":true,"delay":100,"shiftDelay":200},
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: 'Karl的博客',
+  title: '动手学深度学习v2 09 Softmax回归 + 损失函数 + 图片分类数据集',
+  postAI: 'true',
+  pageFillDescription: '09 Softmax回归 + 损失函数 + 图片分类数据集, Softmax回归, 回归vs分类, Kaggle上的分类问题, 从回归到多类分类, 从回归到多类分类, 均方损失, 无校验比例, 校验比例, Softmax和交叉熵损失, 求梯度$\frac{\partial l(\mathbf{y} \hat{\mathbf{y}})}{\partial o_i}$, 求$\frac{\partial(\sum_iy_io_i)}{\partial o_i}$, 求$\frac{\partial\left(\sum_iy_i\log\left(\sum_ke^{o_k}\right)\right)}{\partial o_i}$, 总结, 损失函数, L2 Loss, L1 Loss, Huber’s Robust Loss, 图片分类数据集, Softmax回归从零开始实现, Softmax回归简洁实现回归损失函数图片分类数据集回归回归分类回归估计一个连续值分类预测一个离散类别上的分类问题从回归到多类分类回归单连续数值输出自然区间跟真实值的区别作为损失分类通常多个输出输出是预测为第类的置信度从回归到多类分类均方损失对类别进行一位有效编码单热点码使用均方损失训练无校验比例最大值作为预测需要更置信的识别正确类大余量就是预测出来这一类的值要和其他类的值的相差大于一个阈值能够保证将目标类和其他类拉开距离校验比例输出匹配概率非负和为注意这里概率和的区别作为损失和交叉熵损失交叉熵常用来衡量两个概率的区别将它作为损失这里求和的解释如下由于在向量中只有一项为那么上式可简化为表示只对真实类别上预测出来的求其余位置上的都忽略并且对分类问题来说不关心对于非预测类的预测值只关心对于正确类的预测值求梯度其梯度是真实概率和预测概率的区别注意这里计算过程如下那么等价于接下来分别求和求的计算过程如下至此计算完毕求的计算过程如下至此计算完毕那么将上面的两个结果代入中得出结论计算完毕那么可以知道总结回归是一个多类分类模型使用操作子得到每个类的预测置信度使用交叉熵来衡量预测与标号的区别损失函数蓝色曲线是当且变化时的曲线绿色曲线是的似然函数橙色曲线是的梯度上图红色箭头的方向是参数更新的方向长度是参数更新幅度的相对大小当所需要的梯度要更小时可以选用蓝色曲线是当且变化时的曲线绿色曲线是的似然函数橙色曲线是的梯度可以看到梯度的大小要么是要么是这会带来很多稳定性上的好处但是在零点处是不平滑的上图红色箭头的方向是参数更新的方向长度是参数更新幅度的相对大小可以看到更新幅度的相对大小都是相等的蓝色曲线是当且变化时的曲线绿色曲线是的似然函数橙色曲线是的梯度上图红色箭头的方向是参数更新的方向长度是参数更新幅度的相对大小这样就能够结合两个损失函数的优点上述的三个损失函数向我们展示了分析损失函数的方法图片分类数据集数据集是图像分类中广泛使用的数据集之一但作为基准数据集过于简单我们将使用类似但更复杂的数据集通过框架中的内置函数将数据集下载并读取到内存中通过实例将图像数据从类型变换为位浮点数格式并除以使得所有像素的数值均在到之间输出为输出为这里是黑白图所以第一个通道的维度为两个可视化数据集的函数返回数据集的文本标签绘制图像列表图片张量图片几个样本的图像及其对应的标签输出为读取一小批量数据大小为使用四个进程来读取数据输出为定义函数下载数据集然后将其加载到内存中回归从零开始实现就像我们从零开始实现线性回归一样你应该知道实现的细节使用四个进程来读取数据下载数据集然后将其加载到内存中这里由于我不想把数据集存储在上级目录下所以就直接把上一个视频的函数抄过来了这个函数中我将数据存放在了目录下将展平每个图像将他们视为长度为的向量因为我们的数据集有个类别所以网络输出维度为给定一个矩阵我们可以对所有元素求和的形状为形状分别为输出为实现这里应用了广播机制我们将每个元素变成一个非负数此外依据概率原理每行总和为输出为实现回归模型创建一个数据其中包含个样本在个类别的预测概率使用作为中概率的索引表示个真实的标号预测值个样本在类上的预测值第个样本的第个预测值和第个样本的第个预测值实现交叉熵损失函数在中拿出真实标号代表的值表示在的所有行中以为索引在形状为的第行中拿出第形状为个值最后再求值输出为将预测类别与真实元素进行比较计算预测正确的数量判断是否为二维判断列数这里如果不止一行会自动扩展为列向量进行比较返回相同的个数关于这里为什么不在函数中就除因为取到最后可能取出数据的数量不足一个这样会使得每个数据的权重不同再除的个数就是预测正确的概率我们可以评估在任意模型的准确率计算在指定数据集上模型的精度将模型设置为评估模式不设置也没关系但是需要一个好习惯正确预测数预测总数实例中创建了个变量用于分别存储正确预测的数量和预测的总数量在个变量上累加输出为回归的训练定义一个在动画中绘制数据的实用程序类增量地绘制多条线使用函数捕获参数向图表中添加多个数据点训练函数训练模型小批量随机梯度下降来优化模型的损失函数训练模型个迭代周期输出为对图像进行分类预测预测标签输出为回归简洁实现通过深度学习框架的高级能够使实现回归变得更加容易使用四个进程来读取数据下载数据集然后将其加载到内存中这里由于我不想把数据集存储在上级目录下所以就直接把上一个视频的函数抄过来了这个函数中我将数据存放在了目录下回归是一个全连接层不会隐式地调整输入的形状因此我们定义了展平层在线性层前调整网络输入的形状输出为可以将任何维度的变为一个的其中第维保留其余维度全部展成一个向量那么在展平后原本的输入形状是在经过后就变为了在交叉熵损失函数中传递未归一化的预测并同时计算及其对数注意这里和站视频上的代码不一样使用学习率为的小批量随机梯度下降作为优化算法调用之前定义的训练函数来训练模型如果报错说没有这个模块可以运行但是注意需要自己解决环境的依赖冲突问题最后的曲线为',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-10-10 20:00:00',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/mycss.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"></script><meta name="generator" content="Hexo 7.0.0"><link rel="alternate" href="/atom.xml" title="Karl的博客" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Karl的博客" type="application/rss+xml">
+</head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><div class="back-home-button"><i class="anzhiyufont anzhiyu-icon-grip-vertical"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" href="https://blog.karltan.com/" title="Karl的博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/logo.png" alt="Karl的博客"/><span class="back-menu-item-text">Karl的博客</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://www.karltan.com/" title="Karl的导航"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://www.karltan.com/favicon.ico" alt="Karl的导航"/><span class="back-menu-item-text">Karl的导航</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">博客分流</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://v.karltan.com/" title="Vercel"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://assets.vercel.com/image/upload/front/favicon/vercel/favicon.ico" alt="Vercel"/><span class="back-menu-item-text">Vercel</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://c.karltan.com/" title="Cloudflare"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://dash.cloudflare.com/favicon-32x32.png" alt="Cloudflare"/><span class="back-menu-item-text">Cloudflare</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">工具</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://npmzjk.karltan.com/" title="NPM"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npmzjk.karltan.com/images/favicons/favicon-32x32.png" alt="NPM"/><span class="back-menu-item-text">NPM</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://paste.karltan.com/" title="Free-Bin"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://paste.karltan.com/static/favicon.ico" alt="Free-Bin"/><span class="back-menu-item-text">Free-Bin</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://tools.karltan.com/" title="IT-TOOLS"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://tools.karltan.com/android-chrome-192x192.png" alt="IT-TOOLS"/><span class="back-menu-item-text">IT-TOOLS</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://memos.karltan.com/" title="Memos"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://memos.karltan.com/logo.png" alt="Memos"/><span class="back-menu-item-text">Memos</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://wbo.karltan.com/" title="WBO"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://wbo.karltan.com/favicon.ico" alt="WBO"/><span class="back-menu-item-text">WBO</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://git.karltan.com/" title="Gitea"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://git.karltan.com/assets/img/logo.svg" alt="Gitea"/><span class="back-menu-item-text">Gitea</span></a></div></div></div></div><a id="site-name" href="/" accesskey="h"><div class="title">Karl的博客</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives"><i class="fa-solid fa-box-archive faa-tada"></i><span> 归档</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories"><i class="fa-solid fa-palette faa-tada"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags"><i class="fa-solid fa-tags faa-tada"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link"><i class="fa-solid fa-link faa-tada"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/fcircle"><i class="fa-brands fa-artstation faa-tada"></i><span> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments"><i class="fa-solid fa-comments faa-tada"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/essay"><i class="fa-solid fa-comment-dots faa-tada"></i><span> 说说</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/music"><i class="fa-solid fa-music faa-tada"></i><span> 音乐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album"><i class="fa-solid fa-images faa-tada"></i><span> 相册</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" target="_blank" rel="noopener" href="https://status.karltan.com/status/1"><i class="fa-solid fa-chart-line faa-tada"></i><span> 网站监控</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="fa-solid fa-shoe-prints faa-tada"></i><span> 随便逛逛</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/about"><i class="fa-solid fa-heart faa-tada"></i><span> 关于我</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button only-home" id="travellings_button" title="随机前往一个开往项目网站"><a class="site-page" onclick="anzhiyu.totraveling()" title="随机前往一个开往项目网站" href="javascript:void(0);" rel="external nofollow" data-pjax-state="external"><i class="anzhiyufont anzhiyu-icon-train"></i></a></div><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><div class="nav-button" id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" title="搜索🔍" accesskey="s"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span> 搜索</span></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" alt="微信" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/wechat.jpg"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" alt="支付宝" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/alipay.jpg"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/AcWing/" style="font-size: 1.05rem;">AcWing<sup>33</sup></a><a href="/tags/CUDA/" style="font-size: 1.05rem;">CUDA<sup>1</sup></a><a href="/tags/CVPR/" style="font-size: 1.05rem;">CVPR<sup>3</sup></a><a href="/tags/ICLR/" style="font-size: 1.05rem;">ICLR<sup>1</sup></a><a href="/tags/Linux/" style="font-size: 1.05rem;">Linux<sup>1</sup></a><a href="/tags/MAPL/" style="font-size: 1.05rem;">MAPL<sup>1</sup></a><a href="/tags/MySQL/" style="font-size: 1.05rem;">MySQL<sup>1</sup></a><a href="/tags/NIPS/" style="font-size: 1.05rem;">NIPS<sup>1</sup></a><a href="/tags/PyTorch/" style="font-size: 1.05rem;">PyTorch<sup>1</sup></a><a href="/tags/Python/" style="font-size: 1.05rem;">Python<sup>1</sup></a><a href="/tags/RSS/" style="font-size: 1.05rem;">RSS<sup>1</sup></a><a href="/tags/Ubuntu/" style="font-size: 1.05rem;">Ubuntu<sup>3</sup></a><a href="/tags/Windows/" style="font-size: 1.05rem;">Windows<sup>1</sup></a><a href="/tags/arXiv/" style="font-size: 1.05rem;">arXiv<sup>1</sup></a><a href="/tags/mAP/" style="font-size: 1.05rem;">mAP<sup>1</sup></a><a href="/tags/tmux/" style="font-size: 1.05rem;">tmux<sup>1</sup></a><a href="/tags/vim/" style="font-size: 1.05rem;">vim<sup>1</sup></a><a href="/tags/%E4%BB%A3%E7%A0%81/" style="font-size: 1.05rem;">代码<sup>1</sup></a><a href="/tags/%E4%BD%8D%E5%A7%BF%E4%BC%B0%E8%AE%A1/" style="font-size: 1.05rem;">位姿估计<sup>1</sup></a><a href="/tags/%E6%89%A9%E5%AE%B9/" style="font-size: 1.05rem;">扩容<sup>1</sup></a><a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 1.05rem;">数学<sup>1</sup></a><a href="/tags/%E6%97%8B%E8%BD%AC%E8%A1%A8%E7%A4%BA/" style="font-size: 1.05rem;">旋转表示<sup>1</sup></a><a href="/tags/%E6%9D%8E%E6%B2%90/" style="font-size: 1.05rem;">李沐<sup>76</sup></a><a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 1.05rem;">深度学习<sup>79</sup></a><a href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/" style="font-size: 1.05rem;">目标检测<sup>1</sup></a><a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 1.05rem;">笔记<sup>77</sup></a><a href="/tags/%E7%AE%97%E6%B3%95%E9%A2%98/" style="font-size: 1.05rem;">算法题<sup>33</sup></a><a href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" style="font-size: 1.05rem;">论文笔记<sup>9</sup></a><a href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91/" style="font-size: 1.05rem;">阿里云<sup>1</sup></a><a href="/tags/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6/" style="font-size: 1.05rem;">高等数学<sup>1</sup></a><a href="/tags/%E9%AD%94%E6%B3%95/" style="font-size: 1.05rem;">魔法<sup>1</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span><a class="card-more-btn" href="/archives/" title="查看更多">
+    <i class="anzhiyufont anzhiyu-icon-angle-right"></i></a></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/04/"><span class="card-archive-list-date">2024年04月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">2</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/03/"><span class="card-archive-list-date">2024年03月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/02/"><span class="card-archive-list-date">2024年02月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/01/"><span class="card-archive-list-date">2024年01月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">10</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/12/"><span class="card-archive-list-date">2023年12月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">48</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/11/"><span class="card-archive-list-date">2023年11月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">7</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/10/"><span class="card-archive-list-date">2023年10月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">32</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/09/"><span class="card-archive-list-date">2023年09月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">6</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item on" id="consoleCommentBarrage" onclick="anzhiyu.switchCommentBarrage()" title="热评开关"><a class="commentBarrage"><i class="anzhiyufont anzhiyu-icon-message"></i></a></div><div class="console-btn-item" id="consoleKeyboard" onclick="anzhiyu.keyboardToggle()" title="快捷键开关"><a class="keyboard-switch"><i class="anzhiyufont anzhiyu-icon-keyboard"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E5%A4%96%E7%AC%94%E8%AE%B0/" itemprop="url">课外笔记</a><i class="anzhiyufont anzhiyu-icon-angle-right post-meta-separator"></i><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AF%BE%E5%A4%96%E7%AC%94%E8%AE%B0/d2l/" itemprop="url">d2l</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>深度学习</span></a><a class="article-meta__tags" href="/tags/%E7%AC%94%E8%AE%B0/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>笔记</span></a><a class="article-meta__tags" href="/tags/%E6%9D%8E%E6%B2%90/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>李沐</span></a></span></div></div><h1 class="post-title" itemprop="name headline">动手学深度学习v2 09 Softmax回归 + 损失函数 + 图片分类数据集</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2023-10-09T08:00:00.000Z" title="发表于 2023-10-09 16:00:00">2023-10-09</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2023-10-10T12:00:00.000Z" title="更新于 2023-10-10 20:00:00">2023-10-10</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-wordcount"><i class="anzhiyufont anzhiyu-icon-file-word post-meta-icon" title="文章字数"></i><span class="post-meta-label" title="文章字数">字数总计:</span><span class="word-count" title="文章字数">4.4k</span><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-clock post-meta-icon" title="阅读时长"></i><span class="post-meta-label" title="阅读时长">阅读时长:</span><span>20分钟</span></span><span class="post-meta-separator"></span><span class="post-meta-pv-cv" id="" data-flag-title="动手学深度学习v2 09 Softmax回归 + 损失函数 + 图片分类数据集"><i class="anzhiyufont anzhiyu-icon-fw-eye post-meta-icon"></i><span class="post-meta-label" title="阅读量">阅读量:</span><span id="busuanzi_value_page_pv"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为长沙"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>长沙</span><span class="post-meta-separator"></span><span class="post-meta-commentcount"><i class="anzhiyufont anzhiyu-icon-comments post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/notes-out-class/d2l/09/#post-comment" tabindex="-1"><span id="twikoo-count"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></a></span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="https://img.karltan.com/covers/notes-out-class/d2l/09.jpg"></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><div class="post-ai-description"><div class="ai-title"><i class="anzhiyufont anzhiyu-icon-bilibili"></i><div class="ai-title-text">AI-摘要</div><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right"></i><i class="anzhiyufont anzhiyu-icon-circle-dot" title="朗读摘要"></i><div id="ai-tag">Tianli GPT</div></div><div class="ai-explanation">AI初始化中...</div><div class="ai-btn-box"><div class="ai-btn-item">介绍自己 🙈</div><div class="ai-btn-item">生成本文简介 👋</div><div class="ai-btn-item">推荐相关文章 📖</div><div class="ai-btn-item">前往主页 🏠</div><div class="ai-btn-item" id="go-tianli-blog">前往爱发电购买</div></div><script data-pjax src="/js/anzhiyu/ai_abstract.js"></script></div><article class="post-content" id="article-container" itemscope itemtype="http://blog.karltan.com/notes-out-class/d2l/09/"><header><a class="post-meta-categories" href="/categories/%E8%AF%BE%E5%A4%96%E7%AC%94%E8%AE%B0/" itemprop="url">课外笔记</a><a class="post-meta-categories" href="/categories/%E8%AF%BE%E5%A4%96%E7%AC%94%E8%AE%B0/d2l/" itemprop="url">d2l</a><a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" tabindex="-1" itemprop="url">深度学习</a><a href="/tags/%E7%AC%94%E8%AE%B0/" tabindex="-1" itemprop="url">笔记</a><a href="/tags/%E6%9D%8E%E6%B2%90/" tabindex="-1" itemprop="url">李沐</a><h1 id="CrawlerTitle" itemprop="name headline">动手学深度学习v2 09 Softmax回归 + 损失函数 + 图片分类数据集</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">Karl</span><time itemprop="dateCreated datePublished" datetime="2023-10-09T08:00:00.000Z" title="发表于 2023-10-09 16:00:00">2023-10-09</time><time itemprop="dateCreated datePublished" datetime="2023-10-10T12:00:00.000Z" title="更新于 2023-10-10 20:00:00">2023-10-10</time></header><h1 id="09-Softmax回归-损失函数-图片分类数据集"><a href="#09-Softmax回归-损失函数-图片分类数据集" class="headerlink" title="09 Softmax回归 + 损失函数 + 图片分类数据集"></a>09 Softmax回归 + 损失函数 + 图片分类数据集</h1><h2 id="Softmax回归"><a href="#Softmax回归" class="headerlink" title="Softmax回归"></a>Softmax回归</h2><h3 id="回归vs分类"><a href="#回归vs分类" class="headerlink" title="回归vs分类"></a>回归vs分类</h3><ul>
+<li>回归估计一个连续值</li>
+<li>分类预测一个离散类别</li>
+</ul>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/notes-out-class/d2l/09/image-20231009162556283.png" alt="image-20231009162556283"></p>
+<h3 id="Kaggle上的分类问题"><a href="#Kaggle上的分类问题" class="headerlink" title="Kaggle上的分类问题"></a>Kaggle上的分类问题</h3><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/notes-out-class/d2l/09/image-20231009162632622.png" alt="image-20231009162632622"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/notes-out-class/d2l/09/image-20231009162654345.png" alt="image-20231009162654345"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/notes-out-class/d2l/09/image-20231009162708433.png" alt="image-20231009162708433"></p>
+<h3 id="从回归到多类分类"><a href="#从回归到多类分类" class="headerlink" title="从回归到多类分类"></a>从回归到多类分类</h3><ul>
+<li><p>回归</p>
+<ul>
+<li>单连续数值输出</li>
+<li>自然区间$\mathbb{R}$</li>
+<li><p>跟真实值的区别作为损失</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/notes-out-class/d2l/09/image-20231009162943805.png" alt="image-20231009162943805"></p>
+</li>
+</ul>
+</li>
+<li><p>分类</p>
+<ul>
+<li>通常多个输出</li>
+<li><p>输出i是预测为第i类的置信度</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/notes-out-class/d2l/09/image-20231009163000560.png" alt="image-20231009163000560"></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="从回归到多类分类-1"><a href="#从回归到多类分类-1" class="headerlink" title="从回归到多类分类"></a>从回归到多类分类</h3><h4 id="均方损失"><a href="#均方损失" class="headerlink" title="均方损失"></a>均方损失</h4><ul>
+<li><p>对类别进行一位有效编码（单热点码）</p>
+<script type="math/tex; mode=display">
+  \begin{aligned}
+  \mathbf{y}
+  &= \begin{bmatrix}
+  y_1, & y_2, & \cdots, & y_n
+  \end{bmatrix}^\mathrm{T} \\
+  y_i
+  &= \begin{cases}
+  1 \text{ if } i = y \\
+  0 \text{ otherwise}
+  \end{cases}
+  \end{aligned}</script></li>
+<li><p>使用均方损失训练</p>
+</li>
+</ul>
+<h4 id="无校验比例"><a href="#无校验比例" class="headerlink" title="无校验比例"></a>无校验比例</h4><ul>
+<li><p>最大值作为预测</p>
+<script type="math/tex; mode=display">
+  \hat{y} = \arg \max_{i}o_i</script></li>
+<li><p>需要更置信的识别正确类（大余量），就是预测出来这一类的值要和其他类的值的相差大于一个阈值</p>
+<script type="math/tex; mode=display">
+  o_y - o_i \ge \Delta(y, i)</script><p>  能够保证将目标类和其他类拉开距离</p>
+</li>
+</ul>
+<h4 id="校验比例"><a href="#校验比例" class="headerlink" title="校验比例"></a>校验比例</h4><ul>
+<li><p>输出匹配概率（非负，和为1）</p>
+<script type="math/tex; mode=display">
+  \begin{aligned}
+  \hat{\mathbf{y}} &= \text{softmax}(\mathbf{o}) \\
+  \hat{y}_i &= \frac{\exp(o_i)}{\sum_k\exp(o_k)}
+  \end{aligned}</script><p>  注意，这里$\mathbf{o} = \begin{bmatrix}o_1, &amp; o_2, &amp; \cdots, &amp; o_n\end{bmatrix}$。</p>
+</li>
+<li><p>概率$\mathbf{y}$和$\hat{\mathbf{y}}$的区别作为损失</p>
+</li>
+</ul>
+<h3 id="Softmax和交叉熵损失"><a href="#Softmax和交叉熵损失" class="headerlink" title="Softmax和交叉熵损失"></a>Softmax和交叉熵损失</h3><ul>
+<li><p>交叉熵常用来衡量两个概率的区别$H(\mathbf{p}, \mathbf{q}) = \sum_i \left(- p_i\log(q_i)\right)$</p>
+</li>
+<li><p>将它作为损失</p>
+<script type="math/tex; mode=display">
+  l(\mathbf{y}, \hat{\mathbf{y}}) = -\sum_iy_i\log\hat{y}_i = -\log\hat{y}_y</script><p>  这里求和的解释如下：</p>
+<script type="math/tex; mode=display">
+  \begin{aligned}
+  l(\mathbf{y}, \hat{\mathbf{y}})
+  &= -\sum_iy_i\log\hat{y}_i \\
+  &= -\left(y_1\log\hat{y_1} + y_2\log\hat{y_2} + \cdots + y_i\log\hat{y_i} + \cdots + y_n\log\hat{y_n}\right)
+  \end{aligned}</script><p>  由于在向量$\mathbf{y} = \begin{bmatrix}y_1, &amp; y_2, &amp; \cdots, &amp; y_n\end{bmatrix}^\mathrm{T}$中，只有一项为1，那么上式可简化为：$l(\mathbf{y}, \hat{\mathbf{y}}) = -\sum_iy_i\log\hat{y}_i = -\log\hat{y}_y$，表示只对真实类别$y$上预测出来的$\hat{y}$求$-\log$，其余位置上的$\hat{y}$都忽略。</p>
+<p>  并且对分类问题来说，不关心对于非预测类的预测值，只关心对于正确类的预测值。</p>
+</li>
+</ul>
+<h4 id="求梯度-frac-partial-l-mathbf-y-hat-mathbf-y-partial-o-i"><a href="#求梯度-frac-partial-l-mathbf-y-hat-mathbf-y-partial-o-i" class="headerlink" title="求梯度$\frac{\partial l(\mathbf{y}, \hat{\mathbf{y}})}{\partial o_i}$"></a>求梯度$\frac{\partial l(\mathbf{y}, \hat{\mathbf{y}})}{\partial o_i}$</h4><p>其梯度是真实概率和预测概率的区别：</p>
+<script type="math/tex; mode=display">
+\frac{\partial l(\mathbf{y}, \hat{\mathbf{y}})}{\partial o_i} = \text{softmax}(\mathbf{o})_i - y_i</script><p>注意，$\text{softmax}(\mathbf{o})_i = \hat{y}_i = \frac{\exp(o_i)}{\sum_k\exp(o_k)}$。</p>
+<p>这里计算过程如下：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+l(\mathbf{y}, \hat{\mathbf{y}})
+&= -\sum_iy_i\log\hat{y}_i \\
+&= -\sum_iy_i\log\frac{\exp(o_i)}{\sum_k\exp(o_k)} \\
+&= -\sum_iy_i\log\frac{e^{o_i}}{\sum_ke^{o_k}} \\
+&= -\sum_iy_i\left(\log e^{o_i} - \log\left(\sum_ke^{o_k}\right)\right) \\
+&= -\sum_iy_i\left(o_i - \log\left(\sum_ke^{o_k}\right)\right) \\
+&= -\sum_iy_io_i + \sum_iy_i\left(\log\left(\sum_ke^{o_k}\right)\right)
+\end{aligned}</script><p>那么$\frac{\partial l(\mathbf{y}, \hat{\mathbf{y}})}{\partial o_i}$等价于：</p>
+<script type="math/tex; mode=display">
+\frac{\partial l(\mathbf{y}, \hat{\mathbf{y}})}{\partial o_i} = -\frac{\partial(\sum_iy_io_i)}{\partial o_i} + \frac{\partial\left(\sum_iy_i\log\left(\sum_ke^{o_k}\right)\right)}{\partial o_i}</script><p>接下来分别求$\frac{\partial(\sum_iy_io_i)}{\partial o_i}$和$\frac{\partial\left(\sum_iy_i\log\left(\sum_ke^{o_k}\right)\right)}{\partial o_i}$。</p>
+<h5 id="求-frac-partial-sum-iy-io-i-partial-o-i"><a href="#求-frac-partial-sum-iy-io-i-partial-o-i" class="headerlink" title="求$\frac{\partial(\sum_iy_io_i)}{\partial o_i}$"></a>求$\frac{\partial(\sum_iy_io_i)}{\partial o_i}$</h5><p>$\frac{\partial(\sum_iy_io_i)}{\partial o_i}$的计算过程如下：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\frac{\partial(\sum_iy_io_i)}{\partial o_i}
+&= \frac{\partial(y_1o_1 + y_2o_2 + \cdots + y_io_i + \cdots + y_no_n)}{\partial o_i} \\
+&= y_i
+\end{aligned}</script><p>至此，$\frac{\partial(\sum_iy_io_i)}{\partial o_i}$计算完毕。</p>
+<h5 id="求-frac-partial-left-sum-iy-i-log-left-sum-ke-o-k-right-right-partial-o-i"><a href="#求-frac-partial-left-sum-iy-i-log-left-sum-ke-o-k-right-right-partial-o-i" class="headerlink" title="求$\frac{\partial\left(\sum_iy_i\log\left(\sum_ke^{o_k}\right)\right)}{\partial o_i}$"></a>求$\frac{\partial\left(\sum_iy_i\log\left(\sum_ke^{o_k}\right)\right)}{\partial o_i}$</h5><p>$\frac{\partial\left(\sum_iy_i\log\left(\sum_ke^{o_k}\right)\right)}{\partial o_i}$的计算过程如下：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\frac{\partial\left(\sum_iy_i\log\left(\sum_ke^{o_k}\right)\right)}{\partial o_i}
+&= \frac{\partial\left(y_1\log\left(\sum_ke^{o_k}\right) + y_2\log\left(\sum_ke^{o_k}\right) + \cdots + y_n\log\left(\sum_ke^{o_k}\right)\right)}{\partial o_i} \\
+&= y_1\frac{e^{o_i}}{\sum_ke^{o_k}} + y_2\frac{e^{o_i}}{\sum_ke^{o_k}} + \cdots + y_n\frac{e^{o_i}}{\sum_ke^{o_k}} \\
+&= \frac{e^{o_i}}{\sum_ke^{o_k}}(y_1 + y_2 + \cdots + y_n) \\
+&= \frac{e^{o_i}}{\sum_ke^{o_k}} \\
+&= \frac{\exp(o_i)}{\sum_k\exp(o_k)} \\
+&= \text{softmax}(\mathbf{o})_i \\
+&= \hat{y}_i
+\end{aligned}</script><p>至此，$\frac{\partial\left(\sum_iy_i\log\left(\sum_ke^{o_k}\right)\right)}{\partial o_i}$计算完毕。</p>
+<p>那么将上面的两个结果代入$\frac{\partial l(\mathbf{y}, \hat{\mathbf{y}})}{\partial o_i}$中：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\frac{\partial l(\mathbf{y}, \hat{\mathbf{y}})}{\partial o_i}
+&= -\sum_iy_io_i + \sum_iy_i\left(\log\left(\sum_ke^{o_k}\right)\right) \\
+&= -y_i + \text{softmax}(\mathbf{o})_i \\
+&= \text{softmax}(\mathbf{o})_i - y_i
+\end{aligned}</script><p>得出结论，计算完毕。</p>
+<p>那么可以知道：$\frac{\partial l(\mathbf{y}, \hat{\mathbf{y}})}{\partial o_i} = \text{softmax}(\mathbf{o})_i - y_i = \hat{y}_i - y_i$。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>Softmax回归是一个多类分类模型</li>
+<li>使用Softmax操作子得到每个类的预测置信度</li>
+<li>使用交叉熵来衡量预测与标号的区别</li>
+</ul>
+<h2 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h2><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/notes-out-class/d2l/09/image-20231009193318213.png" alt="image-20231009193318213"></p>
+<h3 id="L2-Loss"><a href="#L2-Loss" class="headerlink" title="L2 Loss"></a>L2 Loss</h3><script type="math/tex; mode=display">
+l(y, y^\prime) = \frac{1}{2}(y - y^\prime)^2</script><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/notes-out-class/d2l/09/image-20231009193455804.png" alt="image-20231009193455804"></p>
+<ul>
+<li>蓝色曲线是当$y = 0$且$y^\prime$变化时$l(y, y^\prime)$的曲线</li>
+<li>绿色曲线是$l(y, y^\prime)$的似然函数</li>
+<li>橙色曲线是$l(y, y^\prime)$的梯度</li>
+</ul>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/notes-out-class/d2l/09/image-20231009193853619.png" alt="image-20231009193853619"></p>
+<p>上图红色箭头的方向是参数更新的方向，长度是参数更新幅度的相对大小。</p>
+<p>当所需要的梯度要更小时，可以选用L1 Loss。</p>
+<h3 id="L1-Loss"><a href="#L1-Loss" class="headerlink" title="L1 Loss"></a>L1 Loss</h3><script type="math/tex; mode=display">
+l(y, y^\prime) = \left|y - y^\prime\right|</script><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/notes-out-class/d2l/09/image-20231009194036403.png" alt="image-20231009194036403"></p>
+<ul>
+<li>蓝色曲线是当$y = 0$且$y^\prime$变化时$l(y, y^\prime)$的曲线</li>
+<li>绿色曲线是$l(y, y^\prime)$的似然函数</li>
+<li>橙色曲线是$l(y, y^\prime)$的梯度</li>
+</ul>
+<p>可以看到，梯度的大小要么是-1，要么是1，这会带来很多稳定性上的好处；但是在零点处是不平滑的。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/notes-out-class/d2l/09/image-20231009194452791.png" alt="image-20231009194452791"></p>
+<p>上图红色箭头的方向是参数更新的方向，长度是参数更新幅度的相对大小。</p>
+<p>可以看到，更新幅度的相对大小都是相等的。</p>
+<h3 id="Huber’s-Robust-Loss"><a href="#Huber’s-Robust-Loss" class="headerlink" title="Huber’s Robust Loss"></a>Huber’s Robust Loss</h3><script type="math/tex; mode=display">
+l(y, y^\prime)
+= \begin{cases}
+\begin{array}{ll}
+\left|y - y^\prime\right| - \frac{1}{2} & \text{if }\left|y - y^\prime\right| > 1 \\
+\frac{1}{2}(y - y^\prime)^2 & \text{otherwise}
+\end{array}
+\end{cases}</script><p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/notes-out-class/d2l/09/image-20231009194743087.png" alt="image-20231009194743087"></p>
+<ul>
+<li>蓝色曲线是当$y = 0$且$y^\prime$变化时$l(y, y^\prime)$的曲线</li>
+<li>绿色曲线是$l(y, y^\prime)$的似然函数</li>
+<li>橙色曲线是$l(y, y^\prime)$的梯度</li>
+</ul>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/notes-out-class/d2l/09/image-20231009194806434.png" alt="image-20231009194806434"></p>
+<p>上图红色箭头的方向是参数更新的方向，长度是参数更新幅度的相对大小。</p>
+<p>这样就能够结合两个损失函数的优点。</p>
+<p>上述的三个损失函数向我们展示了分析损失函数的方法。</p>
+<h2 id="图片分类数据集"><a href="#图片分类数据集" class="headerlink" title="图片分类数据集"></a>图片分类数据集</h2><p>MNIST数据集是图像分类中广泛使用的数据集之一，但作为基准数据集过于简单。我们将使用类似但更复杂的Fashion-MNIST数据集。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">%matplotlib inline</span><br><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torchvision</span><br><span class="line"><span class="keyword">from</span> torch.utils <span class="keyword">import</span> data</span><br><span class="line"><span class="keyword">from</span> torchvision <span class="keyword">import</span> transforms</span><br><span class="line"><span class="keyword">from</span> d2l <span class="keyword">import</span> torch <span class="keyword">as</span> d2l</span><br><span class="line"></span><br><span class="line">d2l.use_svg_display()</span><br></pre></td></tr></table></figure>
+<p>通过框架中的内置函数将Fashion-MNIST数据集下载并读取到内存中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 通过ToTensor实例将图像数据从PIL类型变换为32位浮点数格式</span></span><br><span class="line"><span class="comment"># 并除以255使得所有像素的数值均在0到1之间</span></span><br><span class="line">trans = transforms.ToTensor()</span><br><span class="line">mnist_train = torchvision.datasets.FashionMNIST(root=<span class="string">&quot;./data&quot;</span>, train=<span class="literal">True</span>, transform=trans, download=<span class="literal">True</span>)</span><br><span class="line">mnist_test = torchvision.datasets.FashionMNIST(root=<span class="string">&quot;./data&quot;</span>, train=<span class="literal">False</span>, transform=trans, download=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">len</span>(mnist_train), <span class="built_in">len</span>(mnist_test)</span><br></pre></td></tr></table></figure>
+<p>输出为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(60000, 10000)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mnist_train[<span class="number">0</span>][<span class="number">0</span>].shape</span><br></pre></td></tr></table></figure>
+<p>输出为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">torch.Size([1, 28, 28])</span><br></pre></td></tr></table></figure>
+<p>这里是黑白图，所以第一个通道的维度为1。</p>
+<p>两个可视化数据集的函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_fashion_mnist_labels</span>(<span class="params">labels</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;返回Fashion-MNIST数据集的文本标签。&quot;&quot;&quot;</span></span><br><span class="line">    text_labels = [</span><br><span class="line">        <span class="string">&#x27;t-shirt&#x27;</span>, <span class="string">&#x27;trouser&#x27;</span>, <span class="string">&#x27;pullover&#x27;</span>, <span class="string">&#x27;dress&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;coat&#x27;</span>, <span class="string">&#x27;sandal&#x27;</span>, <span class="string">&#x27;shirt&#x27;</span>, <span class="string">&#x27;sneaker&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;bag&#x27;</span>, <span class="string">&#x27;ankle boot&#x27;</span></span><br><span class="line">    ]</span><br><span class="line">    <span class="keyword">return</span> [text_labels[<span class="built_in">int</span>(i)] <span class="keyword">for</span> i <span class="keyword">in</span> labels]</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">shwo_images</span>(<span class="params">imgs, num_rows, num_cols, titles=<span class="literal">None</span>, scale=<span class="number">1.5</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;绘制图像列表。&quot;&quot;&quot;</span></span><br><span class="line">    figsize = (num_cols * scale, num_rows * scale)</span><br><span class="line">    _, axes = d2l.plt.subplots(num_rows, num_cols, figsize=figsize)</span><br><span class="line">    axes = axes.flatten()</span><br><span class="line">    <span class="keyword">for</span> i, (ax, img) <span class="keyword">in</span> <span class="built_in">enumerate</span>(<span class="built_in">zip</span>(axes, imgs)):</span><br><span class="line">        <span class="keyword">if</span> torch.is_tensor(img):</span><br><span class="line">            <span class="comment"># 图片张量</span></span><br><span class="line">            ax.imshow(img.numpy())</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="comment"># PIL图片</span></span><br><span class="line">            ax.imshow(img)</span><br><span class="line">        ax.axes.get_xaxis().set_visible(<span class="literal">False</span>)</span><br><span class="line">        ax.axes.get_yaxis().set_visible(<span class="literal">False</span>)</span><br><span class="line">        <span class="keyword">if</span> titles:</span><br><span class="line">            ax.set_title(titles[i])</span><br><span class="line">    <span class="keyword">return</span> axes</span><br></pre></td></tr></table></figure>
+<p>几个样本的图像及其对应的标签：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">X, y = <span class="built_in">next</span>(<span class="built_in">iter</span>(data.DataLoader(mnist_train, batch_size=<span class="number">18</span>)))</span><br><span class="line">shwo_images(X.reshape(<span class="number">18</span>, <span class="number">28</span>, <span class="number">28</span>), <span class="number">2</span>, <span class="number">9</span>, titles=get_fashion_mnist_labels(y))</span><br></pre></td></tr></table></figure>
+<p>输出为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">array([&lt;Axes: title=&#123;&#x27;center&#x27;: &#x27;ankle boot&#x27;&#125;&gt;,</span><br><span class="line">       &lt;Axes: title=&#123;&#x27;center&#x27;: &#x27;t-shirt&#x27;&#125;&gt;,</span><br><span class="line">       &lt;Axes: title=&#123;&#x27;center&#x27;: &#x27;t-shirt&#x27;&#125;&gt;,</span><br><span class="line">       &lt;Axes: title=&#123;&#x27;center&#x27;: &#x27;dress&#x27;&#125;&gt;,</span><br><span class="line">       &lt;Axes: title=&#123;&#x27;center&#x27;: &#x27;t-shirt&#x27;&#125;&gt;,</span><br><span class="line">       &lt;Axes: title=&#123;&#x27;center&#x27;: &#x27;pullover&#x27;&#125;&gt;,</span><br><span class="line">       &lt;Axes: title=&#123;&#x27;center&#x27;: &#x27;sneaker&#x27;&#125;&gt;,</span><br><span class="line">       &lt;Axes: title=&#123;&#x27;center&#x27;: &#x27;pullover&#x27;&#125;&gt;,</span><br><span class="line">       &lt;Axes: title=&#123;&#x27;center&#x27;: &#x27;sandal&#x27;&#125;&gt;,</span><br><span class="line">       &lt;Axes: title=&#123;&#x27;center&#x27;: &#x27;sandal&#x27;&#125;&gt;,</span><br><span class="line">       &lt;Axes: title=&#123;&#x27;center&#x27;: &#x27;t-shirt&#x27;&#125;&gt;,</span><br><span class="line">       &lt;Axes: title=&#123;&#x27;center&#x27;: &#x27;ankle boot&#x27;&#125;&gt;,</span><br><span class="line">       &lt;Axes: title=&#123;&#x27;center&#x27;: &#x27;sandal&#x27;&#125;&gt;,</span><br><span class="line">       &lt;Axes: title=&#123;&#x27;center&#x27;: &#x27;sandal&#x27;&#125;&gt;,</span><br><span class="line">       &lt;Axes: title=&#123;&#x27;center&#x27;: &#x27;sneaker&#x27;&#125;&gt;,</span><br><span class="line">       &lt;Axes: title=&#123;&#x27;center&#x27;: &#x27;ankle boot&#x27;&#125;&gt;,</span><br><span class="line">       &lt;Axes: title=&#123;&#x27;center&#x27;: &#x27;trouser&#x27;&#125;&gt;,</span><br><span class="line">       &lt;Axes: title=&#123;&#x27;center&#x27;: &#x27;t-shirt&#x27;&#125;&gt;], dtype=object)</span><br></pre></td></tr></table></figure>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/notes-out-class/d2l/09/dataset-sample.svg" alt="dataset-sample"></p>
+<p>读取一小批量数据，大小为<code>batch_size</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">batch_size = <span class="number">256</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_dataloader_workers</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;使用四个进程来读取数据。&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">4</span></span><br><span class="line"></span><br><span class="line">train_iter = data.DataLoader(mnist_train, batch_size, shuffle=<span class="literal">True</span>,</span><br><span class="line">                             num_workers=get_dataloader_workers())</span><br><span class="line"></span><br><span class="line">timer = d2l.Timer()</span><br><span class="line"><span class="keyword">for</span> X, y <span class="keyword">in</span> train_iter:</span><br><span class="line">    <span class="keyword">continue</span></span><br><span class="line"><span class="string">f&#x27;<span class="subst">&#123;timer.stop():<span class="number">.2</span>f&#125;</span> sec&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>输出为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x27;9.41 sec&#x27;</span><br></pre></td></tr></table></figure>
+<p>定义<code>load_data_fashion_mnist</code>函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">load_data_fashion_mnist</span>(<span class="params">batch_size, resize=<span class="literal">None</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;下载Fashion-MNIST数据集，然后将其加载到内存中。&quot;&quot;&quot;</span></span><br><span class="line">    trans = [transforms.ToTensor()]</span><br><span class="line">    <span class="keyword">if</span> resize:</span><br><span class="line">        trans.insert(<span class="number">0</span>, transforms.Resize(resize))</span><br><span class="line">    trans = transforms.Compose(trans)</span><br><span class="line">    mnist_train = torchvision.datasets.FashionMNIST(</span><br><span class="line">        root=<span class="string">&#x27;./data&#x27;</span>, train=<span class="literal">True</span>, transform=trans, download=<span class="literal">True</span>)</span><br><span class="line">    mnist_test = torchvision.datasets.FashionMNIST(</span><br><span class="line">        root=<span class="string">&#x27;./data&#x27;</span>, train=<span class="literal">False</span>, transform=trans, download=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">return</span> (data.DataLoader(mnist_train, batch_size, shuffle=<span class="literal">True</span>,</span><br><span class="line">                            num_workers=get_dataloader_workers()),</span><br><span class="line">            data.DataLoader(mnist_test, batch_size, shuffle=<span class="literal">False</span>,</span><br><span class="line">                            num_workers=get_dataloader_workers()))</span><br></pre></td></tr></table></figure>
+<h2 id="Softmax回归从零开始实现"><a href="#Softmax回归从零开始实现" class="headerlink" title="Softmax回归从零开始实现"></a>Softmax回归从零开始实现</h2><p>就像我们从零开始实现线性回归一样，你应该知道实现softmax的细节。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">import</span> torchvision</span><br><span class="line"><span class="keyword">from</span> torch.utils <span class="keyword">import</span> data</span><br><span class="line"><span class="keyword">from</span> torchvision <span class="keyword">import</span> transforms</span><br><span class="line"><span class="keyword">from</span> IPython <span class="keyword">import</span> display</span><br><span class="line"><span class="keyword">from</span> d2l <span class="keyword">import</span> torch <span class="keyword">as</span> d2l</span><br><span class="line"></span><br><span class="line">batch_size = <span class="number">256</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_dataloader_workers</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;使用四个进程来读取数据。&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">4</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">load_data_fashion_mnist</span>(<span class="params">batch_size, resize=<span class="literal">None</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;下载Fashion-MNIST数据集，然后将其加载到内存中。&quot;&quot;&quot;</span></span><br><span class="line">    trans = [transforms.ToTensor()]</span><br><span class="line">    <span class="keyword">if</span> resize:</span><br><span class="line">        trans.insert(<span class="number">0</span>, transforms.Resize(resize))</span><br><span class="line">    trans = transforms.Compose(trans)</span><br><span class="line">    mnist_train = torchvision.datasets.FashionMNIST(</span><br><span class="line">        root=<span class="string">&#x27;./data&#x27;</span>, train=<span class="literal">True</span>, transform=trans, download=<span class="literal">True</span>)</span><br><span class="line">    mnist_test = torchvision.datasets.FashionMNIST(</span><br><span class="line">        root=<span class="string">&#x27;./data&#x27;</span>, train=<span class="literal">False</span>, transform=trans, download=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">return</span> (data.DataLoader(mnist_train, batch_size, shuffle=<span class="literal">True</span>,</span><br><span class="line">                            num_workers=get_dataloader_workers()),</span><br><span class="line">            data.DataLoader(mnist_test, batch_size, shuffle=<span class="literal">False</span>,</span><br><span class="line">                            num_workers=get_dataloader_workers()))</span><br><span class="line"></span><br><span class="line">train_iter, test_iter = load_data_fashion_mnist(batch_size)</span><br></pre></td></tr></table></figure>
+<p>这里由于我不想把数据集存储在上级目录下，所以就直接把上一个视频的<code>load_data_fashion_mnist</code>函数抄过来了，这个函数中，我将数据存放在了<code>./data</code>目录下。</p>
+<p>将展平每个图像，将他们视为长度为784的向量。因为我们的数据集有10个类别，所以网络输出维度为10：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">num_inputs = <span class="number">784</span></span><br><span class="line">num_outputs = <span class="number">10</span></span><br><span class="line"></span><br><span class="line">W = torch.normal(<span class="number">0</span>, <span class="number">0.01</span>, size=(num_inputs, num_outputs), requires_grad=<span class="literal">True</span>)</span><br><span class="line">b = torch.zeros(num_outputs, requires_grad=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<p>给定一个矩阵<code>X</code>，我们可以对所有元素求和：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">X = torch.tensor([[<span class="number">1.0</span>, <span class="number">2.0</span>, <span class="number">3.0</span>], [<span class="number">4.0</span>, <span class="number">5.0</span>, <span class="number">6.0</span>]]) <span class="comment"># X的形状为(2, 3)</span></span><br><span class="line">X.<span class="built_in">sum</span>(<span class="number">0</span>, keepdim=<span class="literal">True</span>), X.<span class="built_in">sum</span>(<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line"><span class="comment"># 形状分别为(1, 3) (2, 1)</span></span><br></pre></td></tr></table></figure>
+<p>输出为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(tensor([[5., 7., 9.]]),</span><br><span class="line"> tensor([[ 6.],</span><br><span class="line">         [15.]]))</span><br></pre></td></tr></table></figure>
+<p>实现softmax：</p>
+<script type="math/tex; mode=display">
+\text{softmax}(\mathbf{X})_{ij} = \frac{\exp(\mathbf{X}_{ij})}{\sum_k\exp(\mathbf{X}_{ik})}</script><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">softmax</span>(<span class="params">X</span>):</span><br><span class="line">    X_exp = torch.exp(X)</span><br><span class="line">    partition = X_exp.<span class="built_in">sum</span>(<span class="number">1</span>, keepdim=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">return</span> X_exp / partition <span class="comment"># 这里应用了广播机制</span></span><br></pre></td></tr></table></figure>
+<p>我们将每个元素变成一个非负数。此外，依据概率原理，每行总和为1。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">X = torch.normal(<span class="number">0</span>, <span class="number">1</span>, (<span class="number">2</span>, <span class="number">5</span>))</span><br><span class="line">X_prob = softmax(X)</span><br><span class="line">X_prob, X_prob.<span class="built_in">sum</span>(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>输出为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(tensor([[0.2243, 0.1884, 0.0316, 0.5224, 0.0333],</span><br><span class="line">         [0.1058, 0.5632, 0.0817, 0.1372, 0.1121]]),</span><br><span class="line"> tensor([1.0000, 1.0000]))</span><br></pre></td></tr></table></figure>
+<p>实现softmax回归模型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">net</span>(<span class="params">X</span>):</span><br><span class="line">    <span class="keyword">return</span> softmax(torch.matmul(X.reshape(-<span class="number">1</span>, W.shape[<span class="number">0</span>]), W) + b)</span><br></pre></td></tr></table></figure>
+<p>创建一个数据<code>y_hat</code>，其中包含2个样本在3个类别的预测概率，使用<code>y</code>作为<code>y_hat</code>中概率的索引：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">y = torch.tensor([<span class="number">0</span>, <span class="number">2</span>]) <span class="comment"># 表示2个真实的标号</span></span><br><span class="line">y_hat = torch.tensor([[<span class="number">0.1</span>, <span class="number">0.3</span>, <span class="number">0.6</span>], [<span class="number">0.3</span>, <span class="number">0.2</span>, <span class="number">0.5</span>]]) <span class="comment"># 预测值，2个样本在3类上的预测值</span></span><br><span class="line">y_hat[[<span class="number">0</span>, <span class="number">1</span>], y] <span class="comment"># 第0个样本的第0个预测值 和 第1个样本的第2个预测值</span></span><br></pre></td></tr></table></figure>
+<p>实现交叉熵损失函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">cross_entropy</span>(<span class="params">y_hat, y</span>):</span><br><span class="line">    <span class="comment"># 在y_hat中，拿出真实标号代表的值</span></span><br><span class="line">    <span class="comment"># y_hat[range(len(y_hat)), y]表示在y_hat的所有行中，</span></span><br><span class="line">    <span class="comment"># 以y为索引，在y_hat（形状为(batch_size, num_outputs)）的第i行中</span></span><br><span class="line">    <span class="comment"># 拿出第y[i]（形状为(num_outputs, 1)）个值</span></span><br><span class="line">    <span class="comment"># 最后再求-log值</span></span><br><span class="line">    <span class="keyword">return</span> -torch.log(y_hat[<span class="built_in">range</span>(<span class="built_in">len</span>(y_hat)), y])</span><br><span class="line"></span><br><span class="line">cross_entropy(y_hat, y)</span><br></pre></td></tr></table></figure>
+<p>输出为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tensor([2.3026, 0.6931])</span><br></pre></td></tr></table></figure>
+<p>将预测类别与真实<code>y</code>元素进行比较：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">accuracy</span>(<span class="params">y_hat, y</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;计算预测正确的数量。&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(y_hat.shape) &gt; <span class="number">1</span> <span class="keyword">and</span> y_hat.shape[<span class="number">1</span>] &gt; <span class="number">1</span>:</span><br><span class="line">        <span class="comment"># len(y_hat.shape) &gt; 1判断是否为二维</span></span><br><span class="line">        <span class="comment"># y_hat.shape[1] &gt; 1判断列数</span></span><br><span class="line">        <span class="comment"># 这里如果y_hat不止一行，argmax(axis=1)会自动扩展为列向量</span></span><br><span class="line">        y_hat = y_hat.argmax(axis=<span class="number">1</span>)</span><br><span class="line">    cmp = y_hat.<span class="built_in">type</span>(y.dtype) == y <span class="comment"># 进行比较</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">float</span>(cmp.<span class="built_in">type</span>(y.dtype).<span class="built_in">sum</span>()) <span class="comment"># 返回相同的个数</span></span><br><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">关于这里为什么不在accuracy函数中就除len(y)</span></span><br><span class="line"><span class="string">因为取到最后可能取出数据的数量不足一个batch_size</span></span><br><span class="line"><span class="string">这样会使得每个数据的权重不同</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">accuracy(y_hat, y) / <span class="built_in">len</span>(y) <span class="comment"># 再除y的个数，就是预测正确的概率</span></span><br></pre></td></tr></table></figure>
+<p>我们可以评估在任意模型<code>net</code>的准确率：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">evaluate_accuracy</span>(<span class="params">net, data_iter</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;计算在指定数据集上模型的精度。&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(net, torch.nn.Module):</span><br><span class="line">        net.<span class="built_in">eval</span>() <span class="comment"># 将模型设置为评估模式</span></span><br><span class="line">        <span class="comment"># 不设置也没关系，但是需要一个好习惯</span></span><br><span class="line">    metric = Accumulator(<span class="number">2</span>) <span class="comment"># 正确预测数、预测总数</span></span><br><span class="line">    <span class="keyword">for</span> X, y <span class="keyword">in</span> data_iter:</span><br><span class="line">        metric.add(accuracy(net(X), y), y.numel())</span><br><span class="line">    <span class="keyword">return</span> metric[<span class="number">0</span>] / metric[<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+<p><code>Accumulator</code>实例中创建了2个变量，用于分别存储正确预测的数量和预测的总数量：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Accumulator</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;在n个变量上累加。&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, n</span>):</span><br><span class="line">        self.data = [<span class="number">0.0</span>] * n</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">self, *args</span>):</span><br><span class="line">        self.data = [a + <span class="built_in">float</span>(b) <span class="keyword">for</span> a, b <span class="keyword">in</span> <span class="built_in">zip</span>(self.data, args)]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">reset</span>(<span class="params">self</span>):</span><br><span class="line">        self.data = [<span class="number">0.0</span>] * <span class="built_in">len</span>(self.data)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__getitem__</span>(<span class="params">self, idx</span>):</span><br><span class="line">        <span class="keyword">return</span> self.data[idx]</span><br><span class="line"></span><br><span class="line">evaluate_accuracy(net, test_iter)</span><br></pre></td></tr></table></figure>
+<p>输出为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0.1925</span><br></pre></td></tr></table></figure>
+<p>Softmax回归的训练：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">train_epoch_ch3</span>(<span class="params">net, train_iter, loss, updater</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(net, torch.nn.Module):</span><br><span class="line">        net.train()</span><br><span class="line">    metric = Accumulator(<span class="number">3</span>)</span><br><span class="line">    <span class="keyword">for</span> X, y <span class="keyword">in</span> train_iter:</span><br><span class="line">        y_hat = net(X)</span><br><span class="line">        l = loss(y_hat, y)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">isinstance</span>(updater, torch.optim.Optimizer):</span><br><span class="line">            updater.zero_grad()</span><br><span class="line">            l.backward()</span><br><span class="line">            updater.step()</span><br><span class="line">            metric.add(</span><br><span class="line">                <span class="built_in">float</span>(l) * <span class="built_in">len</span>(y), accuracy(y_hat, y),</span><br><span class="line">                y.size.numel())</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            l.<span class="built_in">sum</span>().backward()</span><br><span class="line">            updater(X.shape[<span class="number">0</span>])</span><br><span class="line">            metric.add(<span class="built_in">float</span>(l.<span class="built_in">sum</span>()), accuracy(y_hat, y), y.numel())</span><br><span class="line">    <span class="keyword">return</span> metric[<span class="number">0</span>] / metric[<span class="number">2</span>], metric[<span class="number">1</span>] / metric[<span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+<p>定义一个在动画中绘制数据的实用程序类：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Animator</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, xlabel=<span class="literal">None</span>, ylabel=<span class="literal">None</span>, legend=<span class="literal">None</span>, xlim=<span class="literal">None</span>,</span></span><br><span class="line"><span class="params">                 ylim=<span class="literal">None</span>, xscale=<span class="string">&#x27;linear&#x27;</span>, yscale=<span class="string">&#x27;linear&#x27;</span>,</span></span><br><span class="line"><span class="params">                 fmts=(<span class="params"><span class="string">&#x27;-&#x27;</span>, <span class="string">&#x27;m--&#x27;</span>, <span class="string">&#x27;g--&#x27;</span>, <span class="string">&#x27;r:&#x27;</span></span>), nrows=<span class="number">1</span>, ncols=<span class="number">1</span>,</span></span><br><span class="line"><span class="params">                 figsize=(<span class="params"><span class="number">3.5</span>, <span class="number">2.5</span></span>)</span>):</span><br><span class="line">        <span class="comment"># 增量地绘制多条线</span></span><br><span class="line">        <span class="keyword">if</span> legend <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            legend = []</span><br><span class="line">        d2l.use_svg_display()</span><br><span class="line">        self.fig, self.axes = d2l.plt.subplots(nrows, ncols, figsize=figsize)</span><br><span class="line">        <span class="keyword">if</span> nrows * ncols == <span class="number">1</span>:</span><br><span class="line">            self.axes = [self.axes, ]</span><br><span class="line">        <span class="comment"># 使用lambda函数捕获参数</span></span><br><span class="line">        self.config_axes = <span class="keyword">lambda</span>: d2l.set_axes(</span><br><span class="line">            self.axes[<span class="number">0</span>], xlabel, ylabel, xlim, ylim, xscale, yscale, legend)</span><br><span class="line">        self.X, self.Y, self.fmts = <span class="literal">None</span>, <span class="literal">None</span>, fmts</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">add</span>(<span class="params">self, x, y</span>):</span><br><span class="line">        <span class="comment"># 向图表中添加多个数据点</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">hasattr</span>(y, <span class="string">&quot;__len__&quot;</span>):</span><br><span class="line">            y = [y]</span><br><span class="line">        n = <span class="built_in">len</span>(y)</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">hasattr</span>(x, <span class="string">&quot;__len__&quot;</span>):</span><br><span class="line">            x = [x] * n</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.X:</span><br><span class="line">            self.X = [[] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.Y:</span><br><span class="line">            self.Y = [[] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(n)]</span><br><span class="line">        <span class="keyword">for</span> i, (a, b) <span class="keyword">in</span> <span class="built_in">enumerate</span>(<span class="built_in">zip</span>(x, y)):</span><br><span class="line">            <span class="keyword">if</span> a <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">and</span> b <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                self.X[i].append(a)</span><br><span class="line">                self.Y[i].append(b)</span><br><span class="line">        self.axes[<span class="number">0</span>].cla()</span><br><span class="line">        <span class="keyword">for</span> x, y, fmt <span class="keyword">in</span> <span class="built_in">zip</span>(self.X, self.Y, self.fmts):</span><br><span class="line">            self.axes[<span class="number">0</span>].plot(x, y, fmt)</span><br><span class="line">        self.config_axes()</span><br><span class="line">        display.display(self.fig)</span><br><span class="line">        display.clear_output(wait=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<p>训练函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">train_ch3</span>(<span class="params">net, train_iter, test_iter, loss, num_epochs, updater</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;训练模型。&quot;&quot;&quot;</span></span><br><span class="line">    animator = Animator(xlabel=<span class="string">&#x27;epoch&#x27;</span>, xlim=[<span class="number">1</span>, num_epochs], ylim=[<span class="number">0.3</span>, <span class="number">0.9</span>],</span><br><span class="line">                        legend=[<span class="string">&#x27;train loss&#x27;</span>, <span class="string">&#x27;train acc&#x27;</span>, <span class="string">&#x27;test acc&#x27;</span>])</span><br><span class="line">    <span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(num_epochs):</span><br><span class="line">        train_metrics = train_epoch_ch3(net, train_iter, loss, updater)</span><br><span class="line">        test_acc = evaluate_accuracy(net, test_iter)</span><br><span class="line">        animator.add(epoch + <span class="number">1</span>, train_metrics + (test_acc,))</span><br><span class="line">    train_loss, train_acc = train_metrics</span><br></pre></td></tr></table></figure>
+<p>小批量随机梯度下降来优化模型的损失函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lr = <span class="number">0.1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">updater</span>(<span class="params">batch_size</span>):</span><br><span class="line">    <span class="keyword">return</span> d2l.sgd([W, b], lr, batch_size)</span><br></pre></td></tr></table></figure>
+<p>训练模型10个迭代周期：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">num_epochs = <span class="number">10</span></span><br><span class="line">train_ch3(net, train_iter, test_iter, cross_entropy, num_epochs, updater)</span><br></pre></td></tr></table></figure>
+<p>输出为：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/notes-out-class/d2l/09/output1.svg" alt="output1"></p>
+<p>对图像进行分类预测：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">predict_ch3</span>(<span class="params">net, test_iter, n=<span class="number">6</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;预测标签。&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> X, y <span class="keyword">in</span> test_iter:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    trues = d2l.get_fashion_mnist_labels(y)</span><br><span class="line">    preds = d2l.get_fashion_mnist_labels(net(X).argmax(axis=<span class="number">1</span>))</span><br><span class="line">    titles = [<span class="string">&#x27;true:&#x27;</span> + true + <span class="string">&#x27;\n&#x27;</span> + <span class="string">&#x27;pred:&#x27;</span> + pred <span class="keyword">for</span> true, pred <span class="keyword">in</span> <span class="built_in">zip</span>(trues, preds)]</span><br><span class="line">    d2l.show_images(X[<span class="number">0</span>:n].reshape(n, <span class="number">28</span>, <span class="number">28</span>), <span class="number">1</span>, n, titles=titles[<span class="number">0</span>:n])</span><br><span class="line"></span><br><span class="line">predict_ch3(net, test_iter)</span><br></pre></td></tr></table></figure>
+<p>输出为：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/notes-out-class/d2l/09/predict.svg" alt="predict"></p>
+<h2 id="Softmax回归简洁实现"><a href="#Softmax回归简洁实现" class="headerlink" title="Softmax回归简洁实现"></a>Softmax回归简洁实现</h2><p>通过深度学习框架的高级API能够使实现softmax回归变得更加容易。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> torch</span><br><span class="line"><span class="keyword">from</span> torch <span class="keyword">import</span> nn</span><br><span class="line"><span class="keyword">from</span> d2l <span class="keyword">import</span> torch <span class="keyword">as</span> d2l</span><br><span class="line"><span class="keyword">import</span> torchvision</span><br><span class="line"><span class="keyword">from</span> torchvision <span class="keyword">import</span> transforms</span><br><span class="line"><span class="keyword">from</span> torch.utils <span class="keyword">import</span> data</span><br><span class="line"></span><br><span class="line">batch_size = <span class="number">256</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_dataloader_workers</span>():</span><br><span class="line">    <span class="string">&quot;&quot;&quot;使用四个进程来读取数据。&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> <span class="number">4</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">load_data_fashion_mnist</span>(<span class="params">batch_size, resize=<span class="literal">None</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;下载Fashion-MNIST数据集，然后将其加载到内存中。&quot;&quot;&quot;</span></span><br><span class="line">    trans = [transforms.ToTensor()]</span><br><span class="line">    <span class="keyword">if</span> resize:</span><br><span class="line">        trans.insert(<span class="number">0</span>, transforms.Resize(resize))</span><br><span class="line">    trans = transforms.Compose(trans)</span><br><span class="line">    mnist_train = torchvision.datasets.FashionMNIST(</span><br><span class="line">        root=<span class="string">&#x27;./data&#x27;</span>, train=<span class="literal">True</span>, transform=trans, download=<span class="literal">True</span>)</span><br><span class="line">    mnist_test = torchvision.datasets.FashionMNIST(</span><br><span class="line">        root=<span class="string">&#x27;./data&#x27;</span>, train=<span class="literal">False</span>, transform=trans, download=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">return</span> (data.DataLoader(mnist_train, batch_size, shuffle=<span class="literal">True</span>,</span><br><span class="line">                            num_workers=get_dataloader_workers()),</span><br><span class="line">            data.DataLoader(mnist_test, batch_size, shuffle=<span class="literal">False</span>,</span><br><span class="line">                            num_workers=get_dataloader_workers()))</span><br><span class="line"></span><br><span class="line">train_iter, test_iter = load_data_fashion_mnist(batch_size)</span><br></pre></td></tr></table></figure>
+<p>这里由于我不想把数据集存储在上级目录下，所以就直接把上一个视频的<code>load_data_fashion_mnist</code>函数抄过来了，这个函数中，我将数据存放在了<code>./data</code>目录下。</p>
+<p>Softmax回归是一个全连接层：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># PyTorch不会隐式地调整输入的形状</span></span><br><span class="line"><span class="comment"># 因此，我们定义了展平层（flatten）在线性层前调整网络输入的形状</span></span><br><span class="line">net = nn.Sequential(nn.Flatten(), nn.Linear(<span class="number">784</span>, <span class="number">10</span>))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">init_weights</span>(<span class="params">m</span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">type</span>(m) == nn.Linear:</span><br><span class="line">        nn.init.normal_(m.weight, std=<span class="number">0.01</span>)</span><br><span class="line"></span><br><span class="line">net.apply(init_weights)</span><br></pre></td></tr></table></figure>
+<p>输出为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Sequential(</span><br><span class="line">  (0): Flatten(start_dim=1, end_dim=-1)</span><br><span class="line">  (1): Linear(in_features=784, out_features=10, bias=True)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p><code>nn.Flatten()</code>可以将任何维度的Tensor变为一个2D的Tensor，其中第0维保留，其余维度全部展成一个向量。</p>
+<p>那么在展平后，原本的输入形状是<code>(batch_size, 1, 28, 28)</code>，在经过<code>nn.Flatten()</code>后，就变为了<code>(batch_size, 1 * 28 * 28) = (batch_size, 784)</code>。</p>
+<p>在交叉熵损失函数中传递未归一化的预测，并同时计算softmax及其对数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">loss = nn.CrossEntropyLoss(reduction=<span class="string">&#x27;none&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>注意，这里和B站视频上的代码不一样。</p>
+<p>使用学习率为0.1的小批量随机梯度下降作为优化算法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">trainer = torch.optim.SGD(net.parameters(), lr=<span class="number">0.1</span>)</span><br></pre></td></tr></table></figure>
+<p>调用之前定义的训练函数来训练模型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">num_epochs = <span class="number">10</span></span><br><span class="line">d2l.train_ch3(net, train_iter, test_iter, loss, num_epochs, trainer)</span><br></pre></td></tr></table></figure>
+<p>如果报错说没有<code>train_ch3</code>这个模块，可以运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install d2l==0.17.6</span><br></pre></td></tr></table></figure>
+<p>但是注意需要自己解决环境的依赖冲突问题。</p>
+<p>最后的曲线为：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/notes-out-class/d2l/09/output2.svg" alt="output2"></p>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/profile.jpg" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/profile.jpg" title="头像" alt="头像"></a><div class="post-copyright__author_name">Karl</div><div class="post-copyright__author_desc">日拱一卒，功不唐捐</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="http://blog.karltan.com/notes-out-class/d2l/09/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('http://blog.karltan.com/notes-out-class/d2l/09/')">动手学深度学习v2 09 Softmax回归 + 损失函数 + 图片分类数据集</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="赞赏作者"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>打赏作者</div><div class="reward-main"><div class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/wechat.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/alipay.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="http://blog.karltan.com/notes-out-class/d2l/09/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=动手学深度学习v2 09 Softmax回归 + 损失函数 + 图片分类数据集&amp;url=http://blog.karltan.com/notes-out-class/d2l/09/&amp;pic=https://img.karltan.com/covers/notes-out-class/d2l/09.jpg" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://blog.karltan.com" target="_blank">Karl的博客</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__category-list"><a class="post-meta__box__categoryes" href="/categories/%E8%AF%BE%E5%A4%96%E7%AC%94%E8%AE%B0/"><span class="categoryes-punctuation"> <i class="anzhiyufont anzhiyu-icon-inbox"></i></span>课外笔记<span class="categoryesPageCount">80</span></a><a class="post-meta__box__categoryes" href="/categories/%E8%AF%BE%E5%A4%96%E7%AC%94%E8%AE%B0/d2l/"><span class="categoryes-punctuation"> <i class="anzhiyufont anzhiyu-icon-inbox"></i></span>d2l<span class="categoryesPageCount">76</span></a></div><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>深度学习<span class="tagsPageCount">79</span></a><a class="post-meta__box__tags" href="/tags/%E7%AC%94%E8%AE%B0/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>笔记<span class="tagsPageCount">77</span></a><a class="post-meta__box__tags" href="/tags/%E6%9D%8E%E6%B2%90/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>李沐<span class="tagsPageCount">76</span></a></div></div><div class="post_share"><div class="social-share" data-image="https://img.karltan.com/covers/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/notes-out-class/d2l/08/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/notes-out-class/d2l/08.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">动手学深度学习v2 08 线性回归 + 基础优化算法</div></div></a></div><div class="next-post pull-right"><a href="/notes-out-class/d2l/10/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/notes-out-class/d2l/10.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">动手学深度学习v2 10 多层感知机 + 代码实现</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="anzhiyufont anzhiyu-icon-thumbs-up fa-fw" style="font-size: 1.5rem; margin-right: 4px"></i><span>喜欢这篇文章的人也看了</span></div><div class="relatedPosts-list"><div><a href="/notes-out-class/d2l/00/" title="动手学深度学习v2 00 预告"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/notes-out-class/d2l/00.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-10-01</div><div class="title">动手学深度学习v2 00 预告</div></div></a></div><div><a href="/notes-out-class/d2l/01/" title="动手学深度学习v2 01 课程安排"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/notes-out-class/d2l/01.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-10-01</div><div class="title">动手学深度学习v2 01 课程安排</div></div></a></div><div><a href="/notes-out-class/d2l/02/" title="动手学深度学习v2 02 深度学习介绍"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/notes-out-class/d2l/02.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-10-01</div><div class="title">动手学深度学习v2 02 深度学习介绍</div></div></a></div><div><a href="/notes-out-class/d2l/03/" title="动手学深度学习v2 03 安装"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/notes-out-class/d2l/03.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-10-01</div><div class="title">动手学深度学习v2 03 安装</div></div></a></div><div><a href="/notes-out-class/d2l/04/" title="动手学深度学习v2 04 数据操作 + 数据预处理"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/notes-out-class/d2l/04.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-10-02</div><div class="title">动手学深度学习v2 04 数据操作 + 数据预处理</div></div></a></div><div><a href="/notes-out-class/d2l/05/" title="动手学深度学习v2 05 线性代数"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/notes-out-class/d2l/05.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-10-02</div><div class="title">动手学深度学习v2 05 线性代数</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="anzhiyufont anzhiyu-icon-comments"></i><span> 评论</span></div><div class="comment-randomInfo"><a onclick="anzhiyu.addRandomCommentInfo()" href="javascript:void(0)">匿名评论</a><a href="/privacy" style="margin-left: 4px">隐私政策</a></div><div class="comment-tips" id="comment-tips"><span>✅ 你无需删除空行，直接评论以获取最佳展示效果</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div><div class="comment-barrage"></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info__sayhi" id="author-info__sayhi" onclick="anzhiyu.changeSayHelloText()"></div><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/profile.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-status"><img class="g-status" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/chuoyichuo.gif" alt="status"/></div></div><div class="author-info__description"><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">直博狗一枚，日常会在博客上分享自己的学习笔记，希望可以帮到你。</div><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">相信你可以在这里找到对你有用的<b style="color:#fff">知识</b>和<b style="color:#fff">教程</b>。</div></div><div class="author-info__bottom-group"><a class="author-info__bottom-group-left" href="/"><h1 class="author-info__name">Karl</h1><div class="author-info__desc">日拱一卒，功不唐捐</div></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://github.com/karltan0328" target="_blank" title="Github"><i class="fa-brands fa-github faa-tada"></i></a><a class="social-icon faa-parent animated-hover" href="mailto:admin@karltan.com" target="_blank" title="Email"><i class="fa-solid fa-envelope faa-tada"></i></a></div></div></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bullhorn anzhiyu-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来看我的博客鸭~</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#09-Softmax%E5%9B%9E%E5%BD%92-%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0-%E5%9B%BE%E7%89%87%E5%88%86%E7%B1%BB%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="toc-text">09 Softmax回归 + 损失函数 + 图片分类数据集</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Softmax%E5%9B%9E%E5%BD%92"><span class="toc-text">Softmax回归</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9E%E5%BD%92vs%E5%88%86%E7%B1%BB"><span class="toc-text">回归vs分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Kaggle%E4%B8%8A%E7%9A%84%E5%88%86%E7%B1%BB%E9%97%AE%E9%A2%98"><span class="toc-text">Kaggle上的分类问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8E%E5%9B%9E%E5%BD%92%E5%88%B0%E5%A4%9A%E7%B1%BB%E5%88%86%E7%B1%BB"><span class="toc-text">从回归到多类分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%8E%E5%9B%9E%E5%BD%92%E5%88%B0%E5%A4%9A%E7%B1%BB%E5%88%86%E7%B1%BB-1"><span class="toc-text">从回归到多类分类</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9D%87%E6%96%B9%E6%8D%9F%E5%A4%B1"><span class="toc-text">均方损失</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%97%A0%E6%A0%A1%E9%AA%8C%E6%AF%94%E4%BE%8B"><span class="toc-text">无校验比例</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%A1%E9%AA%8C%E6%AF%94%E4%BE%8B"><span class="toc-text">校验比例</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Softmax%E5%92%8C%E4%BA%A4%E5%8F%89%E7%86%B5%E6%8D%9F%E5%A4%B1"><span class="toc-text">Softmax和交叉熵损失</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B1%82%E6%A2%AF%E5%BA%A6-frac-partial-l-mathbf-y-hat-mathbf-y-partial-o-i"><span class="toc-text">求梯度$\frac{\partial l(\mathbf{y}, \hat{\mathbf{y}})}{\partial o_i}$</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B1%82-frac-partial-sum-iy-io-i-partial-o-i"><span class="toc-text">求$\frac{\partial(\sum_iy_io_i)}{\partial o_i}$</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B1%82-frac-partial-left-sum-iy-i-log-left-sum-ke-o-k-right-right-partial-o-i"><span class="toc-text">求$\frac{\partial\left(\sum_iy_i\log\left(\sum_ke^{o_k}\right)\right)}{\partial o_i}$</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0"><span class="toc-text">损失函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#L2-Loss"><span class="toc-text">L2 Loss</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#L1-Loss"><span class="toc-text">L1 Loss</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Huber%E2%80%99s-Robust-Loss"><span class="toc-text">Huber’s Robust Loss</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BE%E7%89%87%E5%88%86%E7%B1%BB%E6%95%B0%E6%8D%AE%E9%9B%86"><span class="toc-text">图片分类数据集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Softmax%E5%9B%9E%E5%BD%92%E4%BB%8E%E9%9B%B6%E5%BC%80%E5%A7%8B%E5%AE%9E%E7%8E%B0"><span class="toc-text">Softmax回归从零开始实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Softmax%E5%9B%9E%E5%BD%92%E7%AE%80%E6%B4%81%E5%AE%9E%E7%8E%B0"><span class="toc-text">Softmax回归简洁实现</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/" title="论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》"/></a><div class="content"><a class="title" href="/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/" title="论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》">论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》</a><time datetime="2024-04-15T07:00:00.000Z" title="发表于 2024-04-15 15:00:00">2024-04-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/dissertation-notes/2023/Woo_et_al-2023-ConvNeXt_V2/" title="论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2023/Woo_et_al-2023-ConvNeXt_V2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》"/></a><div class="content"><a class="title" href="/dissertation-notes/2023/Woo_et_al-2023-ConvNeXt_V2/" title="论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》">论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》</a><time datetime="2024-04-04T05:00:00.000Z" title="发表于 2024-04-04 13:00:00">2024-04-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/" title="论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2023/Nguyen_et_al-2023-NOPE.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》"/></a><div class="content"><a class="title" href="/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/" title="论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》">论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》</a><time datetime="2024-03-28T04:00:00.000Z" title="发表于 2024-03-28 12:00:00">2024-03-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/" title="论文笔记《Attention Is All You Need》"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文笔记《Attention Is All You Need》"/></a><div class="content"><a class="title" href="/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/" title="论文笔记《Attention Is All You Need》">论文笔记《Attention Is All You Need》</a><time datetime="2024-02-09T02:00:00.000Z" title="发表于 2024-02-09 10:00:00">2024-02-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/ac-diary/acwing/autumn-daily-question-2023/acwing5199/" title="AcWing 5199. 现代艺术"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/ac-diary/acwing/autumn-daily-question-2023.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AcWing 5199. 现代艺术"/></a><div class="content"><a class="title" href="/ac-diary/acwing/autumn-daily-question-2023/acwing5199/" title="AcWing 5199. 现代艺术">AcWing 5199. 现代艺术</a><time datetime="2024-01-18T08:00:00.000Z" title="发表于 2024-01-18 16:00:00">2024-01-18</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div id="footer_deal"><a class="deal_link" href="mailto:admin@karltan.com" title="email"><i class="fa-solid fa-envelope"></i></a><a class="deal_link" href="/atom.xml" title="RSS"><i class="fa-solid fa-rss"></i></a><img class="footer_mini_logo" title="返回顶部" alt="返回顶部" onclick="anzhiyu.scrollToDest(0, 500)" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/profile.jpg" size="50px"/><a class="deal_link" target="_blank" rel="noopener" href="https://github.com/karltan0328" title="Github"><i class="fa-brands fa-github"></i></a><a class="deal_link" target="_blank" rel="noopener" href="https://blog.csdn.net/karltan0328" title="CSDN"><i class="fa-solid fa-c"></i></a></div><div id="workboard"><img class="workSituationImg boardsign" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/work_img.svg" alt="paper快来，idea快来，我要毕业🥹" title="paper快来，idea快来，我要毕业🥹"/><div id="runtimeTextTip"></div></div><div id="anzhiyu-footer"><div class="footer-group"><div class="footer-title">服务</div><div class="footer-links"><a class="footer-item" title="51la统计" target="_blank" rel="noopener" href="https://v6.51.la/">51la统计</a><a class="footer-item" title="十年之约" target="_blank" rel="noopener" href="https://www.foreverblog.cn/">十年之约</a><a class="footer-item" title="开往" target="_blank" rel="noopener" href="https://github.com/travellings-link/travellings">开往</a></div></div><div class="footer-group"><div class="footer-title">主题</div><div class="footer-links"><a class="footer-item" title="文档" target="_blank" rel="noopener" href="https://docs.anheyu.com/">文档</a><a class="footer-item" title="源码" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu">源码</a><a class="footer-item" title="更新日志" target="_blank" rel="noopener" href="https://blog.anheyu.com/update/">更新日志</a></div></div><div class="footer-group"><div class="footer-title">导航</div><div class="footer-links"><a class="footer-item" title="即刻短文" href="/essay">即刻短文</a><a class="footer-item" title="友链文章" href="/fcircle">友链文章</a><a class="footer-item" title="留言板" href="/comments">留言板</a></div></div><div class="footer-group"><div class="footer-title">协议</div><div class="footer-links"><a class="footer-item" title="隐私协议" href="/privacy">隐私协议</a><a class="footer-item" title="Cookies" href="/cookies">Cookies</a><a class="footer-item" title="版权协议" href="/copyright">版权协议</a></div></div><div class="footer-group"><div class="footer-title-group"><div class="footer-title">友链</div><a class="random-friends-btn" id="footer-random-friends-btn" href="javascript:addFriendLinksInFooter();" title="换一批友情链接"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right"></i></a></div><div class="footer-links" id="friend-links-in-footer"></div></div></div><p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" data-title="博客框架为Hexo 7.0.0" title="博客框架为Hexo 7.0.0"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/frame-hexo.svg" alt="博客框架为Hexo 7.0.0"/></a><a class="github-badge" target="_blank" href="https://blog.anheyu.com/" style="margin-inline:5px" data-title="本站使用AnZhiYu主题" title="本站使用AnZhiYu主题"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/theme-anzhiyu.svg" alt="本站使用AnZhiYu主题"/></a><a class="github-badge" target="_blank" href="https://console.upyun.com/register/?invite=nVONH00RJ" style="margin-inline:5px" data-title="本网站由又拍云提供CDN加速/云储存服务" title="本网站由又拍云提供CDN加速/云储存服务"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/upyun.svg" alt="本网站由又拍云提供CDN加速/云储存服务"/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/copyright-by-nc-sa.svg" alt="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"/></a></p></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2023 - 2024 By <a class="footer-bar-link" href="/" title="Karl" target="_blank">Karl</a></div></div><div id="footer-type-tips"></div><div class="js-pjax"><script>function subtitleType () {
+  if (true) { 
+    window.typed = new Typed("#footer-type-tips", {
+      strings: ["不积跬步无以至千里","今日事，今日毕","有善始者实繁，能克终者盖寡","穷且益坚，不坠青云之志","若无闲事挂心头，便是人间好时节"],
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: true,
+      backSpeed: 50
+    })
+  } else {
+    document.getElementById("footer-type-tips").innerHTML = '不积跬步无以至千里'
+  }
+}
+
+if (true) {
+  if (typeof Typed === 'function') {
+    subtitleType()
+  } else {
+    getScript('https://cdn.cbd.int/typed.js@2.0.15/dist/typed.umd.js').then(subtitleType)
+  }
+} else {
+  subtitleType()
+}</script></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu" title="主题">主题</a><a class="footer-bar-link" target="_blank" rel="noopener" href="https://beian.miit.gov.cn/" title="湘ICP备2023018619号-1">湘ICP备2023018619号-1</a><a class="footer-bar-link cc" href="/copyright" title="cc协议"><i class="anzhiyufont anzhiyu-icon-copyright-line"></i><i class="anzhiyufont anzhiyu-icon-creative-commons-by-line"></i><i class="anzhiyufont anzhiyu-icon-creative-commons-nc-line"></i><i class="anzhiyufont anzhiyu-icon-creative-commons-nd-line"></i></a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">130</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">16</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" href="https://blog.karltan.com/" title="Karl的博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/logo.png" alt="Karl的博客"/><span class="back-menu-item-text">Karl的博客</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://www.karltan.com/" title="Karl的导航"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://www.karltan.com/favicon.ico" alt="Karl的导航"/><span class="back-menu-item-text">Karl的导航</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">博客分流</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://v.karltan.com/" title="Vercel"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://assets.vercel.com/image/upload/front/favicon/vercel/favicon.ico" alt="Vercel"/><span class="back-menu-item-text">Vercel</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://c.karltan.com/" title="Cloudflare"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://dash.cloudflare.com/favicon-32x32.png" alt="Cloudflare"/><span class="back-menu-item-text">Cloudflare</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">工具</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://npmzjk.karltan.com/" title="NPM"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npmzjk.karltan.com/images/favicons/favicon-32x32.png" alt="NPM"/><span class="back-menu-item-text">NPM</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://paste.karltan.com/" title="Free-Bin"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://paste.karltan.com/static/favicon.ico" alt="Free-Bin"/><span class="back-menu-item-text">Free-Bin</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://tools.karltan.com/" title="IT-TOOLS"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://tools.karltan.com/android-chrome-192x192.png" alt="IT-TOOLS"/><span class="back-menu-item-text">IT-TOOLS</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://memos.karltan.com/" title="Memos"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://memos.karltan.com/logo.png" alt="Memos"/><span class="back-menu-item-text">Memos</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://wbo.karltan.com/" title="WBO"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://wbo.karltan.com/favicon.ico" alt="WBO"/><span class="back-menu-item-text">WBO</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://git.karltan.com/" title="Gitea"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://git.karltan.com/assets/img/logo.svg" alt="Gitea"/><span class="back-menu-item-text">Gitea</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives"><i class="fa-solid fa-box-archive faa-tada"></i><span> 归档</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories"><i class="fa-solid fa-palette faa-tada"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags"><i class="fa-solid fa-tags faa-tada"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link"><i class="fa-solid fa-link faa-tada"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/fcircle"><i class="fa-brands fa-artstation faa-tada"></i><span> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments"><i class="fa-solid fa-comments faa-tada"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/essay"><i class="fa-solid fa-comment-dots faa-tada"></i><span> 说说</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/music"><i class="fa-solid fa-music faa-tada"></i><span> 音乐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album"><i class="fa-solid fa-images faa-tada"></i><span> 相册</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" target="_blank" rel="noopener" href="https://status.karltan.com/status/1"><i class="fa-solid fa-chart-line faa-tada"></i><span> 网站监控</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="fa-solid fa-shoe-prints faa-tada"></i><span> 随便逛逛</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/about"><i class="fa-solid fa-heart faa-tada"></i><span> 关于我</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/AcWing/" style="font-size: 0.88rem; color: rgb(85, 23, 91);">AcWing<sup>33</sup></a><a href="/tags/CUDA/" style="font-size: 0.88rem; color: rgb(12, 161, 160);">CUDA<sup>1</sup></a><a href="/tags/CVPR/" style="font-size: 0.88rem; color: rgb(147, 94, 197);">CVPR<sup>3</sup></a><a href="/tags/ICLR/" style="font-size: 0.88rem; color: rgb(43, 82, 180);">ICLR<sup>1</sup></a><a href="/tags/Linux/" style="font-size: 0.88rem; color: rgb(122, 113, 29);">Linux<sup>1</sup></a><a href="/tags/MAPL/" style="font-size: 0.88rem; color: rgb(36, 174, 170);">MAPL<sup>1</sup></a><a href="/tags/MySQL/" style="font-size: 0.88rem; color: rgb(181, 7, 113);">MySQL<sup>1</sup></a><a href="/tags/NIPS/" style="font-size: 0.88rem; color: rgb(7, 27, 3);">NIPS<sup>1</sup></a><a href="/tags/PyTorch/" style="font-size: 0.88rem; color: rgb(150, 37, 10);">PyTorch<sup>1</sup></a><a href="/tags/Python/" style="font-size: 0.88rem; color: rgb(141, 141, 197);">Python<sup>1</sup></a><a href="/tags/RSS/" style="font-size: 0.88rem; color: rgb(112, 22, 153);">RSS<sup>1</sup></a><a href="/tags/Ubuntu/" style="font-size: 0.88rem; color: rgb(19, 93, 120);">Ubuntu<sup>3</sup></a><a href="/tags/Windows/" style="font-size: 0.88rem; color: rgb(164, 101, 25);">Windows<sup>1</sup></a><a href="/tags/arXiv/" style="font-size: 0.88rem; color: rgb(9, 118, 154);">arXiv<sup>1</sup></a><a href="/tags/mAP/" style="font-size: 0.88rem; color: rgb(199, 124, 62);">mAP<sup>1</sup></a><a href="/tags/tmux/" style="font-size: 0.88rem; color: rgb(13, 185, 37);">tmux<sup>1</sup></a><a href="/tags/vim/" style="font-size: 0.88rem; color: rgb(4, 144, 16);">vim<sup>1</sup></a><a href="/tags/%E4%BB%A3%E7%A0%81/" style="font-size: 0.88rem; color: rgb(151, 15, 28);">代码<sup>1</sup></a><a href="/tags/%E4%BD%8D%E5%A7%BF%E4%BC%B0%E8%AE%A1/" style="font-size: 0.88rem; color: rgb(130, 27, 45);">位姿估计<sup>1</sup></a><a href="/tags/%E6%89%A9%E5%AE%B9/" style="font-size: 0.88rem; color: rgb(110, 175, 30);">扩容<sup>1</sup></a><a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 0.88rem; color: rgb(158, 42, 1);">数学<sup>1</sup></a><a href="/tags/%E6%97%8B%E8%BD%AC%E8%A1%A8%E7%A4%BA/" style="font-size: 0.88rem; color: rgb(11, 137, 41);">旋转表示<sup>1</sup></a><a href="/tags/%E6%9D%8E%E6%B2%90/" style="font-size: 0.88rem; color: rgb(109, 78, 54);">李沐<sup>76</sup></a><a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 0.88rem; color: rgb(99, 94, 68);">深度学习<sup>79</sup></a><a href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/" style="font-size: 0.88rem; color: rgb(141, 161, 139);">目标检测<sup>1</sup></a><a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 0.88rem; color: rgb(57, 29, 124);">笔记<sup>77</sup></a><a href="/tags/%E7%AE%97%E6%B3%95%E9%A2%98/" style="font-size: 0.88rem; color: rgb(153, 5, 199);">算法题<sup>33</sup></a><a href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" style="font-size: 0.88rem; color: rgb(186, 192, 126);">论文笔记<sup>9</sup></a><a href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91/" style="font-size: 0.88rem; color: rgb(159, 79, 86);">阿里云<sup>1</sup></a><a href="/tags/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6/" style="font-size: 0.88rem; color: rgb(7, 133, 128);">高等数学<sup>1</sup></a><a href="/tags/%E9%AD%94%E6%B3%95/" style="font-size: 0.88rem; color: rgb(99, 91, 1);">魔法<sup>1</sup></a></div></div><hr/></div></div><div id="keyboard-tips"><div class="keyboardTitle">博客快捷键</div><div class="keybordList"><div class="keybordItem"><div class="keyGroup"><div class="key">shift K</div></div><div class="keyContent"><div class="content">关闭快捷键功能</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift A</div></div><div class="keyContent"><div class="content">打开/关闭中控台</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift M</div></div><div class="keyContent"><div class="content">播放/暂停音乐</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift D</div></div><div class="keyContent"><div class="content">深色/浅色显示模式</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift S</div></div><div class="keyContent"><div class="content">站内搜索</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift R</div></div><div class="keyContent"><div class="content">随机访问</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift H</div></div><div class="keyContent"><div class="content">返回首页</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift F</div></div><div class="keyContent"><div class="content">友链鱼塘</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift L</div></div><div class="keyContent"><div class="content">友链页面</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift P</div></div><div class="keyContent"><div class="content">关于本站</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift I</div></div><div class="keyContent"><div class="content">原版/本站右键菜单</div></div></div></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="anzhiyufont anzhiyu-icon-comment-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="anzhiyufont anzhiyu-icon-comments"></i></a><a id="switch-commentBarrage" href="javascript:anzhiyu.switchCommentBarrage();" title="开关弹幕"><i class="anzhiyufont anzhiyu-icon-danmu"></i></a><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="anzhiyufont anzhiyu-icon-xmark"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.20/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.4/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script async src="/anzhiyu/random.js"></script><script async="async">(function () {
+  var grt = new Date("07/15/2023 00:00:00"); //设置网站上线时间
+  var now = new Date();
+  var dnum;
+  var hnum;
+  var mnum;
+  var snum;
+  var nowHour;
+
+  // 计算并更新天数、小时数、分钟数和秒数
+  function updateTime() {
+    now = new Date(); // 更新 now 的值
+    nowHour = now.getHours(); // 更新 nowHour 的值
+    var days = (now - grt) / 1000 / 60 / 60 / 24;
+    dnum = Math.floor(days);
+    var hours = (now - grt) / 1000 / 60 / 60 - 24 * dnum;
+    hnum = Math.floor(hours);
+    if (String(hnum).length == 1) {
+      hnum = "0" + hnum;
+    }
+    var minutes = (now - grt) / 1000 / 60 - 24 * 60 * dnum - 60 * hnum;
+    mnum = Math.floor(minutes);
+    if (String(mnum).length == 1) {
+      mnum = "0" + mnum;
+    }
+    var seconds = (now - grt) / 1000 - 24 * 60 * 60 * dnum - 60 * 60 * hnum - 60 * mnum;
+    snum = Math.round(seconds);
+    if (String(snum).length == 1) {
+      snum = "0" + snum;
+    }
+  }
+
+  // 更新网页中显示的网站运行时间
+  function updateHtml() {
+    const footer = document.getElementById("footer");
+    if (!footer) return
+    let currentTimeHtml = "";
+    if (nowHour < 18 && nowHour >= 9) {
+      // 如果是上班时间，默认就是"安知鱼-上班摸鱼中.svg"图片，不需要更改
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    } else {
+      // 如果是下班时间，插入"安知鱼-下班啦.svg"图片
+      let img = document.querySelector("#workboard .workSituationImg");
+      if (img != null) {
+        img.src = "/img/label/offduty_img.svg";
+        img.title = "延毕就延毕，我先玩了再说🤡";
+        img.alt = "延毕就延毕，我先玩了再说🤡";
+      }
+
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    }
+
+    if (document.getElementById("runtimeTextTip")) {
+      document.getElementById("runtimeTextTip").innerHTML = currentTimeHtml;
+    }
+  }
+
+  setInterval(() => {
+    updateTime();
+    updateHtml();
+  }, 1000);
+})();</script><script src="https://cdn.cbd.int/algoliasearch@4.18.0/dist/algoliasearch-lite.umd.js"></script><script src="https://cdn.cbd.int/instantsearch.js@4.56.5/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.cbd.int/mathjax@3.2.2/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.cbd.int/mermaid@10.2.4/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  anzhiyu.addGlobalFn('themeChange', runMermaid, 'mermaid')
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo.karltan.com/.netlify/functions/twikoo',
+      region: '',
+      onCommentLoaded: () => {
+        anzhiyu.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') setTimeout(runFn,0)
+    else getScript('https://cdn.cbd.int/twikoo@1.6.25/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo.karltan.com/.netlify/functions/twikoo',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const runFn = () => {
+    init();
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) anzhiyu.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else {
+      loadTwikoo()
+    }
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script><input type="hidden" name="page-type" id="page-type" value="post"><script async src="/js/anzhiyu/comment_barrage.js"></script></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://twikoo.karltan.com/.netlify/functions/twikoo',
+        region: '',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.textContent= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn.cbd.int/twikoo@1.6.25/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'><div class='name'><span>${array[i].nick} </span></div></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <time datetime="${array[i].date}">${anzhiyu.diffDate(array[i].date, true)}</time></div>
+        </div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script async data-pjax src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.1/bubble/bubble.js"></script><script>var visitorMail = "visitor@karltan.com";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><script src="/js/anzhiyu/right_click_menu.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script><script defer src="/_vercel/insights/script.js"></script><script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script src="https://sdk.51.la/perf/js-sdk-perf.min.js" crossorigin="anonymous"></script><script>LA.init({id:"{3GbfAYtZPDEan7kS}",ck:"{3Gbf0O9t4EtAOhf1}"})</script><script>new LingQue.Monitor().init({id:"3GbfAYtZPDEan7kS",sendSuspicious:true});</script><script>(() => {
+  window.$crisp = [];
+  window.CRISP_WEBSITE_ID = "99975f47-0cf6-4a4b-8088-49fd5cb33ab0";
+  (function () {
+    d = document;
+    s = d.createElement("script");
+    s.src = "https://client.crisp.chat/l.js";
+    s.async = 1;
+    d.getElementsByTagName("head")[0].appendChild(s);
+  })();
+  $crisp.push(["safe", true])
+
+  const isChatBtn = true
+  const isChatHideShow = false
+
+  if (isChatBtn) {
+    const open = () => {
+      $crisp.push(["do", "chat:show"])
+      $crisp.push(["do", "chat:open"])
+    }
+
+    const close = () => {
+      $crisp.push(["do", "chat:hide"])
+    }
+
+    close()
+    $crisp.push(["on", "chat:closed", function() {
+      close()
+    }])
+
+    window.chatBtnFn = () => {
+      $crisp.is("chat:visible") ? close() : open()
+    }
+  } else if (isChatHideShow) {
+    window.chatBtn = {
+      hide: () => {
+        $crisp.push(["do", "chat:hide"])
+      },
+      show: () => {
+        $crisp.push(["do", "chat:show"])
+      }
+    }
+  }
+})()</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:type\"]","meta[property=\"og:site_name\"]","meta[property=\"og:description\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>

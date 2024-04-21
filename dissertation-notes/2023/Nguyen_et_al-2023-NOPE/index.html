@@ -1,0 +1,685 @@
+<!-- ./node_modules/hexo-theme-anzhiyu/layout/includes/layout.pug--><!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》 | Karl的博客</title><meta name="keywords" content="论文笔记,CVPR"><meta name="author" content="Karl"><meta name="copyright" content="Karl"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》"><meta name="application-name" content="论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》"><meta property="og:url" content="http://blog.karltan.com/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/index.html"><meta property="og:site_name" content="Karl的博客"><meta property="og:description" content="NOPE：一种新的单图像目标位姿估计方法。"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://img.karltan.com/covers/dissertation-notes/2023/Nguyen_et_al-2023-NOPE.png"><meta property="article:author" content="Karl"><meta property="article:tag"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://img.karltan.com/covers/dissertation-notes/2023/Nguyen_et_al-2023-NOPE.png"><meta name="description" content="NOPE：一种新的单图像目标位姿估计方法。"><link rel="shortcut icon" href="/img/logo.png"><link rel="canonical" href="http://blog.karltan.com/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/"><link rel="preconnect" href="//cdn.cbd.int"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//static.cloudflareinsights.com"/><link rel="preconnect" href="//www.clarity.ms"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="ItAgqL0bGv4TvuAzDl6nNhCuwt5RdBLYRkwae25qGzU"/><meta name="baidu-site-verification" content="codeva-Y7ehYLkADp"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@1.0.17/lib/assets/font-awesome-animation.min.css"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.20/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?0f2c96ab05c3c6d77e2d8fbf3240e404";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script defer="defer" data-pjax="data-pjax" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon="{&quot;token&quot;: &quot;758e166757ec488583caf56b7dd7f095&quot;}"></script><script>(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "i0moouu8jj");</script><script>const GLOBAL_CONFIG = {
+  linkPageTop: {"enable":true,"title":"与数百名博主无限进步","addFriendPlaceholder":"昵称（请勿包含博客等字样）：\n网站地址（要求博客地址，请勿提交个人主页）：\n头像图片url（请提供尽可能清晰的图片）：\n描述：\n站点截图（可选）：\n"},
+  peoplecanvas: undefined,
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"tianli","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"a93a787ee06b121647ed","Referer":"https://blog.karltan.com/"},
+  diytitle: undefined,
+  LA51: {"enable":true,"ck":"3Gbf0O9t4EtAOhf1","LingQueMonitorID":"3GbfAYtZPDEan7kS"},
+  greetingBox: {"enable":true,"default":"晚上好👋","list":[{"greeting":"晚安😴","startTime":0,"endTime":5},{"greeting":"早上好鸭👋, 祝你一天好心情！","startTime":6,"endTime":9},{"greeting":"上午好👋, 状态很好，鼓励一下～","startTime":10,"endTime":10},{"greeting":"11点多啦, 在坚持一下就吃饭啦～","startTime":11,"endTime":11},{"greeting":"午安👋, 宝贝","startTime":12,"endTime":13},{"greeting":"🌈充实的一天辛苦啦！","startTime":14,"endTime":17},{"greeting":"18点喽, 奖励一顿丰盛的大餐吧🍔。","startTime":18,"endTime":19},{"greeting":"晚上好👋, 在属于自己的时间好好放松😌~","startTime":20,"endTime":24}]},
+  twikooEnvId: 'https://twikoo.karltan.com/.netlify/functions/twikoo',
+  commentBarrageConfig:{"enable":true,"maxBarrage":1,"barrageTime":4000,"accessToken":"6f88301de4664d9d9a7cadf39a9f6e5a","mailMd5":""},
+  root: '/',
+  preloader: {"source":2},
+  friends_vue_info: {"apiurl":"https://fcircle.karltan.com/"},
+  navMusic: false,
+  mainTone: undefined,
+  authorStatus: {"skills":["🤖️ 数码科技爱好者","🔍 分享与热心帮助","🏠 智能家居小能手","🔨 设计开发一条龙","🤝 专修交互与设计","🏃 脚踏实地行动派","🧱 团队小组发动机","💢 壮汉人狠话不多"]},
+  algolia: {"appId":"8C3UHN3LPN","apiKey":"e00dcc69cdc423d89a288bc784a14012","indexName":"blog-search","hits":{"per_page":6},"languages":{"input_placeholder":"输入关键词后按下回车查找","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: {"limitDay":1,"position":"top","messagePrev":"本文距上次修改已经","messageNext":"天，其中的内容可能已经不再适用。"},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"作者: Karl","link":"链接: ","source":"来源: Karl的博客","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-right"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: {"enable":true,"delay":100,"shiftDelay":200},
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: 'Karl的博客',
+  title: '论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》',
+  postAI: 'true',
+  pageFillDescription: 'NOPE Novel Object Pose Estimation from a Single Image, Abstract, 1. Introduction, 2. Related work, 2.1. Novel view synthesis from a single image, 2.2. Generalizable object pose estimation, 3. Method, 3.1. Motivation, 3.2. Framework, 3.3. Pose prediction, 4. Experiments, 4.1. Experimental setup, 4.2. Comparison with the state of the art, 4.3. Robustness to occlusions, 4.4. Ablation study, 4.5. Runtime analysis, 4.6. Failure cases, 5. Conclusion原文链接论文笔记的博客链接论文笔记博客论文链接代码链接项目链接由于需要模型的先验知识且在面对新对象时需要额外的训练时间对象位姿估计的实用性在许多应用中仍然受到限制为了解决这一限制我们提出了一种方法该方法将新对象的单个图像作为输入在已知另一张图片的基础上并在不事先了解对象的模型的情况下预测该对象在新图像中的相对位姿并且不需要对新对象和类别进行训练我们通过训练一个模型来直接预测物体周围视角的判别嵌入来实现这一点这种预测是使用一个简单的架构来完成的它的注意力和条件取决于期望的位姿这产生了极快的推断我们将我们的方法与最先进的方法进行比较并表明它在准确性和鲁棒性方面都优于它们我们的源代码可以在上公开获得在过去十年中物体的三维位姿估计在鲁棒性和准确性方面都取得了重大进展具体来说对部分遮挡的鲁棒性已经有了相当大的提高并且通过使用域转移域随机化和利用合成图像进行训练的自监督学习技术对大量真实带注释的训练图像的需求已经放松不幸的是物体位姿估计的实用性在许多应用中仍然有限包括机器人和增强现实通常现有的方法需要一个模型一个视频序列或目标物体的稀疏多幅图像仅参考最近的作品以及一个训练阶段有几种技术旨在通过假设新对象属于已识别的类别与之前训练过的示例如数据集有相似之处或者表现出明显的角点从而避免重新训练的需要在本文中我们介绍了一种称为的新对象位姿估计方法该方法只需要新对象的单个图像即可预测该对象在任何新图像中的相对位姿而不需要对象的模型并且没有对新对象进行训练这是一项非常具有挑战性的任务因为与中使用的多个视图相比单个视图仅提供有关对象几何形状的有限信息为了实现这一目标我们训练来生成物体的新视图这些新视图可以看作带有相应位姿注释的模板将这些模板与新的输入视图相匹配可以让我们估计物体相对于初始视图的相对位姿我们的方法与新视图合成的最新发展有关然而我们更进一步受最近用于位姿估计的模板匹配工作的良好性能的激励我们不是预测纯色图像而是直接预测视图的判别嵌入具体来说我们的嵌入是通过架构将输入图像传递给新视图并以新视图的所需位姿为条件本质上与现有的新视图合成工作相比对于我们的位姿估计任务我们不需要创建对象的模型这节省了大量的计算时间因为使用单视图优化模型至少需要一个小时或更长时间相比之下我们基于视图嵌入的直接推理方法非常快在不到秒的时间内处理图像并且它对未见过的实例或类别产生准确的位姿估计平均准确率超过我们的工作也与两幅图像之间的运动预测有关如它预测了两幅图像之间的相机位移我们与最接近的工作进行了比较结果表明我们明显优于这种方法此外我们表明我们的方法在没有得到对象的模型且只有一个单视图的情况下可以识别位姿的模糊性例如对称为此我们估计查询的所有位姿的分布随着位姿歧义越来越多其峰值越来越少图描述了各种模糊和非模糊情况及其位姿分布总之我们的主要贡献是在新视图中且只给出该物体的单一视图的情况下我们可以有效和可靠地恢复一个未见过的物体的相对位姿据我们所知我们的方法是第一个仅从单一视图预测由于对称性和不可见物体的部分遮挡而导致的模糊性的方法在本节中我们首先回顾实现新视图合成的各种方法然后我们将注意力转移到旨在实现泛化的位姿估计技术上我们的方法生成判别特征视图该视图以参考视图和视图之间的相对位姿为条件这与的开创性工作有关因为它执行新视图合成虽然最近的进展已经提高了的速度但我们的方法仍然要快几个数量级因为它不需要创建完整的体积模型此外我们的方法只需要一个输入视图而典型的设置需要大约个视图减少重建所需的视图数量仍然是一个活跃的研究领域特别是在单视图场景中最近的研究通过利用二维扩散模型利用稀疏视图集作为输入通过成功地生成了新的视图对于图像扩散模型的突破已经解锁了几个工作流程对于应用程序开创了分数蒸馏采样技术允许使用扩散模型作为基于图像的损失并通过可微分渲染在应用程序中进行利用这使得以前使用基于的图像损失训练的任务得到了显著的改进通过在分数蒸馏采样的基础上构建在使用至少两个视图的基础上重构了一个场景而同时期的一项工作从单个输入视图进行重构尽管重构时间对于实时应用来说是不切实际的我们的方法要快得多因为我们不需要创建对象的表示与我们的工作最接近的是这项工作通过在位姿上调节扩散模型来生成物体的新视图他们没有像那样利用基础扩散模型而是专门针对此任务重新训练扩散模型虽然他们还没有将他们的方法应用到基于模板的位姿估计中但我们设计了这样一个基线并与之进行比较我们发现扩散模型总是倾向于生成清晰的图像即使有时会改变纹理或产生错误的细节这也会阻碍基于模板的方法的性能相比之下我们的方法直接在嵌入空间而不是像素空间中生成新的视图正如我们将在节中演示的那样这要有效得多最后几种方法通过调节位姿的前馈神经网络来生成新颖的视图我们也使用来实现这一点我们与这些方法在速度上有一个共同的优势这种前馈神经网络比目前的扩散模型快一到两个数量级然而我们执行位姿估计的方式是完全不同的我们在基于模板的匹配方法中使用新视图合成而他们在基于回归的优化中使用它在实践中我们发现这些方法在有限数量的对象类别上工作得很好并且我们观察到它们在评估新类别时的性能显著下降尽管最近许多从图像中估计物体三维位姿的方法在效率和精度方面都取得了显着进步但大多数方法只能适用于已知物体这意味着它们需要在每个新物体上重新训练从而限制了它们的应用范围人们已经探索了几种技术来更好地推广到未见过物体的位姿估计例如通用对应关系基于能量的策略关键点匹配或模板匹配尽管取得了重大进展但这些方法要么需要精确的目标三维模型要么依赖于来自不同视角的多幅带注释的参考图像这些注释在实践中很难获得相比之下我们提出了一种既不使用目标的模型也不使用多视图注释的策略更重要的是我们的方法只需要一个参考图像就能预测出准确的位姿并且不需要再训练就能推广到新的对象为了激励我们的方法我们评估了最先进的基于模型的图像生成方法在位姿估计中的使用是一种基于扩散的像素空间视图合成方法为了将其应用于给定对象参考图像的位姿预测我们尝试使用它从许多不同的视角生成一组新视图并将对象的查询图像与这些视图在像素空间中进行匹配由于生成的视图被标注了相应的位姿这给了我们一个位姿估计如图所示生成的图像看起来非常逼真然而恢复的位姿不是很准确这可以部分解释为扩散可以发明干扰图像匹配的细节这种方法的局限性将在我们的实验中得到进一步的实证证明表这促使我们学习直接生成视图的判别表示在本节中我们首先用一个基于新视图生成的实验来激励我们的方法然后我们描述我们的架构我们如何训练它以及我们如何使用它进行位姿预测和识别位姿歧义图概述了我们的方法我们训练一个深度架构使用第一组对象类别中的对象图像对来生成对象的新视图嵌入在实践中我们考虑用的网络计算嵌入因为它被证明可以产生模板匹配的鲁棒表示为了生成这些嵌入我们使用类似的网络其位姿调节机制与中引入的机制非常接近并且与中的文本到图像机制相关更准确地说我们首先使用多层感知机将参考视图中相对于物体位姿的期望相对位姿转换为位姿嵌入然后我们使用交叉注意力将这个位姿嵌入到的每个阶段的特征图中如所述在每次训练迭代中我们构建一个由对图像组成的批其中包括一个参考图像和具有已知相对位姿的同一物体的另一个图像模型以参考图像的嵌入为输入并以相对位姿的嵌入为条件来预测第二图像的嵌入我们通过最小化预测嵌入与查询图像嵌入之间的欧氏距离来共同优化和注意我们冻结了计算嵌入的网络因为它已经被训练过了通过在不同的对象数据集上进行训练这种架构可以很好地推广到新的未知对象类别正如我们的结果所示一旦我们的架构得到训练我们可以用它来生成新视图的嵌入给定参考图像和一组个相对位姿我们可以得到一组相应的预测嵌入为了定义这些视角我们遵循中使用的方法我们从一个正二十面体开始将每个三角形递归地细分为四个较小的三角形两次以获得个最终视角最后我们简单地执行最近邻搜索来确定嵌入最接近查询图像嵌入的参考点请注意这可以有效地完成当物体具有对称性时或者当可以消除模糊性的物体部分不可见时就会出现位姿模糊性如图中的马克杯通过考虑查询图像的嵌入与生成的嵌入之间的距离我们不仅可以预测单个位姿还可以识别给定参考视图和查询视图的所有其他可能的位姿更正式地我们估计给定参考图像和查询图像的相对位姿的概率为其中为根据参考图像和相对位姿预测的嵌入为查询图像的嵌入为归一化因子算子表示点积为了说明这一点我们在图中展示了三种不同类型的对称并可视化了相应的参考和查询图像对的位姿分布未显示相似度得分高的区域数量与对称和构成歧义的数量是一致的如果一个物体没有对称则概率分布有一个明确的模式对称物体的概率分布在旋转对称的情况下通常具有几个模态甚至是一个连续的高概率区域我们在第节中提供了额外的定性结果在本节中我们首先在节中描述我们的实验设置然后在节中将我们的方法与其他方法在可见和不可见对象类别上进行比较第节报告了对部分遮挡的鲁棒性的评估在第节中我们进行了消融实验以研究我们的方法在不同环境下的有效性最后在第节中讨论了我们的方法的失败案例据我们所知我们是第一个解决当对象属于训练期间未见的类别时从单个图像中估计对象位姿问题的方法在改进基准上进行评估该基准由具有较小相对位姿的图像对组成和仅对训练期间看到的类别中的对象进行评估因此我们必须创建一个新的基准来评估我们的方法我们使用中与中相同的对象类别创建了一个数据集对于训练集我们从中所做的个类别飞机长凳橱柜汽车椅子显示器灯扬声器步枪沙发桌子电话和船只中的每个类别中随机选择个对象实例结果总共有个实例我们构建两个独立的测试集进行评估第一个测试集是新实例集它包含个新实例这些实例在训练期间没有出现但仍然来自用于训练的对象类别第二个测试集是新类别集包括从选出的个未见过的类别公共汽车吉他时钟瓶子火车杯子洗衣机滑板洗碗机和手枪中选出的个模型对于每个模型我们随机选择相机位姿生成五张参考图像和五张查询图像我们使用作为合成渲染引擎图说明了用于训练我们架构的类别和用于测试它的类别测试集中类别的形状和外观与训练集中类别的形状和外观有很大的不同因此构成了一个很好的测试集可以泛化到未见过的类别我们根据相对相机位姿误差报告了两个不同的指标如中所做的那样具体来说我们为测试集中的每个类别提供了跨实例的中位数位姿误差以及当位姿误差时预测被视为正确的精度此外我们给出了我们的方法对模板匹配检索到的前和个最近邻的结果我们将我们的工作与之前所有旨在从单一视图预测位姿的方法据我们所知进行比较是一种直接预测相对位姿的基于回归的方法和采用半监督和自监督技术将视角估计视为使用条件生成的图像重建问题我们还将我们的方法与最近基于扩散的方法进行了比较后者生成像素级视图合成由于最初只针对视图合成而不是为对象位姿设计的我们使用它来生成模板并执行最近邻搜索来估计对象位姿如节所述为了使在与我们相同的环境中工作我们重新训练它相对位姿条件调节而不是规范位姿条件调节只有的代码可用在撰写本文时其他方法没有发布它们的代码但是我们重新实现了它们我们对新实例情况的数值结果与相应论文中报告的结果相似这验证了我们的实现我们使用中的主干网络来处理和我们在分辨率为的输入图像上训练所有模型但除外我们使用的分辨率因为在像素空间中执行视图合成这需要更多的内存我们的重新实现在对相同的数据进行评估时获得了与原始论文相似的性能如表所示它验证了我们的重新实现我们的方法还使用中的冻结编码器将输入图像编码为大小为的嵌入对于所有的方法我们使用初始学习率为每种方法平均需要在上进行小时的训练我们建议读者参阅补充材料以了解更多实现细节表总结了我们的方法与上述基线的比较结果在和指标下我们的方法始终达到最佳的整体性能在和指标上的表现分别超过基线的和特别是虽然其他工作能在未见过的训练类别中的实例上产生合理的结果但他们经常难以从未见过的类别中估计物体的位姿相比之下我们的方法在这种情况下效果很好在未见过的类别上表现出更好的泛化能力图显示了我们的方法在有对称性和没有对称性的未见类别上的一些可视化结果当存在对称轴时我们的方法比基线产生更精确的位姿为了评估我们的方法对遮挡的鲁棒性我们在对象上的查询图像中添加了填充高斯噪声的随机矩形以类似于随机擦除的方式我们改变矩形的大小以覆盖对象的到的范围图和图显示了几个示例表比较了我们之前评估中表现最好的第二种方法与我们的方法在不同遮挡率下的性能我们的方法即使在大遮挡下也保持鲁棒性这要归功于用于匹配图像的鲁棒性判别嵌入在图中请注意我们的位姿概率保持在正确的最大值上并且当它们存在时仍然显示出清晰的对称性我们尝试了两种不同的位姿表示首先从给定的位姿创建相机光线并使用的位置编码来获得逐像素的位姿条件在我们的方法中该表示在集成到的特征图之前由处理我们对这种方法进行了实验但发现与直接对旋转表示应用相比它并没有提高我们问题的性能我们喜欢第二种方法因为它简单同样我们尝试了不同的旋转表示轴角四元数和旋转我们观察到所有这些表示都会产生类似的性能因此我们在所有实验中都使用旋转我们在表中报告了和的运行时间我们的方法比要快得多这要归功于我们的策略是用一个步骤而不是多个扩散步骤来预测新视点的嵌入当对公共汽车和吉他类别进行评估时所有方法都不能产生准确的结果正如高中位数误差所表明的那样经过目视检查参见图似乎吉他类别的模型在某些视点下可能非常薄此外吉他和巴士类别都是几乎对称的在某种意义上只有小细节才能使位姿不模棱两可为了检查这是否真的是这两个类别表现不佳的原因我们重新运行评估将吉他类别的参考视图作为具有最大轮廓的视图并将这两个类别视为具有度对称表给出了这项新评价的结果度量标准明显更好这表明失败确实是由物体看起来非常薄的视图和准对称性引起的我们提出了一种从单个图像中估计新物体位姿的方法我们的实验表明从单个视图中直接推断视图嵌入可以准确地估计物体位姿甚至对于来自未知类别的物体同时既不需要重新训练也不需要模型此外我们已经证明我们遵循的模板匹配方法可以让我们估计许多对象出现的位姿歧义',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-03-28 20:00:00',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/mycss.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"></script><meta name="generator" content="Hexo 7.0.0"><link rel="alternate" href="/atom.xml" title="Karl的博客" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Karl的博客" type="application/rss+xml">
+</head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><div class="back-home-button"><i class="anzhiyufont anzhiyu-icon-grip-vertical"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" href="https://blog.karltan.com/" title="Karl的博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/logo.png" alt="Karl的博客"/><span class="back-menu-item-text">Karl的博客</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://www.karltan.com/" title="Karl的导航"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://www.karltan.com/favicon.ico" alt="Karl的导航"/><span class="back-menu-item-text">Karl的导航</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">博客分流</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://v.karltan.com/" title="Vercel"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://assets.vercel.com/image/upload/front/favicon/vercel/favicon.ico" alt="Vercel"/><span class="back-menu-item-text">Vercel</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://c.karltan.com/" title="Cloudflare"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://dash.cloudflare.com/favicon-32x32.png" alt="Cloudflare"/><span class="back-menu-item-text">Cloudflare</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">工具</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://npmzjk.karltan.com/" title="NPM"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npmzjk.karltan.com/images/favicons/favicon-32x32.png" alt="NPM"/><span class="back-menu-item-text">NPM</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://paste.karltan.com/" title="Free-Bin"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://paste.karltan.com/static/favicon.ico" alt="Free-Bin"/><span class="back-menu-item-text">Free-Bin</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://tools.karltan.com/" title="IT-TOOLS"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://tools.karltan.com/android-chrome-192x192.png" alt="IT-TOOLS"/><span class="back-menu-item-text">IT-TOOLS</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://memos.karltan.com/" title="Memos"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://memos.karltan.com/logo.png" alt="Memos"/><span class="back-menu-item-text">Memos</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://wbo.karltan.com/" title="WBO"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://wbo.karltan.com/favicon.ico" alt="WBO"/><span class="back-menu-item-text">WBO</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://git.karltan.com/" title="Gitea"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://git.karltan.com/assets/img/logo.svg" alt="Gitea"/><span class="back-menu-item-text">Gitea</span></a></div></div></div></div><a id="site-name" href="/" accesskey="h"><div class="title">Karl的博客</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives"><i class="fa-solid fa-box-archive faa-tada"></i><span> 归档</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories"><i class="fa-solid fa-palette faa-tada"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags"><i class="fa-solid fa-tags faa-tada"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link"><i class="fa-solid fa-link faa-tada"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/fcircle"><i class="fa-brands fa-artstation faa-tada"></i><span> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments"><i class="fa-solid fa-comments faa-tada"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/essay"><i class="fa-solid fa-comment-dots faa-tada"></i><span> 说说</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/music"><i class="fa-solid fa-music faa-tada"></i><span> 音乐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album"><i class="fa-solid fa-images faa-tada"></i><span> 相册</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" target="_blank" rel="noopener" href="https://status.karltan.com/status/1"><i class="fa-solid fa-chart-line faa-tada"></i><span> 网站监控</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="fa-solid fa-shoe-prints faa-tada"></i><span> 随便逛逛</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/about"><i class="fa-solid fa-heart faa-tada"></i><span> 关于我</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button only-home" id="travellings_button" title="随机前往一个开往项目网站"><a class="site-page" onclick="anzhiyu.totraveling()" title="随机前往一个开往项目网站" href="javascript:void(0);" rel="external nofollow" data-pjax-state="external"><i class="anzhiyufont anzhiyu-icon-train"></i></a></div><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><div class="nav-button" id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" title="搜索🔍" accesskey="s"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span> 搜索</span></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" alt="微信" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/wechat.jpg"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" alt="支付宝" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/alipay.jpg"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/AcWing/" style="font-size: 1.05rem;">AcWing<sup>33</sup></a><a href="/tags/CUDA/" style="font-size: 1.05rem;">CUDA<sup>1</sup></a><a href="/tags/CVPR/" style="font-size: 1.05rem;">CVPR<sup>3</sup></a><a href="/tags/ICLR/" style="font-size: 1.05rem;">ICLR<sup>1</sup></a><a href="/tags/Linux/" style="font-size: 1.05rem;">Linux<sup>1</sup></a><a href="/tags/MAPL/" style="font-size: 1.05rem;">MAPL<sup>1</sup></a><a href="/tags/MySQL/" style="font-size: 1.05rem;">MySQL<sup>1</sup></a><a href="/tags/NIPS/" style="font-size: 1.05rem;">NIPS<sup>1</sup></a><a href="/tags/PyTorch/" style="font-size: 1.05rem;">PyTorch<sup>1</sup></a><a href="/tags/Python/" style="font-size: 1.05rem;">Python<sup>1</sup></a><a href="/tags/RSS/" style="font-size: 1.05rem;">RSS<sup>1</sup></a><a href="/tags/Ubuntu/" style="font-size: 1.05rem;">Ubuntu<sup>3</sup></a><a href="/tags/Windows/" style="font-size: 1.05rem;">Windows<sup>1</sup></a><a href="/tags/arXiv/" style="font-size: 1.05rem;">arXiv<sup>1</sup></a><a href="/tags/mAP/" style="font-size: 1.05rem;">mAP<sup>1</sup></a><a href="/tags/tmux/" style="font-size: 1.05rem;">tmux<sup>1</sup></a><a href="/tags/vim/" style="font-size: 1.05rem;">vim<sup>1</sup></a><a href="/tags/%E4%BB%A3%E7%A0%81/" style="font-size: 1.05rem;">代码<sup>1</sup></a><a href="/tags/%E4%BD%8D%E5%A7%BF%E4%BC%B0%E8%AE%A1/" style="font-size: 1.05rem;">位姿估计<sup>1</sup></a><a href="/tags/%E6%89%A9%E5%AE%B9/" style="font-size: 1.05rem;">扩容<sup>1</sup></a><a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 1.05rem;">数学<sup>1</sup></a><a href="/tags/%E6%97%8B%E8%BD%AC%E8%A1%A8%E7%A4%BA/" style="font-size: 1.05rem;">旋转表示<sup>1</sup></a><a href="/tags/%E6%9D%8E%E6%B2%90/" style="font-size: 1.05rem;">李沐<sup>76</sup></a><a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 1.05rem;">深度学习<sup>79</sup></a><a href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/" style="font-size: 1.05rem;">目标检测<sup>1</sup></a><a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 1.05rem;">笔记<sup>77</sup></a><a href="/tags/%E7%AE%97%E6%B3%95%E9%A2%98/" style="font-size: 1.05rem;">算法题<sup>33</sup></a><a href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" style="font-size: 1.05rem;">论文笔记<sup>9</sup></a><a href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91/" style="font-size: 1.05rem;">阿里云<sup>1</sup></a><a href="/tags/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6/" style="font-size: 1.05rem;">高等数学<sup>1</sup></a><a href="/tags/%E9%AD%94%E6%B3%95/" style="font-size: 1.05rem;">魔法<sup>1</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span><a class="card-more-btn" href="/archives/" title="查看更多">
+    <i class="anzhiyufont anzhiyu-icon-angle-right"></i></a></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/04/"><span class="card-archive-list-date">2024年04月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">2</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/03/"><span class="card-archive-list-date">2024年03月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/02/"><span class="card-archive-list-date">2024年02月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/01/"><span class="card-archive-list-date">2024年01月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">10</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/12/"><span class="card-archive-list-date">2023年12月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">48</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/11/"><span class="card-archive-list-date">2023年11月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">7</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/10/"><span class="card-archive-list-date">2023年10月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">32</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/09/"><span class="card-archive-list-date">2023年09月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">6</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item on" id="consoleCommentBarrage" onclick="anzhiyu.switchCommentBarrage()" title="热评开关"><a class="commentBarrage"><i class="anzhiyufont anzhiyu-icon-message"></i></a></div><div class="console-btn-item" id="consoleKeyboard" onclick="anzhiyu.keyboardToggle()" title="快捷键开关"><a class="keyboard-switch"><i class="anzhiyufont anzhiyu-icon-keyboard"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" itemprop="url">论文笔记</a><i class="anzhiyufont anzhiyu-icon-angle-right post-meta-separator"></i><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/2023/" itemprop="url">2023</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>论文笔记</span></a><a class="article-meta__tags" href="/tags/CVPR/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>CVPR</span></a></span></div></div><h1 class="post-title" itemprop="name headline">论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2024-03-28T04:00:00.000Z" title="发表于 2024-03-28 12:00:00">2024-03-28</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2024-03-28T12:00:00.000Z" title="更新于 2024-03-28 20:00:00">2024-03-28</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-wordcount"><i class="anzhiyufont anzhiyu-icon-file-word post-meta-icon" title="文章字数"></i><span class="post-meta-label" title="文章字数">字数总计:</span><span class="word-count" title="文章字数">6.2k</span><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-clock post-meta-icon" title="阅读时长"></i><span class="post-meta-label" title="阅读时长">阅读时长:</span><span>19分钟</span></span><span class="post-meta-separator"></span><span class="post-meta-pv-cv" id="" data-flag-title="论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》"><i class="anzhiyufont anzhiyu-icon-fw-eye post-meta-icon"></i><span class="post-meta-label" title="阅读量">阅读量:</span><span id="busuanzi_value_page_pv"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为长沙"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>长沙</span><span class="post-meta-separator"></span><span class="post-meta-commentcount"><i class="anzhiyufont anzhiyu-icon-comments post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/#post-comment" tabindex="-1"><span id="twikoo-count"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></a></span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="https://img.karltan.com/covers/dissertation-notes/2023/Nguyen_et_al-2023-NOPE.png"></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><div class="post-ai-description"><div class="ai-title"><i class="anzhiyufont anzhiyu-icon-bilibili"></i><div class="ai-title-text">AI-摘要</div><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right"></i><i class="anzhiyufont anzhiyu-icon-circle-dot" title="朗读摘要"></i><div id="ai-tag">Tianli GPT</div></div><div class="ai-explanation">AI初始化中...</div><div class="ai-btn-box"><div class="ai-btn-item">介绍自己 🙈</div><div class="ai-btn-item">生成本文简介 👋</div><div class="ai-btn-item">推荐相关文章 📖</div><div class="ai-btn-item">前往主页 🏠</div><div class="ai-btn-item" id="go-tianli-blog">前往爱发电购买</div></div><script data-pjax src="/js/anzhiyu/ai_abstract.js"></script></div><article class="post-content" id="article-container" itemscope itemtype="http://blog.karltan.com/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/"><header><a class="post-meta-categories" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" itemprop="url">论文笔记</a><a class="post-meta-categories" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/2023/" itemprop="url">2023</a><a href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" tabindex="-1" itemprop="url">论文笔记</a><a href="/tags/CVPR/" tabindex="-1" itemprop="url">CVPR</a><h1 id="CrawlerTitle" itemprop="name headline">论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">Karl</span><time itemprop="dateCreated datePublished" datetime="2024-03-28T04:00:00.000Z" title="发表于 2024-03-28 12:00:00">2024-03-28</time><time itemprop="dateCreated datePublished" datetime="2024-03-28T12:00:00.000Z" title="更新于 2024-03-28 20:00:00">2024-03-28</time></header><h1 id="NOPE-Novel-Object-Pose-Estimation-from-a-Single-Image"><a href="#NOPE-Novel-Object-Pose-Estimation-from-a-Single-Image" class="headerlink" title="NOPE: Novel Object Pose Estimation from a Single Image"></a>NOPE: Novel Object Pose Estimation from a Single Image</h1><p>原文链接：<a href="https://blog.karltan.com/dissertation-notes/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/">论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》 | Karl的博客</a></p>
+<p>CSDN链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/karltan0328/article/details/137119067">论文笔记《NOPE: Novel Object Pose Estimation from a Single Image》-CSDN博客</a></p>
+<p>论文链接：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2303.13612">[2303.13612] NOPE: Novel Object Pose Estimation from a Single Image (arxiv.org)</a></p>
+<p>代码链接：<a target="_blank" rel="noopener" href="https://github.com/nv-nguyen/nope">nv-nguyen/nope: [CVPR 2024] PyTorch implementation of NOPE: Novel Object Pose Estimation from a Single Image (github.com)</a></p>
+<p>项目链接：<a target="_blank" rel="noopener" href="https://nv-nguyen.github.io/nope/">NOPE: Novel Object Pose Estimation from a Single Image (nv-nguyen.github.io)</a></p>
+<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>由于需要3D模型的先验知识，且在面对新对象时，需要额外的训练时间，3D对象位姿估计的实用性在许多应用中仍然受到限制。为了解决这一限制，我们提出了一种方法，该方法将新对象的单个图像作为输入（在已知另一张图片的基础上），并在不事先了解对象的3D模型的情况下预测该对象在新图像中的相对位姿，并且不需要对新对象和类别进行训练。我们通过训练一个模型来直接预测物体周围视角的判别嵌入来实现这一点。这种预测是使用一个简单的U-Net架构来完成的，它的注意力和条件取决于期望的位姿，这产生了极快的推断。我们将我们的方法与最先进的方法进行比较，并表明它在准确性和鲁棒性方面都优于它们。我们的源代码可以在<a target="_blank" rel="noopener" href="https://github.com/nv-nguyen/nope">https://github.com/nv-nguyen/nope</a>上公开获得。</p>
+<h2 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1. Introduction"></a>1. Introduction</h2><p>在过去十年中，物体的三维位姿估计在鲁棒性和准确性方面都取得了重大进展[12, 16, 33, 47, 57]。具体来说，对部分遮挡的鲁棒性已经有了相当大的提高[8, 29, 30]，并且通过使用域转移[1]、域随机化[14, 44, 48]和利用合成图像进行训练的自监督学习技术[46]，对大量真实带注释的训练图像的需求已经放松。</p>
+<p>不幸的是，3D物体位姿估计的实用性在许多应用中仍然有限，包括机器人和增强现实。通常，现有的方法需要一个3D模型[15]，一个视频序列[6, 43]，或目标物体[58]的稀疏多幅图像（仅参考最近的作品），以及一个训练阶段。有几种技术旨在通过假设新对象属于已识别的类别[5, 51]，与之前训练过的示例（如T-LESS数据集[44]）有相似之处，或者表现出明显的角点[31]，从而避免重新训练的需要。</p>
+<p>在本文中，我们介绍了一种称为NOPE(<strong>N</strong>ovel <strong>O</strong>bject <strong>P</strong>ose <strong>E</strong>stimation)的新对象位姿估计方法，该方法只需要新对象的单个图像即可预测该对象在任何新图像中的相对位姿，而不需要对象的3D模型并且没有对新对象进行训练。这是一项非常具有挑战性的任务，因为与[43, 58]中使用的多个视图相比，单个视图仅提供有关对象几何形状的有限信息。</p>
+<p>为了实现这一目标，我们训练NOPE来生成物体的新视图。这些新视图可以看作带有相应位姿注释的“模板”。将这些模板与新的输入视图相<strong>匹配</strong>，可以让我们估计物体相对于初始视图的相对位姿。我们的方法与新视图合成的最新发展有关。然而，我们更进一步：受最近用于位姿估计的模板匹配工作的良好性能[28, 40]的激励，我们不是预测纯色图像，而是直接预测视图的判别嵌入。具体来说，我们的嵌入是通过U-Net架构将输入图像传递给新视图，并以新视图的所需位姿为条件。</p>
+<p>本质上，与现有的新视图合成工作[24, 32]相比，对于我们的位姿估计任务，我们不需要创建对象的3D模型。这节省了大量的计算时间，因为使用单视图优化3D模型至少需要一个小时[62]或更长时间。相比之下，我们基于视图嵌入的直接推理方法非常快，在不到2秒的时间内处理图像。并且，它对未见过的实例或类别产生准确的位姿估计，平均准确率超过65%。我们的工作也与两幅图像之间的运动预测有关，如[27, 49]，它预测了两幅图像之间的相机位移。我们与[27]最接近的工作进行了比较，结果表明我们明显优于这种方法。</p>
+<p>此外，我们表明，我们的方法在没有得到对象的3D模型，且只有一个单视图的情况下，可以识别位姿的模糊性，例如，对称[20]。</p>
+<p>为此，我们估计查询的所有位姿的分布，随着位姿歧义越来越多，其峰值越来越少。图1描述了各种模糊和非模糊情况及其位姿分布：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/image-20240328151442993.png" alt="image-20240328151442993"></p>
+<p>总之，我们的主要贡献是，在新视图中，且只给出该物体的单一视图的情况下，我们可以有效和可靠地恢复一个未见过的物体的相对位姿。据我们所知，我们的方法是第一个仅从单一视图预测由于对称性和不可见物体的部分遮挡而导致的模糊性的方法。</p>
+<h2 id="2-Related-work"><a href="#2-Related-work" class="headerlink" title="2. Related work"></a>2. Related work</h2><p>在本节中，我们首先回顾实现新视图合成的各种方法。然后，我们将注意力转移到旨在实现泛化的位姿估计技术上。</p>
+<h3 id="2-1-Novel-view-synthesis-from-a-single-image"><a href="#2-1-Novel-view-synthesis-from-a-single-image" class="headerlink" title="2.1. Novel view synthesis from a single image"></a>2.1. Novel view synthesis from a single image</h3><p>我们的方法生成判别特征视图，该视图以参考视图和视图之间的相对位姿为条件。这与NeRFs[25]的开创性工作有关，因为它执行新视图合成。虽然最近的进展已经提高了NeRFs的速度[26, 39, 55]，但我们的方法仍然要快几个数量级，因为它不需要创建完整的3D体积模型。此外，我们的方法只需要一个输入视图，而典型的NeRF设置需要大约50个视图。减少NeRF重建所需的视图数量仍然是一个活跃的研究领域，特别是在单视图场景中[24, 56]。</p>
+<p>最近的研究[24, 62]通过利用二维扩散模型，利用稀疏视图集作为输入，通过NeRFs成功地生成了新的视图。对于图像，扩散模型的突破[7, 41]已经解锁了几个工作流程[35, 37, 38]。对于3D应用程序，DreamFusion[32]开创了分数蒸馏采样技术，允许使用2D扩散模型作为基于图像的损失，并通过可微分渲染在3D应用程序中进行利用。这使得以前使用基于CLIP的图像损失训练的任务得到了显著的改进[9, 10, 13, 17, 34, 50]。通过在分数蒸馏采样的基础上构建，在使用至少两个视图的基础上，SparseFusion[62]重构了一个NeRF场景，而同时期的一项工作RealFusion[24]从单个输入视图进行重构，尽管重构时间对于实时应用来说是不切实际的。我们的方法要快得多，因为我们不需要创建对象的3D表示。</p>
+<p>与我们的工作最接近的是3DiM[52]，这项工作通过在位姿上调节扩散模型来生成物体的新视图。他们没有像DreamFusion那样利用2D基础扩散模型，而是专门针对此任务重新训练扩散模型。虽然他们还没有将他们的方法应用到基于模板的位姿估计中，但我们设计了这样一个基线并与之进行比较。我们发现扩散模型总是倾向于生成清晰的图像，即使有时会改变纹理或产生错误的细节，这也会阻碍基于模板的方法的性能。相比之下，我们的方法直接在嵌入空间而不是像素空间中生成新的视图，正如我们将在3.1节中演示的那样，这要有效得多。</p>
+<p>最后，几种方法[22, 23]通过调节3D位姿的前馈神经网络来生成新颖的视图，我们也使用U-Net来实现这一点。我们与这些方法在速度上有一个共同的优势：这种前馈神经网络比目前的扩散模型快一到两个数量级。然而，我们执行位姿估计的方式是完全不同的。我们在基于模板的匹配方法[28]中使用新视图合成，而他们在基于回归的优化中使用它。在实践中，我们发现这些方法在有限数量的对象类别上工作得很好，并且我们观察到它们在评估新类别时的性能显著下降。</p>
+<h3 id="2-2-Generalizable-object-pose-estimation"><a href="#2-2-Generalizable-object-pose-estimation" class="headerlink" title="2.2. Generalizable object pose estimation"></a>2.2. Generalizable object pose estimation</h3><p>尽管最近许多从图像中估计物体三维位姿的方法在效率和精度方面都取得了显着进步[2, 14, 30, 42, 44, 45, 53]，但大多数方法只能适用于已知物体，这意味着它们需要在每个新物体上重新训练，从而限制了它们的应用范围。</p>
+<p>人们已经探索了几种技术来更好地推广到未见过物体的位姿估计，例如通用2D-3D对应关系[31]、基于能量的策略[58]、关键点匹配[43]或模板匹配[15, 18, 28, 40, 59]。尽管取得了重大进展，但这些方法要么需要精确的目标三维模型，要么依赖于来自不同视角的多幅带注释的参考图像。这些3D注释在实践中很难获得。相比之下，我们提出了一种既不使用目标的3D模型也不使用多视图注释的策略。更重要的是，我们的方法只需要一个参考图像就能预测出准确的位姿，并且不需要再训练就能推广到新的对象。</p>
+<h2 id="3-Method"><a href="#3-Method" class="headerlink" title="3. Method"></a>3. Method</h2><h3 id="3-1-Motivation"><a href="#3-1-Motivation" class="headerlink" title="3.1. Motivation"></a>3.1. Motivation</h3><p>为了激励我们的方法，我们评估了最先进的基于3D模型的图像生成方法（3DiM）[52]在位姿估计中的使用。3DiM是一种基于扩散的像素空间视图合成方法。为了将其应用于给定对象参考图像的位姿预测，我们尝试使用它从许多不同的视角生成一组新视图，并将对象的查询图像与这些视图在像素空间中进行匹配。由于生成的视图被标注了相应的位姿，这给了我们一个位姿估计。</p>
+<p>如图2所示，3DiM生成的图像看起来非常逼真：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/image-20240328155434429.png" alt="image-20240328155434429"></p>
+<p>然而，恢复的位姿不是很准确。这可以部分解释为扩散可以“发明”干扰图像匹配的细节。这种方法的局限性将在我们的实验中得到进一步的实证证明（表1）：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/image-20240328155647483.png" alt="image-20240328155647483"></p>
+<p>这促使我们学习直接生成视图的判别表示。</p>
+<p>在本节中，我们首先用一个基于新视图生成的实验来激励我们的方法。然后我们描述我们的架构，我们如何训练它，以及我们如何使用它进行位姿预测和识别位姿歧义。</p>
+<h3 id="3-2-Framework"><a href="#3-2-Framework" class="headerlink" title="3.2. Framework"></a>3.2. Framework</h3><p>图3概述了我们的方法：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/image-20240328160810385.png" alt="image-20240328160810385"></p>
+<p>我们训练一个深度架构，使用第一组对象类别中的对象图像对来生成对象的新视图嵌入。在实践中，我们考虑用[28]的网络计算嵌入，因为它被证明可以产生模板匹配的鲁棒表示。为了生成这些嵌入，我们使用类似U-Net的网络，其位姿调节机制与3DiM[52]中引入的机制非常接近，并且与[36]中的文本到图像机制相关。</p>
+<p>更准确地说，我们首先使用多层感知机（MLP）将参考视图中相对于物体位姿的期望相对位姿$\Delta R$转换为位姿嵌入。然后，我们使用交叉注意力将这个位姿嵌入到U-Net的每个阶段的特征图中，如[36]所述。</p>
+<p><strong>Training.</strong> 在每次训练迭代中，我们构建一个由$N$对图像组成的批，其中包括一个参考图像和具有已知相对位姿的同一物体的另一个图像。U-Net模型以参考图像的嵌入为输入，并以相对位姿的嵌入为条件来预测第二图像的嵌入。我们通过最小化预测嵌入与查询图像嵌入之间的欧氏距离来共同优化U-Net和MLP。注意，我们冻结了[28]计算嵌入的网络，因为它已经被训练过了。</p>
+<p>通过在不同的对象数据集上进行训练，这种架构可以很好地推广到新的未知对象类别，正如我们的结果所示。</p>
+<h3 id="3-3-Pose-prediction"><a href="#3-3-Pose-prediction" class="headerlink" title="3.3. Pose prediction"></a>3.3. Pose prediction</h3><p><strong>Template matching.</strong> 一旦我们的架构得到训练，我们可以用它来生成新视图的嵌入：给定参考图像$\mathbf{I}_\mathrm{r}$和一组$N$个相对位姿$\mathcal{P} = (\Delta R_1, \Delta R_2, \cdots, \Delta R_N)$，我们可以得到一组相应的预测嵌入$(\mathbf{e}_1, \mathbf{e}_2, \cdots, \mathbf{e}_N)$。为了定义这些视角，我们遵循[28]中使用的方法：我们从一个正二十面体开始，将每个三角形递归地细分为四个较小的三角形两次，以获得342个最终视角。</p>
+<p>最后，我们简单地执行最近邻搜索来确定嵌入最接近查询图像嵌入的参考点。请注意，这可以有效地完成[28]。</p>
+<p><strong>Detecting pose ambiguities.</strong> 当物体具有对称性时，或者当可以消除模糊性的物体部分不可见时，就会出现位姿模糊性，如图1中的马克杯。通过考虑查询图像的嵌入与生成的嵌入之间的距离，我们不仅可以预测单个位姿，还可以识别给定参考视图和查询视图的所有其他可能的位姿。</p>
+<p>更正式地，我们估计给定参考图像$I_r$和查询图像$I_q$的相对位姿$\Delta R$的概率为：</p>
+<script type="math/tex; mode=display">
+p(\Delta R \mid I_r, I_q) = \frac{1}{Z}\frac{\mathbf{e}_{\Delta R} \cdot \mathbf{e}_q}{\Vert\mathbf{e}_{\Delta R}\Vert\Vert\mathbf{e}_q\Vert}</script><p>其中$\mathbf{e}_{\Delta R}$为U-Net根据参考图像$I_r$和相对位姿$\Delta R$预测的嵌入，$\mathbf{e}_q$为查询图像$I_q$的嵌入，$Z$为归一化因子。算子$\cdot$表示点积。</p>
+<p>为了说明这一点，我们在图4中展示了三种不同类型的对称：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/image-20240328164505558.png" alt="image-20240328164505558"></p>
+<p>并可视化了相应的参考和查询图像对的位姿分布（未显示）。相似度得分高的区域数量与对称和构成歧义的数量是一致的：如果一个物体没有对称，则概率分布有一个明确的模式。对称物体的概率分布在旋转对称的情况下通常具有几个模态，甚至是一个连续的高概率区域。我们在第4节中提供了额外的定性结果。</p>
+<h2 id="4-Experiments"><a href="#4-Experiments" class="headerlink" title="4. Experiments"></a>4. Experiments</h2><p>在本节中，我们首先在4.1节中描述我们的实验设置，然后在4.2节中将我们的方法与其他方法[21, 22, 27, 52]在可见和不可见对象类别上进行比较。第4.3节报告了对部分遮挡的鲁棒性的评估。在第4.4节中，我们进行了消融实验，以研究我们的方法在不同环境下的有效性，最后在第4.6节中讨论了我们的方法的失败案例。</p>
+<h3 id="4-1-Experimental-setup"><a href="#4-1-Experimental-setup" class="headerlink" title="4.1. Experimental setup"></a>4.1. Experimental setup</h3><p><strong>Dataset.</strong> 据我们所知，我们是第一个解决当对象属于训练期间未见的类别时，从单个图像中估计对象位姿问题的方法：PIZZA[27]在DeepIM改进基准上进行评估，该基准由具有较小相对位姿的图像对组成；SSVE[22]和ViewNet[21]仅对训练期间看到的类别中的对象进行评估。</p>
+<p>因此，我们必须创建一个新的基准来评估我们的方法。我们使用ShapeNet[3]中与FORGE[11]中相同的对象类别创建了一个数据集。对于训练集，我们从FORGE中所做的13个类别（飞机、长凳、橱柜、汽车、椅子、显示器、灯、扬声器、步枪、沙发、桌子、电话和船只）中的每个类别中随机选择1000个对象实例，结果总共有13,000个实例。我们构建两个独立的测试集进行评估。第一个测试集是“新实例”集，它包含50个新实例，这些实例在训练期间没有出现，但仍然来自用于训练的对象类别。第二个测试集是“新类别”集，包括从FORGE选出的10个未见过的类别（公共汽车，吉他，时钟，瓶子，火车，杯子，洗衣机，滑板，洗碗机和手枪）中选出的100个模型。对于每个3D模型，我们随机选择相机位姿生成五张参考图像和五张查询图像。我们使用BlenderProc[4]作为合成渲染引擎。</p>
+<p>图5说明了用于训练我们架构的类别和用于测试它的类别：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/image-20240328165217458.png" alt="image-20240328165217458"></p>
+<p>测试集中类别的形状和外观与训练集中类别的形状和外观有很大的不同，因此构成了一个很好的测试集，可以泛化到未见过的类别。</p>
+<p><strong>Metrics.</strong> 我们根据相对相机位姿误差报告了两个不同的指标，如[22]中所做的那样。具体来说，我们为测试集中的每个类别提供了跨实例的中位数位姿误差，以及当位姿误差$\le 30^\circ$时预测被视为正确的精度Acc 30。此外，我们给出了我们的方法对模板匹配检索到的前3和5个最近邻的结果。</p>
+<p><strong>Baselines.</strong> 我们将我们的工作与之前所有旨在从单一视图预测位姿的方法（据我们所知）进行比较：PIZZA[27]是一种直接预测相对位姿的基于回归的方法，SSVE[22]和ViewNet[21]采用半监督和自监督技术，将视角估计视为使用条件生成的图像重建问题。</p>
+<p>我们还将我们的方法与最近基于扩散的方法3DiM[52]进行了比较，后者生成像素级视图合成。由于3DiM最初只针对视图合成，而不是为3D对象位姿设计的，我们使用它来生成模板并执行最近邻搜索来估计3D对象位姿，如3.1节所述。为了使3DiM在与我们相同的环境中工作，我们重新训练它相对位姿条件调节而不是规范位姿条件调节。</p>
+<p>只有PIZZA的代码可用。在撰写本文时，其他方法没有发布它们的代码，但是我们重新实现了它们。我们对“新实例”情况的数值结果与相应论文中报告的结果相似，这验证了我们的实现。我们使用[27]中的ResNet18主干网络来处理PIZZA、SSVE和ViewNet。</p>
+<p>我们在分辨率为$256 \times 256$的输入图像上训练所有模型，但3DiM除外，我们使用$128 \times 128$的分辨率，因为3DiM在像素空间中执行视图合成，这需要更多的内存。我们的重新实现在对相同的数据进行评估时获得了与原始论文相似的性能，如表1所示：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/image-20240328155647483.png" alt="image-20240328155647483"></p>
+<p>它验证了我们的重新实现。我们的方法还使用[28]中的冻结编码器将输入图像编码为大小为$32 \times 32 \times 8$的嵌入。对于所有的方法，我们使用AdamW[19]，初始学习率为<code>1e-4</code>。每种方法平均需要在4GPU V100上进行10小时的训练。我们建议读者参阅补充材料以了解更多实现细节。</p>
+<h3 id="4-2-Comparison-with-the-state-of-the-art"><a href="#4-2-Comparison-with-the-state-of-the-art" class="headerlink" title="4.2. Comparison with the state of the art"></a>4.2. Comparison with the state of the art</h3><p>表1总结了我们的方法与上述基线的比较结果。在Acc30和Median指标下，我们的方法始终达到最佳的整体性能，在Acc30和Median指标上的表现分别超过基线的10%和10%。特别是，虽然其他工作能在未见过的训练类别中的实例上产生合理的结果，但他们经常难以从未见过的类别中估计物体的3D位姿。相比之下，我们的方法在这种情况下效果很好，在未见过的类别上表现出更好的泛化能力。</p>
+<p>图6显示了我们的方法在有对称性和没有对称性的未见类别上的一些可视化结果：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/image-20240328171121023.png" alt="image-20240328171121023"></p>
+<p>当存在对称轴时，我们的方法比基线产生更精确的3D位姿。</p>
+<h3 id="4-3-Robustness-to-occlusions"><a href="#4-3-Robustness-to-occlusions" class="headerlink" title="4.3. Robustness to occlusions"></a>4.3. Robustness to occlusions</h3><p>为了评估我们的方法对遮挡的鲁棒性，我们在对象上的查询图像中添加了填充高斯噪声的随机矩形，以类似于随机擦除[60]的方式。我们改变矩形的大小，以覆盖对象bounding box的0%到25%的范围。图1和图6显示了几个示例。</p>
+<p>表2比较了我们之前评估中表现最好的第二种方法PIZZA与我们的方法在不同遮挡率下的性能：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/image-20240328171442950.png" alt="image-20240328171442950"></p>
+<p>我们的方法即使在大遮挡下也保持鲁棒性，这要归功于用于匹配图像的鲁棒性判别嵌入。</p>
+<p>在图6中，请注意我们的位姿概率保持在正确的最大值上，并且当它们存在时仍然显示出清晰的对称性。</p>
+<h3 id="4-4-Ablation-study"><a href="#4-4-Ablation-study" class="headerlink" title="4.4. Ablation study"></a>4.4. Ablation study</h3><p><strong>Pose conditioning.</strong> 我们尝试了两种不同的位姿表示。3DiM首先从给定的3D位姿创建相机光线，并使用[25]的位置编码来获得逐像素的位姿条件。在我们的方法中，该表示在集成到U-Net的特征图之前，由MLP处理。我们对这种方法进行了实验，但发现与直接对旋转表示应用MLP相比，它并没有提高我们问题的性能。我们喜欢第二种方法，因为它简单。</p>
+<p><strong>Rotation representation for the relative pose.</strong> 同样，我们尝试了不同的旋转表示：轴角、四元数和旋转-6D[61]。我们观察到所有这些表示都会产生类似的性能，因此我们在所有实验中都使用旋转-6D[61]。</p>
+<h3 id="4-5-Runtime-analysis"><a href="#4-5-Runtime-analysis" class="headerlink" title="4.5. Runtime analysis"></a>4.5. Runtime analysis</h3><p>我们在表3中报告了NOPE和3DiM的运行时间：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/image-20240328171754129.png" alt="image-20240328171754129"></p>
+<p>我们的方法比3DiM要快得多，这要归功于我们的策略是用一个步骤而不是多个扩散步骤来预测新视点的嵌入。</p>
+<h3 id="4-6-Failure-cases"><a href="#4-6-Failure-cases" class="headerlink" title="4.6. Failure cases"></a>4.6. Failure cases</h3><p>当对“公共汽车”和“吉他”类别进行评估时，所有方法都不能产生准确的结果，正如高中位数误差所表明的那样。经过目视检查（参见图7）：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/image-20240328171915360.png" alt="image-20240328171915360"></p>
+<p>似乎吉他类别的3D模型在某些视点下可能非常薄。此外，吉他和巴士类别都是“几乎对称的”，在某种意义上，只有小细节才能使位姿不模棱两可。</p>
+<p>为了检查这是否真的是这两个类别表现不佳的原因，我们重新运行评估，将“吉他”类别的参考视图作为具有最大轮廓的视图，并将这两个类别视为具有180度对称。表4给出了这项新评价的结果：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/image-20240328172225284.png" alt="image-20240328172225284"></p>
+<p>度量标准明显更好。这表明，失败确实是由物体看起来非常薄的视图和“准对称性”引起的。</p>
+<h2 id="5-Conclusion"><a href="#5-Conclusion" class="headerlink" title="5. Conclusion"></a>5. Conclusion</h2><p>我们提出了NOPE，一种从单个图像中估计新物体位姿的方法。我们的实验表明，从单个视图中直接推断视图嵌入可以准确地估计物体位姿，甚至对于来自未知类别的物体，同时既不需要重新训练也不需要3D模型。此外，我们已经证明，我们遵循的模板匹配方法可以让我们估计许多对象出现的位姿歧义。</p>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/profile.jpg" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/profile.jpg" title="头像" alt="头像"></a><div class="post-copyright__author_name">Karl</div><div class="post-copyright__author_desc">日拱一卒，功不唐捐</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="http://blog.karltan.com/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('http://blog.karltan.com/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/')">论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="赞赏作者"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>打赏作者</div><div class="reward-main"><div class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/wechat.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/alipay.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="http://blog.karltan.com/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》&amp;url=http://blog.karltan.com/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/&amp;pic=https://img.karltan.com/covers/dissertation-notes/2023/Nguyen_et_al-2023-NOPE.png" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://blog.karltan.com" target="_blank">Karl的博客</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__category-list"><a class="post-meta__box__categoryes" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/"><span class="categoryes-punctuation"> <i class="anzhiyufont anzhiyu-icon-inbox"></i></span>论文笔记<span class="categoryesPageCount">9</span></a><a class="post-meta__box__categoryes" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/2023/"><span class="categoryes-punctuation"> <i class="anzhiyufont anzhiyu-icon-inbox"></i></span>2023<span class="categoryesPageCount">3</span></a></div><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>论文笔记<span class="tagsPageCount">9</span></a><a class="post-meta__box__tags" href="/tags/CVPR/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>CVPR<span class="tagsPageCount">3</span></a></div></div><div class="post_share"><div class="social-share" data-image="https://img.karltan.com/covers/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">论文笔记《Attention Is All You Need》</div></div></a></div><div class="next-post pull-right"><a href="/dissertation-notes/2023/Woo_et_al-2023-ConvNeXt_V2/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2023/Woo_et_al-2023-ConvNeXt_V2.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="anzhiyufont anzhiyu-icon-thumbs-up fa-fw" style="font-size: 1.5rem; margin-right: 4px"></i><span>喜欢这篇文章的人也看了</span></div><div class="relatedPosts-list"><div><a href="/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/" title="论文笔记《Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation》"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-10-25</div><div class="title">论文笔记《Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation》</div></div></a></div><div><a href="/dissertation-notes/2023/Woo_et_al-2023-ConvNeXt_V2/" title="论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2023/Woo_et_al-2023-ConvNeXt_V2.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2024-04-04</div><div class="title">论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》</div></div></a></div><div><a href="/dissertation-notes/dissertation-summary/" title="论文总结"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/dissertation-summary.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-10-28</div><div class="title">论文总结</div></div></a></div><div><a href="/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/" title="论文笔记《Attention Is All You Need》"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2024-02-09</div><div class="title">论文笔记《Attention Is All You Need》</div></div></a></div><div><a href="/dissertation-notes/2018/Xiang_et_al-2018-PoseCNN/" title="论文笔记《PoseCNN：A Convolutional Neural Network for 6D Object Pose Estimation in Cluttered Scenes》"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2018/Xiang_et_al-2018-PoseCNN.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-10-19</div><div class="title">论文笔记《PoseCNN：A Convolutional Neural Network for 6D Object Pose Estimation in Cluttered Scenes》</div></div></a></div><div><a href="/dissertation-notes/2019/Tillet_et_al-2019-Triton/" title="论文笔记《Triton：An Intermediate Language and Compiler for Tiled Neural Network Computations》"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2019/Tillet_et_al-2019-Triton.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-12-26</div><div class="title">论文笔记《Triton：An Intermediate Language and Compiler for Tiled Neural Network Computations》</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="anzhiyufont anzhiyu-icon-comments"></i><span> 评论</span></div><div class="comment-randomInfo"><a onclick="anzhiyu.addRandomCommentInfo()" href="javascript:void(0)">匿名评论</a><a href="/privacy" style="margin-left: 4px">隐私政策</a></div><div class="comment-tips" id="comment-tips"><span>✅ 你无需删除空行，直接评论以获取最佳展示效果</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div><div class="comment-barrage"></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info__sayhi" id="author-info__sayhi" onclick="anzhiyu.changeSayHelloText()"></div><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/profile.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-status"><img class="g-status" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/chuoyichuo.gif" alt="status"/></div></div><div class="author-info__description"><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">直博狗一枚，日常会在博客上分享自己的学习笔记，希望可以帮到你。</div><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">相信你可以在这里找到对你有用的<b style="color:#fff">知识</b>和<b style="color:#fff">教程</b>。</div></div><div class="author-info__bottom-group"><a class="author-info__bottom-group-left" href="/"><h1 class="author-info__name">Karl</h1><div class="author-info__desc">日拱一卒，功不唐捐</div></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://github.com/karltan0328" target="_blank" title="Github"><i class="fa-brands fa-github faa-tada"></i></a><a class="social-icon faa-parent animated-hover" href="mailto:admin@karltan.com" target="_blank" title="Email"><i class="fa-solid fa-envelope faa-tada"></i></a></div></div></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bullhorn anzhiyu-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来看我的博客鸭~</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#NOPE-Novel-Object-Pose-Estimation-from-a-Single-Image"><span class="toc-text">NOPE: Novel Object Pose Estimation from a Single Image</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Abstract"><span class="toc-text">Abstract</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Introduction"><span class="toc-text">1. Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Related-work"><span class="toc-text">2. Related work</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-Novel-view-synthesis-from-a-single-image"><span class="toc-text">2.1. Novel view synthesis from a single image</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-Generalizable-object-pose-estimation"><span class="toc-text">2.2. Generalizable object pose estimation</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Method"><span class="toc-text">3. Method</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-Motivation"><span class="toc-text">3.1. Motivation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-Framework"><span class="toc-text">3.2. Framework</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-Pose-prediction"><span class="toc-text">3.3. Pose prediction</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Experiments"><span class="toc-text">4. Experiments</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-Experimental-setup"><span class="toc-text">4.1. Experimental setup</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-Comparison-with-the-state-of-the-art"><span class="toc-text">4.2. Comparison with the state of the art</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-Robustness-to-occlusions"><span class="toc-text">4.3. Robustness to occlusions</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-Ablation-study"><span class="toc-text">4.4. Ablation study</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-Runtime-analysis"><span class="toc-text">4.5. Runtime analysis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-6-Failure-cases"><span class="toc-text">4.6. Failure cases</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Conclusion"><span class="toc-text">5. Conclusion</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/" title="论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》"/></a><div class="content"><a class="title" href="/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/" title="论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》">论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》</a><time datetime="2024-04-15T07:00:00.000Z" title="发表于 2024-04-15 15:00:00">2024-04-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/dissertation-notes/2023/Woo_et_al-2023-ConvNeXt_V2/" title="论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2023/Woo_et_al-2023-ConvNeXt_V2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》"/></a><div class="content"><a class="title" href="/dissertation-notes/2023/Woo_et_al-2023-ConvNeXt_V2/" title="论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》">论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》</a><time datetime="2024-04-04T05:00:00.000Z" title="发表于 2024-04-04 13:00:00">2024-04-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/" title="论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2023/Nguyen_et_al-2023-NOPE.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》"/></a><div class="content"><a class="title" href="/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/" title="论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》">论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》</a><time datetime="2024-03-28T04:00:00.000Z" title="发表于 2024-03-28 12:00:00">2024-03-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/" title="论文笔记《Attention Is All You Need》"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文笔记《Attention Is All You Need》"/></a><div class="content"><a class="title" href="/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/" title="论文笔记《Attention Is All You Need》">论文笔记《Attention Is All You Need》</a><time datetime="2024-02-09T02:00:00.000Z" title="发表于 2024-02-09 10:00:00">2024-02-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/ac-diary/acwing/autumn-daily-question-2023/acwing5199/" title="AcWing 5199. 现代艺术"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/ac-diary/acwing/autumn-daily-question-2023.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AcWing 5199. 现代艺术"/></a><div class="content"><a class="title" href="/ac-diary/acwing/autumn-daily-question-2023/acwing5199/" title="AcWing 5199. 现代艺术">AcWing 5199. 现代艺术</a><time datetime="2024-01-18T08:00:00.000Z" title="发表于 2024-01-18 16:00:00">2024-01-18</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div id="footer_deal"><a class="deal_link" href="mailto:admin@karltan.com" title="email"><i class="fa-solid fa-envelope"></i></a><a class="deal_link" href="/atom.xml" title="RSS"><i class="fa-solid fa-rss"></i></a><img class="footer_mini_logo" title="返回顶部" alt="返回顶部" onclick="anzhiyu.scrollToDest(0, 500)" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/profile.jpg" size="50px"/><a class="deal_link" target="_blank" rel="noopener" href="https://github.com/karltan0328" title="Github"><i class="fa-brands fa-github"></i></a><a class="deal_link" target="_blank" rel="noopener" href="https://blog.csdn.net/karltan0328" title="CSDN"><i class="fa-solid fa-c"></i></a></div><div id="workboard"><img class="workSituationImg boardsign" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/work_img.svg" alt="paper快来，idea快来，我要毕业🥹" title="paper快来，idea快来，我要毕业🥹"/><div id="runtimeTextTip"></div></div><div id="anzhiyu-footer"><div class="footer-group"><div class="footer-title">服务</div><div class="footer-links"><a class="footer-item" title="51la统计" target="_blank" rel="noopener" href="https://v6.51.la/">51la统计</a><a class="footer-item" title="十年之约" target="_blank" rel="noopener" href="https://www.foreverblog.cn/">十年之约</a><a class="footer-item" title="开往" target="_blank" rel="noopener" href="https://github.com/travellings-link/travellings">开往</a></div></div><div class="footer-group"><div class="footer-title">主题</div><div class="footer-links"><a class="footer-item" title="文档" target="_blank" rel="noopener" href="https://docs.anheyu.com/">文档</a><a class="footer-item" title="源码" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu">源码</a><a class="footer-item" title="更新日志" target="_blank" rel="noopener" href="https://blog.anheyu.com/update/">更新日志</a></div></div><div class="footer-group"><div class="footer-title">导航</div><div class="footer-links"><a class="footer-item" title="即刻短文" href="/essay">即刻短文</a><a class="footer-item" title="友链文章" href="/fcircle">友链文章</a><a class="footer-item" title="留言板" href="/comments">留言板</a></div></div><div class="footer-group"><div class="footer-title">协议</div><div class="footer-links"><a class="footer-item" title="隐私协议" href="/privacy">隐私协议</a><a class="footer-item" title="Cookies" href="/cookies">Cookies</a><a class="footer-item" title="版权协议" href="/copyright">版权协议</a></div></div><div class="footer-group"><div class="footer-title-group"><div class="footer-title">友链</div><a class="random-friends-btn" id="footer-random-friends-btn" href="javascript:addFriendLinksInFooter();" title="换一批友情链接"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right"></i></a></div><div class="footer-links" id="friend-links-in-footer"></div></div></div><p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" data-title="博客框架为Hexo 7.0.0" title="博客框架为Hexo 7.0.0"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/frame-hexo.svg" alt="博客框架为Hexo 7.0.0"/></a><a class="github-badge" target="_blank" href="https://blog.anheyu.com/" style="margin-inline:5px" data-title="本站使用AnZhiYu主题" title="本站使用AnZhiYu主题"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/theme-anzhiyu.svg" alt="本站使用AnZhiYu主题"/></a><a class="github-badge" target="_blank" href="https://console.upyun.com/register/?invite=nVONH00RJ" style="margin-inline:5px" data-title="本网站由又拍云提供CDN加速/云储存服务" title="本网站由又拍云提供CDN加速/云储存服务"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/upyun.svg" alt="本网站由又拍云提供CDN加速/云储存服务"/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/copyright-by-nc-sa.svg" alt="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"/></a></p></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2023 - 2024 By <a class="footer-bar-link" href="/" title="Karl" target="_blank">Karl</a></div></div><div id="footer-type-tips"></div><div class="js-pjax"><script>function subtitleType () {
+  if (true) { 
+    window.typed = new Typed("#footer-type-tips", {
+      strings: ["不积跬步无以至千里","今日事，今日毕","有善始者实繁，能克终者盖寡","穷且益坚，不坠青云之志","若无闲事挂心头，便是人间好时节"],
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: true,
+      backSpeed: 50
+    })
+  } else {
+    document.getElementById("footer-type-tips").innerHTML = '不积跬步无以至千里'
+  }
+}
+
+if (true) {
+  if (typeof Typed === 'function') {
+    subtitleType()
+  } else {
+    getScript('https://cdn.cbd.int/typed.js@2.0.15/dist/typed.umd.js').then(subtitleType)
+  }
+} else {
+  subtitleType()
+}</script></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu" title="主题">主题</a><a class="footer-bar-link" target="_blank" rel="noopener" href="https://beian.miit.gov.cn/" title="湘ICP备2023018619号-1">湘ICP备2023018619号-1</a><a class="footer-bar-link cc" href="/copyright" title="cc协议"><i class="anzhiyufont anzhiyu-icon-copyright-line"></i><i class="anzhiyufont anzhiyu-icon-creative-commons-by-line"></i><i class="anzhiyufont anzhiyu-icon-creative-commons-nc-line"></i><i class="anzhiyufont anzhiyu-icon-creative-commons-nd-line"></i></a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">130</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">16</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" href="https://blog.karltan.com/" title="Karl的博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/logo.png" alt="Karl的博客"/><span class="back-menu-item-text">Karl的博客</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://www.karltan.com/" title="Karl的导航"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://www.karltan.com/favicon.ico" alt="Karl的导航"/><span class="back-menu-item-text">Karl的导航</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">博客分流</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://v.karltan.com/" title="Vercel"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://assets.vercel.com/image/upload/front/favicon/vercel/favicon.ico" alt="Vercel"/><span class="back-menu-item-text">Vercel</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://c.karltan.com/" title="Cloudflare"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://dash.cloudflare.com/favicon-32x32.png" alt="Cloudflare"/><span class="back-menu-item-text">Cloudflare</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">工具</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://npmzjk.karltan.com/" title="NPM"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npmzjk.karltan.com/images/favicons/favicon-32x32.png" alt="NPM"/><span class="back-menu-item-text">NPM</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://paste.karltan.com/" title="Free-Bin"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://paste.karltan.com/static/favicon.ico" alt="Free-Bin"/><span class="back-menu-item-text">Free-Bin</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://tools.karltan.com/" title="IT-TOOLS"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://tools.karltan.com/android-chrome-192x192.png" alt="IT-TOOLS"/><span class="back-menu-item-text">IT-TOOLS</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://memos.karltan.com/" title="Memos"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://memos.karltan.com/logo.png" alt="Memos"/><span class="back-menu-item-text">Memos</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://wbo.karltan.com/" title="WBO"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://wbo.karltan.com/favicon.ico" alt="WBO"/><span class="back-menu-item-text">WBO</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://git.karltan.com/" title="Gitea"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://git.karltan.com/assets/img/logo.svg" alt="Gitea"/><span class="back-menu-item-text">Gitea</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives"><i class="fa-solid fa-box-archive faa-tada"></i><span> 归档</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories"><i class="fa-solid fa-palette faa-tada"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags"><i class="fa-solid fa-tags faa-tada"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link"><i class="fa-solid fa-link faa-tada"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/fcircle"><i class="fa-brands fa-artstation faa-tada"></i><span> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments"><i class="fa-solid fa-comments faa-tada"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/essay"><i class="fa-solid fa-comment-dots faa-tada"></i><span> 说说</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/music"><i class="fa-solid fa-music faa-tada"></i><span> 音乐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album"><i class="fa-solid fa-images faa-tada"></i><span> 相册</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" target="_blank" rel="noopener" href="https://status.karltan.com/status/1"><i class="fa-solid fa-chart-line faa-tada"></i><span> 网站监控</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="fa-solid fa-shoe-prints faa-tada"></i><span> 随便逛逛</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/about"><i class="fa-solid fa-heart faa-tada"></i><span> 关于我</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/AcWing/" style="font-size: 0.88rem; color: rgb(85, 23, 91);">AcWing<sup>33</sup></a><a href="/tags/CUDA/" style="font-size: 0.88rem; color: rgb(12, 161, 160);">CUDA<sup>1</sup></a><a href="/tags/CVPR/" style="font-size: 0.88rem; color: rgb(147, 94, 197);">CVPR<sup>3</sup></a><a href="/tags/ICLR/" style="font-size: 0.88rem; color: rgb(43, 82, 180);">ICLR<sup>1</sup></a><a href="/tags/Linux/" style="font-size: 0.88rem; color: rgb(122, 113, 29);">Linux<sup>1</sup></a><a href="/tags/MAPL/" style="font-size: 0.88rem; color: rgb(36, 174, 170);">MAPL<sup>1</sup></a><a href="/tags/MySQL/" style="font-size: 0.88rem; color: rgb(181, 7, 113);">MySQL<sup>1</sup></a><a href="/tags/NIPS/" style="font-size: 0.88rem; color: rgb(7, 27, 3);">NIPS<sup>1</sup></a><a href="/tags/PyTorch/" style="font-size: 0.88rem; color: rgb(150, 37, 10);">PyTorch<sup>1</sup></a><a href="/tags/Python/" style="font-size: 0.88rem; color: rgb(141, 141, 197);">Python<sup>1</sup></a><a href="/tags/RSS/" style="font-size: 0.88rem; color: rgb(112, 22, 153);">RSS<sup>1</sup></a><a href="/tags/Ubuntu/" style="font-size: 0.88rem; color: rgb(19, 93, 120);">Ubuntu<sup>3</sup></a><a href="/tags/Windows/" style="font-size: 0.88rem; color: rgb(164, 101, 25);">Windows<sup>1</sup></a><a href="/tags/arXiv/" style="font-size: 0.88rem; color: rgb(9, 118, 154);">arXiv<sup>1</sup></a><a href="/tags/mAP/" style="font-size: 0.88rem; color: rgb(199, 124, 62);">mAP<sup>1</sup></a><a href="/tags/tmux/" style="font-size: 0.88rem; color: rgb(13, 185, 37);">tmux<sup>1</sup></a><a href="/tags/vim/" style="font-size: 0.88rem; color: rgb(4, 144, 16);">vim<sup>1</sup></a><a href="/tags/%E4%BB%A3%E7%A0%81/" style="font-size: 0.88rem; color: rgb(151, 15, 28);">代码<sup>1</sup></a><a href="/tags/%E4%BD%8D%E5%A7%BF%E4%BC%B0%E8%AE%A1/" style="font-size: 0.88rem; color: rgb(130, 27, 45);">位姿估计<sup>1</sup></a><a href="/tags/%E6%89%A9%E5%AE%B9/" style="font-size: 0.88rem; color: rgb(110, 175, 30);">扩容<sup>1</sup></a><a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 0.88rem; color: rgb(158, 42, 1);">数学<sup>1</sup></a><a href="/tags/%E6%97%8B%E8%BD%AC%E8%A1%A8%E7%A4%BA/" style="font-size: 0.88rem; color: rgb(11, 137, 41);">旋转表示<sup>1</sup></a><a href="/tags/%E6%9D%8E%E6%B2%90/" style="font-size: 0.88rem; color: rgb(109, 78, 54);">李沐<sup>76</sup></a><a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 0.88rem; color: rgb(99, 94, 68);">深度学习<sup>79</sup></a><a href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/" style="font-size: 0.88rem; color: rgb(141, 161, 139);">目标检测<sup>1</sup></a><a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 0.88rem; color: rgb(57, 29, 124);">笔记<sup>77</sup></a><a href="/tags/%E7%AE%97%E6%B3%95%E9%A2%98/" style="font-size: 0.88rem; color: rgb(153, 5, 199);">算法题<sup>33</sup></a><a href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" style="font-size: 0.88rem; color: rgb(186, 192, 126);">论文笔记<sup>9</sup></a><a href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91/" style="font-size: 0.88rem; color: rgb(159, 79, 86);">阿里云<sup>1</sup></a><a href="/tags/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6/" style="font-size: 0.88rem; color: rgb(7, 133, 128);">高等数学<sup>1</sup></a><a href="/tags/%E9%AD%94%E6%B3%95/" style="font-size: 0.88rem; color: rgb(99, 91, 1);">魔法<sup>1</sup></a></div></div><hr/></div></div><div id="keyboard-tips"><div class="keyboardTitle">博客快捷键</div><div class="keybordList"><div class="keybordItem"><div class="keyGroup"><div class="key">shift K</div></div><div class="keyContent"><div class="content">关闭快捷键功能</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift A</div></div><div class="keyContent"><div class="content">打开/关闭中控台</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift M</div></div><div class="keyContent"><div class="content">播放/暂停音乐</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift D</div></div><div class="keyContent"><div class="content">深色/浅色显示模式</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift S</div></div><div class="keyContent"><div class="content">站内搜索</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift R</div></div><div class="keyContent"><div class="content">随机访问</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift H</div></div><div class="keyContent"><div class="content">返回首页</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift F</div></div><div class="keyContent"><div class="content">友链鱼塘</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift L</div></div><div class="keyContent"><div class="content">友链页面</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift P</div></div><div class="keyContent"><div class="content">关于本站</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift I</div></div><div class="keyContent"><div class="content">原版/本站右键菜单</div></div></div></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="anzhiyufont anzhiyu-icon-comment-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="anzhiyufont anzhiyu-icon-comments"></i></a><a id="switch-commentBarrage" href="javascript:anzhiyu.switchCommentBarrage();" title="开关弹幕"><i class="anzhiyufont anzhiyu-icon-danmu"></i></a><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="anzhiyufont anzhiyu-icon-xmark"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.20/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.4/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script async src="/anzhiyu/random.js"></script><script async="async">(function () {
+  var grt = new Date("07/15/2023 00:00:00"); //设置网站上线时间
+  var now = new Date();
+  var dnum;
+  var hnum;
+  var mnum;
+  var snum;
+  var nowHour;
+
+  // 计算并更新天数、小时数、分钟数和秒数
+  function updateTime() {
+    now = new Date(); // 更新 now 的值
+    nowHour = now.getHours(); // 更新 nowHour 的值
+    var days = (now - grt) / 1000 / 60 / 60 / 24;
+    dnum = Math.floor(days);
+    var hours = (now - grt) / 1000 / 60 / 60 - 24 * dnum;
+    hnum = Math.floor(hours);
+    if (String(hnum).length == 1) {
+      hnum = "0" + hnum;
+    }
+    var minutes = (now - grt) / 1000 / 60 - 24 * 60 * dnum - 60 * hnum;
+    mnum = Math.floor(minutes);
+    if (String(mnum).length == 1) {
+      mnum = "0" + mnum;
+    }
+    var seconds = (now - grt) / 1000 - 24 * 60 * 60 * dnum - 60 * 60 * hnum - 60 * mnum;
+    snum = Math.round(seconds);
+    if (String(snum).length == 1) {
+      snum = "0" + snum;
+    }
+  }
+
+  // 更新网页中显示的网站运行时间
+  function updateHtml() {
+    const footer = document.getElementById("footer");
+    if (!footer) return
+    let currentTimeHtml = "";
+    if (nowHour < 18 && nowHour >= 9) {
+      // 如果是上班时间，默认就是"安知鱼-上班摸鱼中.svg"图片，不需要更改
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    } else {
+      // 如果是下班时间，插入"安知鱼-下班啦.svg"图片
+      let img = document.querySelector("#workboard .workSituationImg");
+      if (img != null) {
+        img.src = "/img/label/offduty_img.svg";
+        img.title = "延毕就延毕，我先玩了再说🤡";
+        img.alt = "延毕就延毕，我先玩了再说🤡";
+      }
+
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    }
+
+    if (document.getElementById("runtimeTextTip")) {
+      document.getElementById("runtimeTextTip").innerHTML = currentTimeHtml;
+    }
+  }
+
+  setInterval(() => {
+    updateTime();
+    updateHtml();
+  }, 1000);
+})();</script><script src="https://cdn.cbd.int/algoliasearch@4.18.0/dist/algoliasearch-lite.umd.js"></script><script src="https://cdn.cbd.int/instantsearch.js@4.56.5/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.cbd.int/mathjax@3.2.2/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.cbd.int/mermaid@10.2.4/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  anzhiyu.addGlobalFn('themeChange', runMermaid, 'mermaid')
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo.karltan.com/.netlify/functions/twikoo',
+      region: '',
+      onCommentLoaded: () => {
+        anzhiyu.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') setTimeout(runFn,0)
+    else getScript('https://cdn.cbd.int/twikoo@1.6.25/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo.karltan.com/.netlify/functions/twikoo',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const runFn = () => {
+    init();
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) anzhiyu.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else {
+      loadTwikoo()
+    }
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script><input type="hidden" name="page-type" id="page-type" value="post"><script async src="/js/anzhiyu/comment_barrage.js"></script></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://twikoo.karltan.com/.netlify/functions/twikoo',
+        region: '',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.textContent= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn.cbd.int/twikoo@1.6.25/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'><div class='name'><span>${array[i].nick} </span></div></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <time datetime="${array[i].date}">${anzhiyu.diffDate(array[i].date, true)}</time></div>
+        </div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script async data-pjax src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.1/bubble/bubble.js"></script><script>var visitorMail = "visitor@karltan.com";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><script src="/js/anzhiyu/right_click_menu.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script><script defer src="/_vercel/insights/script.js"></script><script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script src="https://sdk.51.la/perf/js-sdk-perf.min.js" crossorigin="anonymous"></script><script>LA.init({id:"{3GbfAYtZPDEan7kS}",ck:"{3Gbf0O9t4EtAOhf1}"})</script><script>new LingQue.Monitor().init({id:"3GbfAYtZPDEan7kS",sendSuspicious:true});</script><script>(() => {
+  window.$crisp = [];
+  window.CRISP_WEBSITE_ID = "99975f47-0cf6-4a4b-8088-49fd5cb33ab0";
+  (function () {
+    d = document;
+    s = d.createElement("script");
+    s.src = "https://client.crisp.chat/l.js";
+    s.async = 1;
+    d.getElementsByTagName("head")[0].appendChild(s);
+  })();
+  $crisp.push(["safe", true])
+
+  const isChatBtn = true
+  const isChatHideShow = false
+
+  if (isChatBtn) {
+    const open = () => {
+      $crisp.push(["do", "chat:show"])
+      $crisp.push(["do", "chat:open"])
+    }
+
+    const close = () => {
+      $crisp.push(["do", "chat:hide"])
+    }
+
+    close()
+    $crisp.push(["on", "chat:closed", function() {
+      close()
+    }])
+
+    window.chatBtnFn = () => {
+      $crisp.is("chat:visible") ? close() : open()
+    }
+  } else if (isChatHideShow) {
+    window.chatBtn = {
+      hide: () => {
+        $crisp.push(["do", "chat:hide"])
+      },
+      show: () => {
+        $crisp.push(["do", "chat:show"])
+      }
+    }
+  }
+})()</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:type\"]","meta[property=\"og:site_name\"]","meta[property=\"og:description\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>

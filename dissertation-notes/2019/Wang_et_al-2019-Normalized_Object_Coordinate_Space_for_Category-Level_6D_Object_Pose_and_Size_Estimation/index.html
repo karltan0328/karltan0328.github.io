@@ -1,0 +1,845 @@
+<!-- ./node_modules/hexo-theme-anzhiyu/layout/includes/layout.pug--><!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>论文笔记《Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation》 | Karl的博客</title><meta name="keywords" content="论文笔记,CVPR"><meta name="author" content="Karl"><meta name="copyright" content="Karl"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="论文笔记《Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation》"><meta name="application-name" content="论文笔记《Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation》"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="论文笔记《Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation》"><meta property="og:url" content="http://blog.karltan.com/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/index.html"><meta property="og:site_name" content="Karl的博客"><meta property="og:description" content="用于类别级6D对象姿态和尺寸估计的归一化对象坐标空间。"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://img.karltan.com/covers/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation.png"><meta property="article:author" content="Karl"><meta property="article:tag"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://img.karltan.com/covers/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation.png"><meta name="description" content="用于类别级6D对象姿态和尺寸估计的归一化对象坐标空间。"><link rel="shortcut icon" href="/img/logo.png"><link rel="canonical" href="http://blog.karltan.com/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/"><link rel="preconnect" href="//cdn.cbd.int"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//static.cloudflareinsights.com"/><link rel="preconnect" href="//www.clarity.ms"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="ItAgqL0bGv4TvuAzDl6nNhCuwt5RdBLYRkwae25qGzU"/><meta name="baidu-site-verification" content="codeva-Y7ehYLkADp"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@1.0.17/lib/assets/font-awesome-animation.min.css"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.20/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?0f2c96ab05c3c6d77e2d8fbf3240e404";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script defer="defer" data-pjax="data-pjax" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon="{&quot;token&quot;: &quot;758e166757ec488583caf56b7dd7f095&quot;}"></script><script>(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "i0moouu8jj");</script><script>const GLOBAL_CONFIG = {
+  linkPageTop: {"enable":true,"title":"与数百名博主无限进步","addFriendPlaceholder":"昵称（请勿包含博客等字样）：\n网站地址（要求博客地址，请勿提交个人主页）：\n头像图片url（请提供尽可能清晰的图片）：\n描述：\n站点截图（可选）：\n"},
+  peoplecanvas: undefined,
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"tianli","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"a93a787ee06b121647ed","Referer":"https://blog.karltan.com/"},
+  diytitle: undefined,
+  LA51: {"enable":true,"ck":"3Gbf0O9t4EtAOhf1","LingQueMonitorID":"3GbfAYtZPDEan7kS"},
+  greetingBox: {"enable":true,"default":"晚上好👋","list":[{"greeting":"晚安😴","startTime":0,"endTime":5},{"greeting":"早上好鸭👋, 祝你一天好心情！","startTime":6,"endTime":9},{"greeting":"上午好👋, 状态很好，鼓励一下～","startTime":10,"endTime":10},{"greeting":"11点多啦, 在坚持一下就吃饭啦～","startTime":11,"endTime":11},{"greeting":"午安👋, 宝贝","startTime":12,"endTime":13},{"greeting":"🌈充实的一天辛苦啦！","startTime":14,"endTime":17},{"greeting":"18点喽, 奖励一顿丰盛的大餐吧🍔。","startTime":18,"endTime":19},{"greeting":"晚上好👋, 在属于自己的时间好好放松😌~","startTime":20,"endTime":24}]},
+  twikooEnvId: 'https://twikoo.karltan.com/.netlify/functions/twikoo',
+  commentBarrageConfig:{"enable":true,"maxBarrage":1,"barrageTime":4000,"accessToken":"6f88301de4664d9d9a7cadf39a9f6e5a","mailMd5":""},
+  root: '/',
+  preloader: {"source":2},
+  friends_vue_info: {"apiurl":"https://fcircle.karltan.com/"},
+  navMusic: false,
+  mainTone: undefined,
+  authorStatus: {"skills":["🤖️ 数码科技爱好者","🔍 分享与热心帮助","🏠 智能家居小能手","🔨 设计开发一条龙","🤝 专修交互与设计","🏃 脚踏实地行动派","🧱 团队小组发动机","💢 壮汉人狠话不多"]},
+  algolia: {"appId":"8C3UHN3LPN","apiKey":"e00dcc69cdc423d89a288bc784a14012","indexName":"blog-search","hits":{"per_page":6},"languages":{"input_placeholder":"输入关键词后按下回车查找","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: {"limitDay":1,"position":"top","messagePrev":"本文距上次修改已经","messageNext":"天，其中的内容可能已经不再适用。"},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"作者: Karl","link":"链接: ","source":"来源: Karl的博客","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-right"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: {"enable":true,"delay":100,"shiftDelay":200},
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: 'Karl的博客',
+  title: '论文笔记《Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation》',
+  postAI: 'true',
+  pageFillDescription: 'Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation, Abstract, 1. Introduction, 2. Related Work, Category-Level 3D Object Detection, Instance-Level 6 DoF Pose Estimation, Category-Level 4 DoF Pose Estimation, Training Data Generation, 3. Background and Overview, Category-Level 6D Object Pose and Size Estimation, Normalized Object Coordinate Space (NOCS), Method Overview, 4. Datasets, 4.1. Context-Aware Mixed Reality Approach, Real Scenes, Synthetic Objects, Context-Aware Compositing, 4.2. Real-World Data, 5. Method, 5.1. NOCS Map Prediction CNN, 5.1.1 NOCS Map Head, Regression vs. Classification, Loss Function, Object Symmetry, Training Protocol, 5.2. 6D Pose and Size Estimation, 6. Experiments and Results, Metrics, Baselines, Evaluation Data, 6.1. Category-Level 6D Pose and Size Estimation, Test on CAMERA25, Test on REAL275, 6.2. Ablation Studies, CAMERA Approach, Classification vs. Regression, Symmetry Loss, 6.3. Instance-level 6D Pose Estimation, Limitations and FutureWork, 7. Conclusion, A. Implementation and Computation Times, B. Scanned Real Instances, C. Result Visualization, D. Comparisons on the OccludedLINEMOD Dataset原文链接论文笔记的博客链接论文笔记博客论文链接代码链接项目链接本文的目标是估计图像中未见过物体的位姿和尺寸与实例级姿态估计任务相反我们的问题假设在训练或测试期间没有精确的对象模型可用为了处理给定类别中不同且未见过的对象实例我们引入了标准化对象坐标空间一个类别中所有可能对象实例的共享规范表示然后我们基于区域的神经网络被训练用来直接推断从观察到的像素到这个共享对象表示的对应关系以及其他对象信息如类标签和实例掩码这些预测可以与深度图结合共同估计在混乱场景中多个物体的度量姿态和大小为了训练我们的网络我们提出了一种新的上下文感知技术来生成大量有标签的混合现实数据为了进一步改进我们的模型并评估其在真实数据上的性能我们还提供了一个具有多个环境和实例变化的有标签真实数据集大量的实验表明该方法能够稳健地估计真实环境中未见过对象的姿态和大小同时在标准姿态估计基准上实现最先进的性能在虚拟和增强现实机器人技术和场景理解中目标检测和位置方向和大小的估计是一个重要的需求这些应用程序需要在新的环境中进行操作这些环境可能包含以前未见过的对象实例过去的工作已经探索了实例级位姿估计问题其中精确的模型和它们的尺寸是预先可得的不幸的是这些技术不能在一般情况下使用因为大多数对象以前从未见过也没有已知的模型另一方面类别级对象检测方法可以估计出对象类别标签和而不需要精确的模型然而估计的依赖于视角方法中并不会编码对象的精确方向因此这两类方法都不能满足需要未见过对象姿态和个非均匀尺度参数编码维度应用程序的需要在本文中我们的目标是通过介绍第一个多对象的类别级位姿和大小估计的方法来弥合这两类方法之间的差距据我们所知这是一个对新对象实例具有挑战性的问题由于我们不能对未见过的物体使用模型第一个挑战是找到一种表示方式允许在特定类别中定义不同物体的位姿和大小第二个挑战是无法获得用于训练和测试的大规模数据集像或这样的数据集缺乏精确的姿态和大小的标签或者不包含桌面尺度对象类别确切地说是在桌面或桌面操作任务中出现的对象类型对于这种类型的对象来说知道姿态和大小将是有用的为了解决表示的挑战我们将这个问题表述为在共享对象描述空间中寻找对象像素与归一化坐标之间的对应关系参见第节我们定义了一个称为归一化对象坐标空间的共享空间其中所有对象都包含在一个公共归一化空间中一个类别中的所有实例方向都是一致的这使姿态和大小估计成为可能即使是未见过的对象实例我们的方法的核心是一个卷积神经网络它从单个图像中联合估计对象类实例掩码和多个对象的映射直观地映射通过预测目标像素和之间的密集对应来捕获目标可见部分的归一化形状我们的通过像素回归或分类问题来估计映射然后映射与深度图一起使用以使用位姿拟合方法来估计对象的全度量位姿和大小为了解决数据挑战我们引入了一种空间上下文感知的混合现实方法来自动生成大量的数据训练测试这些数据由中逼真的合成对象与真实的桌面场景组合而成这种方法允许自动生成具有混乱对象的真实数据并为类标签实例掩码映射位姿和大小提供完整的标签我们还提供了一个用于训练和测试的真实世界数据集该数据集中有个对象类别有个不同场景共计个独特的实例并且为每个实例提供了位姿和大小的标签据我们所知我们的数据集是最大和最全面的用于位姿和尺寸以及对象检测任务的训练和测试数据集我们的方法使用来自商用传感器的输入设计用于处理对称和非对称对象使其适用于许多应用程序图显示了我们的方法在一个桌面场景上操作的例子在训练期间有多个对象未见过综上所述本工作的主要贡献有标准化对象坐标空间一个统一的共享空间允许不同但相关的对象有一个共同的参考框架以便对未见过的对象进行位姿和大小估计一种联合预测图像中多个未见过对象的类标签实例掩码和映射的在位姿拟合算法中我们使用映射和深度图来估计对象的全度量位姿和尺寸数据集一种空间上下文感知的混合现实技术在真实图像中去合成合成对象允许我们生成一个大规模的有标签数据集来训练我们的我们还为训练和测试提供了完整标签的真实世界数据集在本节中我们重点回顾了基于图像的类别级目标检测实例级位姿估计类别级位姿估计以及不同数据生成策略的相关工作预测物体的姿态和大小的挑战之一是在场景中定位物体并找到它们的物理尺寸这可以表述为一个检测问题值得注意的尝试包括他们将体积数据作为输入直接在中检测物体另一种思路提出先在图像中生成对象推荐然后将该推荐投影到空间中进一步细化最终的位置上面描述的技术达到了令人印象深刻的检测率但不幸的是仅仅关注于寻找物体的边界体积而不能预测物体的姿态考虑到它的实际重要性有大量的工作集中在实例级位姿估计在这里任务是推断对象的位置和旋转无比例假设在训练期间可以获得这些对象的确切模型和大小目前的可以大致分为模板匹配或对象坐标回归技术模板匹配技术通过迭代最近点等算法将模型与预测到的点云进行对齐或者使用手工制作的局部描述符进一步指导对齐过程这类技术经常遭受对象间和对象内的遮挡这是我们只有部分扫描对象时的典型情况第二类是基于对象坐标回归的方法目的是回归每个物体像素对应的物体表面位置这些技术已成功应用于身体姿态估计相机重定位和目标姿态估计上述两种方法都需要在训练和测试过程中建立精确的模型除了在测试时存储所有模型或学习过的物体坐标回归器的实际限制外捕获大量物体的高保真和完整的模型是一项具有挑战性的任务虽然我们的方法受到了对象坐标回归技术的启发但它也与上面的方法有很大的不同因为我们在测试时不再需要完整和高保真的对象模型有一些关于类别级姿态估计的研究但它们都做出了简化的假设首先这些算法将旋转预测限制为仅沿重力方向只有个自由度其次他们关注一些大房间尺度的物体类别例如椅子沙发床或汽车而没有考虑到物体的对称性相反我们估计了各种手尺度物体的姿态由于姿态变化较大手尺度物体的姿态往往比室内尺度物体更具挑战性我们的方法也可以在不假设物体重力方向的情况下预测完整的位姿和大小最后我们的方法以交互帧率运行每帧秒这比其他方法为每帧约秒为每帧分钟快得多训练的一个主要挑战是缺乏足够的类别个数实例个数姿态种类混乱程度和光照变化的训练数据为了构建包含对象标签的真实数据集例如人们已经做出了一些努力不幸的是这些数据集往往相对较小这主要是由于与标签相关的高成本时间和金钱这个限制是其他工作例如的动力这些工作生成的数据完全是合成的这允许以较小的成本生成大量具有完美标签的训练数据为了简单起见所有这些数据集都忽略了一些因素的组合材料传感器噪声和照明这些因素会在合成数据和真实数据分布之间造成事实上的领域差距为了缩小这种差距生成了混合真实数据和合成数据的数据集方法是在真实背景上呈现虚拟对象虽然背景是真实的但渲染的对象是飞行在半空中的并且是脱离上下文的这阻止算法利用重要的上下文线索我们引入了一种新的混合真实的方法以上下文感知的方式自动生成大量的由合成物体和真实背景组成的数据使其更加真实这得到了实验的支持表明我们的上下文感知训练数据能够使模型更好地泛化到真实世界测试数据我们还提供了一个真实世界的数据集以进一步改善学习和评估我们关注对象实例的个旋转个平移和个缩放参数维度的估计问题此问题的解决方案可以可视化为围绕对象的一个紧密定向的参见图虽然图像中的这些对象之前没有见过但是这些对象来自于训练过程中的已知对象类别如相机并且在训练过程中模型会见到这些类别中的若干个样本这项任务特别具有挑战性因为我们不能在测试时使用模型而且位姿对未见过的物体没有明确定义为了克服这个问题我们提出了一种新的表示方式它定义了一个共享的对象空间可以定义未见过的对象的位姿和大小是一个在空间中的单位立方体即给定每个类别的已知对象模型的形状集合通过统一缩放对象我们将其大小归一化使其的对角线长度收缩为并在空间中居中参见图此外我们让同一类别对象的中心和方向一致我们使用中的模型这些模型已经对比例位置和方向进行了规范化图显示了相机类别中规范化形状的示例我们的表示允许形状的每个顶点在图中的颜色编码中表示为一个元组我们的预测彩色编码的坐标的透视投影即映射图左下角注意进行透视投影之后像素的坐标仍然是三维的图中右侧的竖线是图像平面是点在空间中的位置是点在图像平面中的位置那么预测的坐标也是一个三维坐标有多种方式来解释映射作为在中观测到的物体部分的形状重建作为密集的像素对应我们的学习对未见过的物体进行形状预测或者在大的形状集合上训练学习去预测物体的像素对应这种表示比其他方法例如更健壮因为即使对象只有部分可见我们也可以操作图说明了我们使用图像和深度图作为输入的方法我们的仅从图像估计图像中对象的类标签实例掩码就是语义分割和映射除此之外我们没有在中使用深度图因为我们想利用现有不包含深度的数据集如数据集来提高性能映射可以在一个标准化的空间中编码对象的形状和大小因此我们可以在稍后阶段使用深度图来提升这一归一化空间并使用鲁棒的离群值去除和对齐技术来预测全度量对象的姿态和大小我们的是建立在框架上的除了类标签和实例掩码外在改进后还能够联合预测映射第节详细介绍了我们的改进和可以处理对称对象的新的函数在训练过程中我们使用一种新的方法参见第节来渲染图像这个大数据集允许我们在测试时从新的类别泛化到新的实例并且为了进一步缩小这个领域的差距我们还使用了一个更小的真实数据集在类别级检测和位姿与尺寸估计中一个主要的挑战是无法获得数据虽然已经有了像和这样的尝试但它们都有重要的局限性首先它们不提供对象的位姿只关注其次增强现实和机器人等应用得益于桌面设置中的手尺度对象而当前的数据集关注的是更大的对象如椅子和桌子最后这些数据集不包含我们需要的类型的标签即映射并且包含的示例数量有限为了促进大量手尺度对象训练数据的生成我们提出了一种新的方法它解决了以前方法的局限性使数据生成需要的时间更少并降低了成本它以一种上下文感知的方式将真实的背景图像与综合渲染的前景对象结合起来即将合成的对象渲染并组合成具有合理的物理位置照明和比例的真实场景见图左边蓝色框内这种混合现实的方法允许我们生成比以前多得多的训练数据我们使用幅变化广泛的室内场景的真实图像作为背景图中间粉色框内我们的重点是桌面场景因为大多数室内以人为中心的空间由桌面表面和手尺度的对象组成我们总共为个场景收集了张图像其中个场景留作验证为了在上面的真实场景中渲染逼真的对象我们从中选择手动缩放的对象手动删除那些看起来不真实或有拓扑问题的对象总的来说我们挑选了种物品类别瓶子碗相机罐子笔记本电脑和马克杯我们还创建了一个干扰类别其中包含了上面没有列出的类别中的对象实例比如显示器电话和吉他这提高了预测我们的主要类别时的鲁棒性即使场景中出现了其他对象我们策划的版本包含个单独的对象实例我们留出个实例用于验证为了提高真实感我们以一种上下文感知的方式组合虚拟对象即我们将其放置在它们自然出现的地方例如在支持表面上并使用合理的照明我们使用了一种平面检测算法对真实图像进行像素级平面分割随后我们在可放置合成物体的分割平面上取样随机位置和方向然后我们放置几个虚拟光源来模拟真实的室内照明条件最后我们将渲染的图像和真实的图像结合起来以生成一个具有映射掩码和类标签的合成图片并且这个合成图片有完美的标签我们总共渲染了的合成图像其中用于验证据我们所知这是分类级位姿和尺寸估计的最大数据集我们的混合现实合成技术是使用游戏引擎实现的并且我们为引擎增加了用于平面检测和点采样的自定义插件所有这些都将公开发布与使用非上下文感知数据相比使用我们的方法生成的图像看起来似乎合理和真实从而提高了泛化为了进一步改进和验证算法在具有挑战性的混乱和光照条件下的真实世界性能我们捕获了两个真实世界的数据集我们前面生成的混合现实数据的真实训练数据集的补充一个真实世界的测试数据集来评估姿态和尺寸估计的性能我们开发了一种半自动的方法来标注物体的位姿和大小图显示了真实世界数据的示例右边绿色框内我们使用在个不同的真实场景个场景用于训练个场景用于验证个场景用于测试中捕获了个帧个帧用于训练个帧用于验证个帧用于测试训练集用于训练会反复遍历验证集用于评估模型的好坏测试集只用一次对于每个训练和测试子集我们使用个类别每个类别选取个不同的实例对于验证集我们使用个类别每个类别选取个不同的实例我们在每个场景中放置超过个对象实例来模拟真实世界的混乱对于每个实例我们使用我们为此目的开发的重建算法来获得一个干净和准确的网格总的来说我们的组合数据集包含个不同的真实场景个独特的对象实例跨越个类别使其成为分类级位姿和大小估计最全面的数据集图显示了我们从图像中估计多个之前未见过物体的姿态和大小的方法该会预测对象的类标签掩码和映射然后我们使用映射和深度图来估计对象的度量位姿和大小我们的目标是纯粹基于图像估计对象的类标签实例掩码和映射该建立在基于区域的框架上因为它在目标检测和实例分割任务上展示了最先进的性能是模块化的灵活的快速的并可以很容易地被增强从而预测映射如下所述构建在架构之上由两个模块组成一个模块提出可能包含对象的区域一个检测器检测和分类区域内的对象此外它还预测区域内对象的实例掩码我们的主要贡献是在中添加了个头部结构用于预测映射的分量见图对于每个提议的感兴趣区域一个头部的输出大小为其中是类别的数量每个类别包含该类别中所有检测到的对象的或坐标与掩码头类似我们在测试时使用对象类别然后查找相应的预测通道在训练过程中损失函数中只使用了来自对象类别的映射组件我们使用骨干网和特征金字塔网络为了预测映射我们要么回归每个像素值要么将像素值离散化将其作为一个分类问题图中直接回归可能是一个更困难的任务可能会在训练中引入不稳定性类似地具有大量类的像素分类例如或者其中是像素的取值数可能引入更多的参数使训练比直接回归更具有挑战性实验结果表明的像素分类优于直接回归我们网络中的类框和掩码头使用与中描述的相同的损失函数对于映射头我们使用两个损失函数一个标准的损失函数用于分类另一个损失函数用于回归使学习更鲁棒表示如下其中在该损失函数中是映射像素的值是映射像素的预测值是中掩码像素的个数是的值是的预测值许多常见的家用物品如瓶子都展现出了绕轴对称的特性我们的表示没有考虑到对称性这导致了一些对象类的巨大错误为了缓解这个问题我们引入了一个考虑对称性的损失函数的变体对于训练数据中的每个类别我们定义了一个对称轴在映射中对象发生预定义的绕轴旋转时会产生相同的损失函数值例如顶部为方形的长方体有一个垂直的对称轴在这个轴上旋转时会导致相同的映射因此有相同的损失对于非对称对象是唯一的我们发现为取值的数量足以处理大多数对称类我们生成映射下标表示沿着对称轴旋转的次数然后我们定义我们的对称损失函数其中表示的是预测的映射像素这里相当于是将的旋转次分别计算损失函数值然后选取一个最小的损失函数值来作为最后的损失函数值我们在数据集上用在二维实例分割任务上训练的权值来初始化主干和对于所有头我们使用中提出的初始化技术我们使用的批量大小为初始学习率为优化器的动量为权重衰减为在训练的第一阶段我们冻结权重只训练头部和中的层进行次迭代在第二阶段我们将层冻结在级以下并训练进行迭代在最后阶段我们将层冻结在第级以下持续次迭代当切换到每个阶段时我们将学习速度降低了倍我们的目标是通过使用映射和输入深度图来估计被检测物体的全度量位姿和尺寸为此我们使用相机的内部和外部特性来对齐深度图像和彩色图像然后应用预测的对象掩码来得到被检测对象的三维点云如果语义分割正确那么这个点云是真实点云我们还使用映射来获得的表示这个是在原点处的点云然后我们估计从转换到的缩放旋转和平移我们使用了算法来解决这个维刚性变换估计问题并使用算法来去除离群点定性结果见补充资料从得到的点云应该是在原点位置的然后经过缩放旋转和平移到深度相机处从而得到姿态估计我们报告了物体检测和姿态估计指标的结果为了评估三维检测和目标尺寸估计我们使用了阈值为的交并比度量对于位姿估计我们报告的对象实例的平均精度其中平移的误差小于旋转的误差小于类似于我们将目标检测与姿态评估分离因为它可以更清晰地显示性能我们在预测和之间设置了的重叠检测阈值以确保大多数目标都包含在评估中对于对称对象类别瓶碗和罐我们允许预测的围绕对象的垂直轴自由旋转而不会受到任何惩罚我们对马克杯类杯子进行了特殊处理在手柄不可见的情况下使其对称因为在这种情况下很难判断它的位姿即使是人类我们使用来检测数据的处理可视性并手动标注真实数据由于我们不知道有其他方法来估计类别级的位姿和大小我们建立了自己的基线来帮助比较性能它由网络组成在相同的数据上训练但没有映射头我们使用预测的实例掩码从深度图中获得对象的三维点云我们使用将掩码点云与相应类别中随机选择的模型进行对齐对于位姿估计我们给出的结果可以很容易地与进行比较我们所有的实验都使用这些评估数据集中的一个或两个验证数据集一个的真实数据集带有标签由于真实数据是有限的这允许我们在不涉及姿态估计和域泛化的情况下研究性能我们报告了我们的方法的类别级结果仅在训练集上训练我们在上测试性能它由训练中完全未见过的对象和背景组成我们在为时实现了的在的测量中实现了的是用于估计姿态的严格度量即使对于已知实例更多细节请参见图因为这里的测试集中都是在训练中没有见过的背景和对象是无法处理的所以在这个数据集上是无法将方法和方法进行比较的然后我们在结合真实数据集和来自的弱监督下训练我们的网络并在真实测试集上对其进行评估因为没有的映射所以我们在训练中不使用损失我们使用了张包含我们类实例的图片为了平衡这些数据集对于每个小批量我们从三个数据源中选择图像的概率为的概率为的概率为这个网络是我们产生的所有可视化结果中表现最好的见图在真实的测试集中我们在为时实现了的在的测量中实现了的在的测量中实现了的相比之下基线算法在为时实现了的在和的测量中实现了的这显著低于我们算法的性能图显示了更详细的分析和比较该实验表明通过学习去预测密集映射我们的算法能够提供有关对象的形状部件和可见性的额外详细信息这些信息对于正确估计对象的姿态和大小都至关重要为了评估我们的数据生成方法我们对在不同训练数据组合上训练的网络进行了实验对于这个实验我们设置网络架构来回归映射表显示了我们的网络在测试集上的性能我们还创建了的变体其中图像以非上下文感知的方式合成在表中由表示如表中所示由于域间隙仅使用会导致性能较差我们看到了在添加和后的逐步改进仅在或在和上进行训练往往会由于数据集大小较小而过拟合到训练数据使用和进行训练可获得最佳效果此外我们看到非上下文感知数据的结果比上下文感知数据的性能更差这表明我们的方法是有用的在和上像素分类始终优于回归使用最适合姿态估计而在检测上更好参见表这种损失对于许多日常对称对象类别来说是至关重要的为了研究对称性损失的影响我们在和集上对回归网络进行了消融实验表示出了如果不使用对称性损失表示不使用对称性损失姿态精度显著降低特别是对于姿态我们还评估了我们在上的实例级姿态估计任务的方法并与进行了比较数据集有个对象实例并为每个实例提供一个模型它有张带有标签的姿态的图像我们遵循中的协议随机选择的数据集作为训练图像然后我们使用第节中描述的技术生成个合成图像使用分类网络我们实现了的检测率在为时实现了的在的测量中实现了的在的测量中实现了的这远远高于后者在没有迭代姿态细化的情况下仅实现了的在中报告图提供了更详细的分析这个实验表明虽然我们的方法是为类别级姿态估计而设计的但它也可以在标准姿态估计基准上实现最先进的性能使用投影度量其测量值和估计的对象姿态之间的平均像素距离我们在像素的投影上实现了我们的方法显著优于后者在中报告了像素的投影上实现的详细对比见补充文件据我们所知我们是第一个解决类别级姿态和大小估计问题的方法仍有许多悬而未决的问题需要解决首先在我们的方法中位姿估计是以区域推荐和类别预测为条件的这可能是不正确的并对结果产生负面影响其次我们的方法依赖于深度图像来提升预测到真实世界的坐标未来的工作应该研究直接从图像估计姿态和大小我们提出了一种方法为未见过的的对象实例做类别级的姿态和尺寸估计我们提出了一个新的规范化对象坐标空间允许我们定义一个共享的空间与一致的对象缩放和方向我们提出了一个来预测映射该映射可以与深度图一起使用使用一种位姿拟合方法来估计未见过物体的全度量位姿和大小我们的方法在增强现实机器人和场景理解等领域有重要的应用我们的网络在和上实现代码基于的实现该网络使用特征金字塔网络和骨干网络我们的网络将分辨率为的图像作为输入我们在台式机上使用实现了约的交互速率我们的实现使用算法神经网络推理的平均时间为姿态对齐的平均时间为我们的真实数据集包含个对象类别和个真实扫描的唯一实例对于每个类别我们收集了个实例其中个用于训练和验证其余个用于测试图显示了我们实例的一个子集在这里可以看到数据集中有很大的类内形状差异第一行是在训练中使用的实例第二行和第三行是为测试而保留的实例这里我们提供了位姿和尺寸估计的更多视觉结果由于有足够的训练数据我们的方法在验证集上取得了非常好的性能如图所示在测试集上尽管实际训练数据量很小但我们仍然观察到良好的性能如图所示我们观察到真实数据的几种失效模式包括缺失检测错误分类和预测坐标图的不一致我们的方法与现有的在数据集上使用二维投影度量的方法的比较如图所示',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-10-28 14:00:00',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/mycss.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"></script><meta name="generator" content="Hexo 7.0.0"><link rel="alternate" href="/atom.xml" title="Karl的博客" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Karl的博客" type="application/rss+xml">
+</head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><div class="back-home-button"><i class="anzhiyufont anzhiyu-icon-grip-vertical"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" href="https://blog.karltan.com/" title="Karl的博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/logo.png" alt="Karl的博客"/><span class="back-menu-item-text">Karl的博客</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://www.karltan.com/" title="Karl的导航"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://www.karltan.com/favicon.ico" alt="Karl的导航"/><span class="back-menu-item-text">Karl的导航</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">博客分流</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://v.karltan.com/" title="Vercel"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://assets.vercel.com/image/upload/front/favicon/vercel/favicon.ico" alt="Vercel"/><span class="back-menu-item-text">Vercel</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://c.karltan.com/" title="Cloudflare"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://dash.cloudflare.com/favicon-32x32.png" alt="Cloudflare"/><span class="back-menu-item-text">Cloudflare</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">工具</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://npmzjk.karltan.com/" title="NPM"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npmzjk.karltan.com/images/favicons/favicon-32x32.png" alt="NPM"/><span class="back-menu-item-text">NPM</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://paste.karltan.com/" title="Free-Bin"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://paste.karltan.com/static/favicon.ico" alt="Free-Bin"/><span class="back-menu-item-text">Free-Bin</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://tools.karltan.com/" title="IT-TOOLS"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://tools.karltan.com/android-chrome-192x192.png" alt="IT-TOOLS"/><span class="back-menu-item-text">IT-TOOLS</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://memos.karltan.com/" title="Memos"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://memos.karltan.com/logo.png" alt="Memos"/><span class="back-menu-item-text">Memos</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://wbo.karltan.com/" title="WBO"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://wbo.karltan.com/favicon.ico" alt="WBO"/><span class="back-menu-item-text">WBO</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://git.karltan.com/" title="Gitea"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://git.karltan.com/assets/img/logo.svg" alt="Gitea"/><span class="back-menu-item-text">Gitea</span></a></div></div></div></div><a id="site-name" href="/" accesskey="h"><div class="title">Karl的博客</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives"><i class="fa-solid fa-box-archive faa-tada"></i><span> 归档</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories"><i class="fa-solid fa-palette faa-tada"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags"><i class="fa-solid fa-tags faa-tada"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link"><i class="fa-solid fa-link faa-tada"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/fcircle"><i class="fa-brands fa-artstation faa-tada"></i><span> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments"><i class="fa-solid fa-comments faa-tada"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/essay"><i class="fa-solid fa-comment-dots faa-tada"></i><span> 说说</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/music"><i class="fa-solid fa-music faa-tada"></i><span> 音乐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album"><i class="fa-solid fa-images faa-tada"></i><span> 相册</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" target="_blank" rel="noopener" href="https://status.karltan.com/status/1"><i class="fa-solid fa-chart-line faa-tada"></i><span> 网站监控</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="fa-solid fa-shoe-prints faa-tada"></i><span> 随便逛逛</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/about"><i class="fa-solid fa-heart faa-tada"></i><span> 关于我</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button only-home" id="travellings_button" title="随机前往一个开往项目网站"><a class="site-page" onclick="anzhiyu.totraveling()" title="随机前往一个开往项目网站" href="javascript:void(0);" rel="external nofollow" data-pjax-state="external"><i class="anzhiyufont anzhiyu-icon-train"></i></a></div><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><div class="nav-button" id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" title="搜索🔍" accesskey="s"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span> 搜索</span></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" alt="微信" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/wechat.jpg"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" alt="支付宝" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/alipay.jpg"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/AcWing/" style="font-size: 1.05rem;">AcWing<sup>33</sup></a><a href="/tags/CUDA/" style="font-size: 1.05rem;">CUDA<sup>1</sup></a><a href="/tags/CVPR/" style="font-size: 1.05rem;">CVPR<sup>3</sup></a><a href="/tags/ICLR/" style="font-size: 1.05rem;">ICLR<sup>1</sup></a><a href="/tags/Linux/" style="font-size: 1.05rem;">Linux<sup>1</sup></a><a href="/tags/MAPL/" style="font-size: 1.05rem;">MAPL<sup>1</sup></a><a href="/tags/MySQL/" style="font-size: 1.05rem;">MySQL<sup>1</sup></a><a href="/tags/NIPS/" style="font-size: 1.05rem;">NIPS<sup>1</sup></a><a href="/tags/PyTorch/" style="font-size: 1.05rem;">PyTorch<sup>1</sup></a><a href="/tags/Python/" style="font-size: 1.05rem;">Python<sup>1</sup></a><a href="/tags/RSS/" style="font-size: 1.05rem;">RSS<sup>1</sup></a><a href="/tags/Ubuntu/" style="font-size: 1.05rem;">Ubuntu<sup>3</sup></a><a href="/tags/Windows/" style="font-size: 1.05rem;">Windows<sup>1</sup></a><a href="/tags/arXiv/" style="font-size: 1.05rem;">arXiv<sup>1</sup></a><a href="/tags/mAP/" style="font-size: 1.05rem;">mAP<sup>1</sup></a><a href="/tags/tmux/" style="font-size: 1.05rem;">tmux<sup>1</sup></a><a href="/tags/vim/" style="font-size: 1.05rem;">vim<sup>1</sup></a><a href="/tags/%E4%BB%A3%E7%A0%81/" style="font-size: 1.05rem;">代码<sup>1</sup></a><a href="/tags/%E4%BD%8D%E5%A7%BF%E4%BC%B0%E8%AE%A1/" style="font-size: 1.05rem;">位姿估计<sup>1</sup></a><a href="/tags/%E6%89%A9%E5%AE%B9/" style="font-size: 1.05rem;">扩容<sup>1</sup></a><a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 1.05rem;">数学<sup>1</sup></a><a href="/tags/%E6%97%8B%E8%BD%AC%E8%A1%A8%E7%A4%BA/" style="font-size: 1.05rem;">旋转表示<sup>1</sup></a><a href="/tags/%E6%9D%8E%E6%B2%90/" style="font-size: 1.05rem;">李沐<sup>76</sup></a><a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 1.05rem;">深度学习<sup>79</sup></a><a href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/" style="font-size: 1.05rem;">目标检测<sup>1</sup></a><a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 1.05rem;">笔记<sup>77</sup></a><a href="/tags/%E7%AE%97%E6%B3%95%E9%A2%98/" style="font-size: 1.05rem;">算法题<sup>33</sup></a><a href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" style="font-size: 1.05rem;">论文笔记<sup>9</sup></a><a href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91/" style="font-size: 1.05rem;">阿里云<sup>1</sup></a><a href="/tags/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6/" style="font-size: 1.05rem;">高等数学<sup>1</sup></a><a href="/tags/%E9%AD%94%E6%B3%95/" style="font-size: 1.05rem;">魔法<sup>1</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span><a class="card-more-btn" href="/archives/" title="查看更多">
+    <i class="anzhiyufont anzhiyu-icon-angle-right"></i></a></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/04/"><span class="card-archive-list-date">2024年04月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">2</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/03/"><span class="card-archive-list-date">2024年03月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/02/"><span class="card-archive-list-date">2024年02月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/01/"><span class="card-archive-list-date">2024年01月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">10</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/12/"><span class="card-archive-list-date">2023年12月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">48</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/11/"><span class="card-archive-list-date">2023年11月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">7</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/10/"><span class="card-archive-list-date">2023年10月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">32</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/09/"><span class="card-archive-list-date">2023年09月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">6</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item on" id="consoleCommentBarrage" onclick="anzhiyu.switchCommentBarrage()" title="热评开关"><a class="commentBarrage"><i class="anzhiyufont anzhiyu-icon-message"></i></a></div><div class="console-btn-item" id="consoleKeyboard" onclick="anzhiyu.keyboardToggle()" title="快捷键开关"><a class="keyboard-switch"><i class="anzhiyufont anzhiyu-icon-keyboard"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" itemprop="url">论文笔记</a><i class="anzhiyufont anzhiyu-icon-angle-right post-meta-separator"></i><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/2019/" itemprop="url">2019</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>论文笔记</span></a><a class="article-meta__tags" href="/tags/CVPR/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>CVPR</span></a></span></div></div><h1 class="post-title" itemprop="name headline">论文笔记《Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation》</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2023-10-25T15:00:00.000Z" title="发表于 2023-10-25 23:00:00">2023-10-25</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2023-10-28T06:00:00.000Z" title="更新于 2023-10-28 14:00:00">2023-10-28</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-wordcount"><i class="anzhiyufont anzhiyu-icon-file-word post-meta-icon" title="文章字数"></i><span class="post-meta-label" title="文章字数">字数总计:</span><span class="word-count" title="文章字数">9.7k</span><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-clock post-meta-icon" title="阅读时长"></i><span class="post-meta-label" title="阅读时长">阅读时长:</span><span>31分钟</span></span><span class="post-meta-separator"></span><span class="post-meta-pv-cv" id="" data-flag-title="论文笔记《Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation》"><i class="anzhiyufont anzhiyu-icon-fw-eye post-meta-icon"></i><span class="post-meta-label" title="阅读量">阅读量:</span><span id="busuanzi_value_page_pv"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为长沙"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>长沙</span><span class="post-meta-separator"></span><span class="post-meta-commentcount"><i class="anzhiyufont anzhiyu-icon-comments post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/#post-comment" tabindex="-1"><span id="twikoo-count"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></a></span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="https://img.karltan.com/covers/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation.png"></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><div class="post-ai-description"><div class="ai-title"><i class="anzhiyufont anzhiyu-icon-bilibili"></i><div class="ai-title-text">AI-摘要</div><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right"></i><i class="anzhiyufont anzhiyu-icon-circle-dot" title="朗读摘要"></i><div id="ai-tag">Tianli GPT</div></div><div class="ai-explanation">AI初始化中...</div><div class="ai-btn-box"><div class="ai-btn-item">介绍自己 🙈</div><div class="ai-btn-item">生成本文简介 👋</div><div class="ai-btn-item">推荐相关文章 📖</div><div class="ai-btn-item">前往主页 🏠</div><div class="ai-btn-item" id="go-tianli-blog">前往爱发电购买</div></div><script data-pjax src="/js/anzhiyu/ai_abstract.js"></script></div><article class="post-content" id="article-container" itemscope itemtype="http://blog.karltan.com/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/"><header><a class="post-meta-categories" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" itemprop="url">论文笔记</a><a class="post-meta-categories" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/2019/" itemprop="url">2019</a><a href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" tabindex="-1" itemprop="url">论文笔记</a><a href="/tags/CVPR/" tabindex="-1" itemprop="url">CVPR</a><h1 id="CrawlerTitle" itemprop="name headline">论文笔记《Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation》</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">Karl</span><time itemprop="dateCreated datePublished" datetime="2023-10-25T15:00:00.000Z" title="发表于 2023-10-25 23:00:00">2023-10-25</time><time itemprop="dateCreated datePublished" datetime="2023-10-28T06:00:00.000Z" title="更新于 2023-10-28 14:00:00">2023-10-28</time></header><h1 id="Normalized-Object-Coordinate-Space-for-Category-Level-6D-Object-Pose-and-Size-Estimation"><a href="#Normalized-Object-Coordinate-Space-for-Category-Level-6D-Object-Pose-and-Size-Estimation" class="headerlink" title="Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation"></a>Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation</h1><p>原文链接：<a href="https://blog.karltan.com/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/">论文笔记《Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation》 | Karl的博客 (karltan.com)</a></p>
+<p>CSDN链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/karltan0328/article/details/134443252">论文笔记《Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation》-CSDN博客</a></p>
+<p>论文链接：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1901.02970">[1901.02970] Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation (arxiv.org)</a></p>
+<p>代码链接：<a target="_blank" rel="noopener" href="https://github.com/hughw19/NOCS_CVPR2019">hughw19/NOCS_CVPR2019: [CVPR2019 Oral] Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation on Python3, Tensorflow, and Keras (github.com)</a></p>
+<p>项目链接：<a target="_blank" rel="noopener" href="https://geometry.stanford.edu/projects/NOCS_CVPR2019/">Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation, CVPR 2019 (Oral) (stanford.edu)</a></p>
+<h2 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h2><p>本文的目标是估计RGB-D图像中未见过物体的6D位姿和尺寸。与“实例级”6D姿态估计任务相反，我们的问题假设在训练或测试期间没有精确的对象CAD模型可用。</p>
+<p>为了处理给定类别中不同且未见过的对象实例，我们引入了<strong>标准化对象坐标空间（NOCS）</strong>——一个类别中所有可能对象实例的共享规范表示。然后，我们基于区域的神经网络被训练用来直接推断从观察到的像素到这个共享对象表示（NOCS）的对应关系，以及其他对象信息，如类标签和实例掩码。这些预测可以与深度图结合，共同估计在混乱场景中多个物体的度量6D姿态和大小。</p>
+<p>为了训练我们的网络，我们提出了一种新的上下文感知技术来生成大量有标签的混合现实数据。为了进一步改进我们的模型并评估其在真实数据上的性能，我们还提供了一个具有多个环境和实例变化的有标签真实数据集。</p>
+<p>大量的实验表明，该方法能够稳健地估计真实环境中未见过对象的姿态和大小，同时在标准6D姿态估计基准上实现最先进的性能。</p>
+<h2 id="1-Introduction"><a href="#1-Introduction" class="headerlink" title="1. Introduction"></a>1. Introduction</h2><p>在虚拟和增强现实（AR）、机器人技术和3D场景理解中，目标检测和3D位置、方向和大小的估计是一个重要的需求。这些应用程序需要在新的环境中进行操作，这些环境可能包含以前未见过的对象实例。</p>
+<p>过去的工作已经探索了实例级6D位姿估计问题[37, 46, 27, 51, 6, 28]，其中精确的CAD模型和它们的尺寸是预先可得的。</p>
+<p>不幸的是，这些技术不能在一般情况下使用，因为大多数对象以前从未见过，也没有已知的CAD模型。</p>
+<p>另一方面，类别级3D对象检测方法[43, 36, 9, 34, 49, 12]可以估计出对象类别标签和3D bounding boxes，而不需要精确的CAD模型。然而，估计的3D bounding boxes依赖于视角，方法中并不会编码对象的精确方向。</p>
+<p>因此，这两类方法都不能满足需要未见过对象6D姿态和3个非均匀尺度参数（编码维度）应用程序的需要。</p>
+<p>在本文中，我们的目标是通过介绍第一个多对象的<strong>类别级6D位姿和大小估计</strong>的方法来弥合这两类方法之间的差距，据我们所知，这是一个对新对象实例具有挑战性的问题。</p>
+<p>由于我们不能对未见过的物体使用CAD模型，<strong>第一个挑战</strong>是找到一种表示方式，允许在特定类别中定义不同物体的6D位姿和大小。<strong>第二个挑战</strong>是无法获得用于训练和测试的大规模数据集。像SUN RGB-D[41]或NYU v2[40]这样的数据集缺乏精确的6D姿态和大小的标签，或者不包含桌面尺度对象类别——确切地说是在桌面或桌面操作任务中出现的对象类型，对于这种类型的对象来说，知道6D姿态和大小将是有用的。</p>
+<p><strong>为了解决表示的挑战</strong>，我们将这个问题表述为在共享对象描述空间中寻找对象像素与归一化坐标之间的对应关系（参见第3节）。我们定义了一个称为<strong>归一化对象坐标空间（NOCS）</strong>的共享空间，其中所有对象都包含在一个公共归一化空间中，一个类别中的所有实例方向都是一致的。这使6D姿态和大小估计成为可能，即使是未见过的对象实例。</p>
+<p>我们的方法的核心是一个卷积神经网络（CNN），它从单个RGB图像中联合估计对象类、实例掩码和多个对象的NOCS映射。直观地，NOCS映射通过预测目标像素和NOCS之间的密集对应来捕获目标可见部分的归一化形状。我们的CNN通过<strong>像素回归</strong>或<strong>分类问题</strong>来估计NOCS映射。</p>
+<p>然后，NOCS映射与深度图一起使用，以使用位姿拟合方法来估计对象的全度量6D位姿和大小。</p>
+<p><strong>为了解决数据挑战</strong>，我们引入了一种空间上下文感知的混合现实方法来自动生成大量的数据（275K训练，25K测试），这些数据由ShapeNetCore[8]中逼真的合成对象与真实的桌面场景组合而成。这种方法允许自动生成具有混乱对象的真实数据，并为类标签、实例掩码、NOCS映射、6D位姿和大小提供完整的GT标签。</p>
+<p>我们还提供了<strong>一个用于训练和测试的真实世界数据集</strong>，该数据集中有6个对象类别，有18个不同场景，共计42个独特的实例，并且为每个实例提供了6D位姿和大小的GT标签。</p>
+<p>据我们所知，我们的数据集是最大和最全面的，用于6D位姿和尺寸，以及3D对象检测任务的训练和测试数据集。</p>
+<p>我们的方法使用来自商用RGB-D传感器的输入，设计用于处理对称和非对称对象，使其适用于许多应用程序。</p>
+<p>图1显示了我们的方法在一个桌面场景上操作的例子，在训练期间有多个对象未见过：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/image-20231026141109178.png" alt="image-20231026141109178"></p>
+<p>综上所述，本工作的主要贡献有：</p>
+<ul>
+<li>标准化对象坐标空间（NOCS），一个统一的共享空间，允许不同但相关的对象有一个共同的参考框架，以便对未见过的对象进行6D位姿和大小估计。</li>
+<li>一种联合预测RGB图像中多个未见过对象的类标签、实例掩码和NOCS映射的CNN。在位姿拟合算法中，我们使用NOCS映射和深度图来估计对象的全度量6D位姿和尺寸。</li>
+<li>数据集：一种空间上下文感知的混合现实技术，在真实图像中去合成合成对象，允许我们生成一个大规模的有标签数据集来训练我们的CNN。我们还为训练和测试提供了完整标签的真实世界数据集。</li>
+</ul>
+<h2 id="2-Related-Work"><a href="#2-Related-Work" class="headerlink" title="2. Related Work"></a>2. Related Work</h2><p>在本节中，我们重点回顾了基于RGB-D图像的类别级3D目标检测、实例级6D位姿估计、类别级4 DoF位姿估计以及不同数据生成策略的相关工作。</p>
+<h3 id="Category-Level-3D-Object-Detection"><a href="#Category-Level-3D-Object-Detection" class="headerlink" title="Category-Level 3D Object Detection"></a>Category-Level 3D Object Detection</h3><p>预测物体的6D姿态和大小的挑战之一是在场景中定位物体并找到它们的物理尺寸，这可以表述为一个3D检测问题[54, 22, 21, 31, 14]。值得注意的尝试包括[43, 55]，他们将3D体积数据作为输入，直接在3D中检测物体。另一种思路[36, 20, 10, 29]提出先在2D图像中生成2D对象推荐，然后将该推荐投影到3D空间中，进一步细化最终的3D bounding box位置。上面描述的技术达到了令人印象深刻的3D检测率，但不幸的是，仅仅关注于寻找物体的边界体积，而不能预测物体的6D姿态。</p>
+<h3 id="Instance-Level-6-DoF-Pose-Estimation"><a href="#Instance-Level-6-DoF-Pose-Estimation" class="headerlink" title="Instance-Level 6 DoF Pose Estimation"></a>Instance-Level 6 DoF Pose Estimation</h3><p>考虑到它的实际重要性，有大量的工作集中在实例级6D位姿估计。</p>
+<p>在这里，任务是推断对象的3D位置和3D旋转（无比例），假设在训练期间可以获得这些对象的确切3D CAD模型和大小。目前的SOTA可以大致分为<strong>模板匹配或对象坐标回归技术</strong>。</p>
+<p><strong>模板匹配技术</strong>通过迭代最近点[4, 53]等算法将GT 3D CAD模型与预测到的3D点云进行对齐，或者使用手工制作的局部描述符进一步指导对齐过程[26, 11]。这类技术经常遭受对象间和对象内的遮挡，这是我们只有部分扫描对象时的典型情况。</p>
+<p>第二类是基于<strong>对象坐标回归</strong>的方法，目的是回归每个物体像素对应的物体表面位置。这些技术已成功应用于身体姿态估计[45, 18]，相机重定位[39, 48]和6D目标姿态估计[5]。</p>
+<p>上述两种方法都需要在训练和测试过程中建立<strong>精确</strong>的3D模型。除了在测试时存储所有3D CAD模型或学习过的物体坐标回归器的实际限制外，捕获大量物体的高保真和完整的3D模型是一项具有挑战性的任务。</p>
+<p>虽然我们的方法受到了对象坐标回归技术的启发，但它也与上面的方法有很大的不同，因为我们在测试时不再需要完整和高保真的对象3D CAD模型。</p>
+<h3 id="Category-Level-4-DoF-Pose-Estimation"><a href="#Category-Level-4-DoF-Pose-Estimation" class="headerlink" title="Category-Level 4 DoF Pose Estimation"></a>Category-Level 4 DoF Pose Estimation</h3><p>有一些关于类别级姿态估计的研究[20, 42, 19, 35, 7]，但它们都做出了简化的假设。</p>
+<p><strong>首先</strong>，这些算法将旋转预测限制为仅沿重力方向（只有4个自由度）。</p>
+<p><strong>其次</strong>，他们关注一些大房间尺度的物体类别（例如，椅子、沙发、床或汽车），而没有考虑到物体的对称性[20, 42, 19]。相反，我们估计了各种手尺度物体的姿态，由于姿态变化较大，手尺度物体的姿态往往比室内尺度物体更具挑战性。我们的方法也可以在不假设物体重力方向的情况下预测完整的6D位姿和大小。</p>
+<p>最后，我们的方法以交互帧率运行（每帧0.5秒），这比其他方法（[20]为每帧约70秒，[42]为每帧25分钟）快得多。</p>
+<h3 id="Training-Data-Generation"><a href="#Training-Data-Generation" class="headerlink" title="Training Data Generation"></a>Training Data Generation</h3><p>训练CNNs的一个主要挑战是缺乏足够的类别个数、实例个数、姿态种类、混乱程度和光照变化的训练数据。</p>
+<p>为了构建包含对象标签的真实数据集（例如，[40, 41, 50]），人们已经做出了一些努力。不幸的是，这些数据集往往相对较小，这主要是由于与GT标签相关的高成本（时间和金钱）。这个限制是其他工作（例如，[35, 44, 51]）的动力，这些工作生成的数据完全是合成的，这允许以较小的成本生成大量具有完美标签的训练数据。</p>
+<p>为了简单起见，所有这些数据集都忽略了一些因素的组合（材料、传感器噪声和照明），这些因素会在合成数据和真实数据分布之间造成事实上的领域差距。</p>
+<p>为了缩小这种差距，[13]生成了混合真实数据和合成数据的数据集，方法是在真实背景上呈现虚拟对象。虽然背景是真实的，但渲染的对象是飞行在半空中的，并且是脱离上下文的[13]，这阻止算法利用重要的上下文线索。</p>
+<p>我们引入了一种新的混合真实的方法，以上下文感知的方式自动生成大量的由合成物体和真实背景组成的数据，使其更加真实。</p>
+<p>这得到了实验的支持，表明我们的上下文感知训练数据能够使模型更好地泛化到真实世界测试数据。</p>
+<p>我们还提供了一个真实世界的数据集，以进一步改善学习和评估。</p>
+<h2 id="3-Background-and-Overview"><a href="#3-Background-and-Overview" class="headerlink" title="3. Background and Overview"></a>3. Background and Overview</h2><h3 id="Category-Level-6D-Object-Pose-and-Size-Estimation"><a href="#Category-Level-6D-Object-Pose-and-Size-Estimation" class="headerlink" title="Category-Level 6D Object Pose and Size Estimation"></a>Category-Level 6D Object Pose and Size Estimation</h3><p>我们关注对象实例的3个旋转、3个平移和3个缩放参数（维度）的估计问题。</p>
+<p>此问题的解决方案可以可视化为围绕对象的一个紧密定向的bounding box，参见图1：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/image-20231026141109178.png" alt="image-20231026141109178"></p>
+<p>虽然图像中的这些对象之前没有见过，但是这些对象来自于训练过程中的已知对象类别（如相机），并且在训练过程中，模型会见到这些类别中的若干个样本。</p>
+<p>这项任务特别具有挑战性，因为我们不能在测试时使用CAD模型，而且6D位姿对未见过的物体没有明确定义。为了克服这个问题，我们提出了一种新的表示方式，它定义了一个共享的对象空间，可以定义未见过的对象的6D位姿和大小。</p>
+<h3 id="Normalized-Object-Coordinate-Space-NOCS"><a href="#Normalized-Object-Coordinate-Space-NOCS" class="headerlink" title="Normalized Object Coordinate Space (NOCS)"></a>Normalized Object Coordinate Space (NOCS)</h3><p>NOCS是一个在空间中的单位立方体，即：$\{x, y, z\} \in [0, 1]$。</p>
+<p>给定每个类别的已知对象CAD模型的形状集合，通过统一缩放对象，我们将其大小归一化，使其bounding box的对角线长度收缩为1（？），并在NOCS空间中居中，参见图2：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/image-20231026155511223.png" alt="image-20231026155511223"></p>
+<p>此外，我们让同一类别对象的中心和方向一致。</p>
+<p>我们使用ShapeNetCore[8]中的模型，这些模型已经对比例、位置和方向进行了规范化。图2显示了<strong>相机</strong>类别中规范化形状的示例。我们的表示允许形状的每个顶点在NOCS（图2中的颜色编码）中表示为一个元组$(x, y, z)$。</p>
+<p><strong>我们的CNN预测彩色编码的NOCS坐标的2D透视投影，即NOCS映射（图2左下角）。</strong></p>
+<p><strong>注意，进行2D透视投影之后，像素的坐标仍然是三维的：</strong></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/project.png" alt="project"></p>
+<p><strong>图中右侧的竖线是图像平面，$(x, y, z)$是点在空间中的位置，$(x^\prime, y^\prime, z^\prime)$是点在图像平面中的位置。</strong></p>
+<p><strong>那么预测的坐标也是一个三维坐标。</strong></p>
+<p>有多种方式来解释NOCS映射：</p>
+<ol>
+<li>作为在NOCS中观测到的物体部分的<strong>形状重建</strong></li>
+<li>作为密集的像素-NOCS对应</li>
+</ol>
+<p>我们的CNN学习对未见过的物体进行形状预测，或者在大的形状集合上训练，学习去预测物体的像素-NOCS对应。这种表示比其他方法（例如bounding boxes）更健壮，因为即使对象只有部分可见，我们也可以操作。</p>
+<h3 id="Method-Overview"><a href="#Method-Overview" class="headerlink" title="Method Overview"></a>Method Overview</h3><p>图3说明了我们使用RGB图像和深度图作为输入的方法：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/image-20231026163707517.png" alt="image-20231026163707517"></p>
+<p>我们的CNN仅从RGB图像估计图像中对象的类标签、实例掩码（就是语义分割）和NOCS映射。</p>
+<p>除此之外，我们没有在CNN中使用深度图，因为我们想利用现有不包含深度的RGB数据集，如COCO数据集来提高性能。</p>
+<p>NOCS映射可以在一个标准化的空间中编码对象的形状和大小。因此，我们可以在稍后阶段使用深度图来提升这一归一化空间，并使用鲁棒的离群值去除和对齐技术来预测全度量6D对象的姿态和大小。</p>
+<p>我们的CNN是建立在Mask R-CNN框架[23]上的，除了类标签和实例掩码外，在改进后还能够联合预测NOCS映射。第5节详细介绍了我们的改进和可以处理对称对象的新的loss函数。</p>
+<p>在训练过程中，我们使用一种新的Context-Aware MixEd ReAlity（CAMERA）方法（参见第4节）来渲染GT图像。</p>
+<p>这个大数据集允许我们在测试时从新的类别泛化到新的实例。并且为了进一步缩小这个领域的差距，我们还使用了一个更小的真实数据集。</p>
+<h2 id="4-Datasets"><a href="#4-Datasets" class="headerlink" title="4. Datasets"></a>4. Datasets</h2><p>在类别级3D检测和6D位姿与尺寸估计中，一个主要的挑战是无法获得GT数据。虽然已经有了像NYU v2[40]和SUNRGB-D[41]这样的尝试，但它们都有重要的局限性。</p>
+<p>首先，它们不提供对象的6D位姿，只关注3D bounding boxes。</p>
+<p>其次，增强现实和机器人等应用得益于桌面设置中的手尺度对象，而当前的数据集关注的是更大的对象，如椅子和桌子。</p>
+<p>最后，这些数据集不包含我们需要的GT类型的标签（即NOCS映射），并且包含的示例数量有限。</p>
+<h3 id="4-1-Context-Aware-Mixed-Reality-Approach"><a href="#4-1-Context-Aware-Mixed-Reality-Approach" class="headerlink" title="4.1. Context-Aware Mixed Reality Approach"></a>4.1. Context-Aware Mixed Reality Approach</h3><p>为了促进大量手尺度对象GT训练数据的生成，我们提出了一种新的<strong>Context-Aware MixEd ReAlity（CAMERA）</strong>方法，它解决了以前方法的局限性，使数据生成需要的时间更少，并降低了成本。</p>
+<p>它以一种<strong>上下文感知</strong>的方式将真实的背景图像与综合渲染的前景对象结合起来，即，将合成的对象渲染并组合成具有合理的物理位置、照明和比例的真实场景，见图4（左边蓝色框内）：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/image-20231026170636706.png" alt="image-20231026170636706"></p>
+<p>这种<strong>混合现实</strong>的方法允许我们生成比以前多得多的训练数据。</p>
+<h4 id="Real-Scenes"><a href="#Real-Scenes" class="headerlink" title="Real Scenes"></a>Real Scenes</h4><p>我们使用31幅变化广泛的室内场景的真实RGB-D图像作为背景（图4中间粉色框内）。</p>
+<p>我们的重点是桌面场景，因为大多数室内以人为中心的空间由桌面表面和手尺度的对象组成。我们总共为31个场景收集了553张图像，其中4个场景留作验证。</p>
+<h4 id="Synthetic-Objects"><a href="#Synthetic-Objects" class="headerlink" title="Synthetic Objects"></a>Synthetic Objects</h4><p>为了在上面的真实场景中渲染逼真的对象，我们从ShapeNetCore[8]中选择手动缩放的对象，手动删除那些看起来不真实或有拓扑问题的对象。</p>
+<p>总的来说，我们挑选了6种物品类别——<strong>瓶子、碗、相机、罐子、笔记本电脑和马克杯</strong>。我们还创建了一个<strong>干扰</strong>类别，其中包含了上面没有列出的类别中的对象实例，比如<strong>显示器、电话和吉他</strong>。这提高了预测我们的主要类别时的鲁棒性，即使场景中出现了其他对象。</p>
+<p>我们策划的ShapeNetCore版本包含1085个单独的对象实例，我们留出184个实例用于验证。</p>
+<h4 id="Context-Aware-Compositing"><a href="#Context-Aware-Compositing" class="headerlink" title="Context-Aware Compositing"></a>Context-Aware Compositing</h4><p>为了提高真实感，我们以一种上下文感知的方式组合虚拟对象，即，我们将其放置在它们自然出现的地方（例如，在支持表面上），并使用合理的照明。</p>
+<p>我们使用了一种平面检测算法[15]对真实图像进行像素级平面分割。</p>
+<p>随后，我们在可放置合成物体的分割平面上取样随机位置和方向。</p>
+<p>然后我们放置几个虚拟光源来模拟真实的室内照明条件。</p>
+<p>最后，我们将渲染的图像和真实的图像结合起来，以生成一个具有NOCS映射、掩码和类标签的合成图片，并且这个合成图片有完美的GT标签。</p>
+<p>我们总共渲染了300K的合成图像，其中25K用于验证。据我们所知，这是分类级6D位姿和尺寸估计的最大数据集。</p>
+<p>我们的混合现实合成技术是使用Unity游戏引擎[2]实现的，并且我们为引擎增加了用于平面检测和点采样的自定义插件（所有这些都将公开发布）。</p>
+<p>与使用非上下文感知数据相比，使用我们的方法生成的图像看起来似乎合理和真实，从而提高了泛化。</p>
+<h3 id="4-2-Real-World-Data"><a href="#4-2-Real-World-Data" class="headerlink" title="4.2. Real-World Data"></a>4.2. Real-World Data</h3><p>为了进一步改进和验证算法在具有挑战性的混乱和光照条件下的真实世界性能，我们捕获了两个真实世界的数据集：</p>
+<ol>
+<li>我们前面生成的混合现实数据的真实训练数据集的补充</li>
+<li>一个真实世界的测试数据集来评估6D姿态和尺寸估计的性能</li>
+</ol>
+<p>我们开发了一种半自动的方法来标注物体的GT位姿和大小。图4显示了真实世界数据的示例（右边绿色框内）：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/image-20231026170636706.png" alt="image-20231026170636706"></p>
+<p>我们使用Structure Sensor[1]在18个不同的真实场景（7个场景用于训练，5个场景用于验证，6个场景用于测试）中，捕获了8K个RGB-D帧（4300个帧用于训练，950个帧用于验证，2750个帧用于测试）。</p>
+<blockquote>
+<p>训练集用于训练，会反复遍历；验证集用于评估模型的好坏；测试集只用一次。</p>
+</blockquote>
+<p>对于每个训练和测试子集，我们使用6个类别，每个类别选取3个不同的实例。对于验证集，我们使用6个类别，每个类别选取1个不同的实例。</p>
+<p>我们在每个场景中放置超过5个对象实例来模拟真实世界的混乱。对于每个实例，我们使用我们为此目的开发的RGB-D重建算法来获得一个干净和准确的3D网格。</p>
+<p>总的来说，我们的组合数据集包含18个不同的真实场景，42个独特的对象实例，跨越6个类别，使其成为分类级6D位姿和大小估计最全面的数据集。</p>
+<h2 id="5-Method"><a href="#5-Method" class="headerlink" title="5. Method"></a>5. Method</h2><p>图3显示了我们从RGB-D图像中估计多个之前未见过物体的6D姿态和大小的方法：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/image-20231026163707517.png" alt="image-20231026163707517"></p>
+<p>该CNN会预测对象的类标签、掩码和NOCS映射。然后我们使用NOCS映射和深度图来估计对象的度量6D位姿和大小。</p>
+<h3 id="5-1-NOCS-Map-Prediction-CNN"><a href="#5-1-NOCS-Map-Prediction-CNN" class="headerlink" title="5.1. NOCS Map Prediction CNN"></a>5.1. NOCS Map Prediction CNN</h3><p>我们CNN的目标是纯粹基于RGB图像估计对象的类标签、实例掩码和NOCS映射。</p>
+<p>该CNN建立在基于区域的Mask R-CNN框架[23]上，因为它在2D目标检测和实例分割任务上展示了最先进的性能，是模块化的，灵活的，快速的，并可以很容易地被增强从而预测NOCS映射，如下所述。</p>
+<h4 id="5-1-1-NOCS-Map-Head"><a href="#5-1-1-NOCS-Map-Head" class="headerlink" title="5.1.1 NOCS Map Head"></a>5.1.1 NOCS Map Head</h4><p>Mask R-CNN构建在Faster R-CNN架构[38]之上，由两个模块组成——一个模块提出可能包含对象的区域，一个检测器检测和分类区域内的对象。此外，它还预测区域内对象的实例掩码。</p>
+<p>我们的主要贡献是在Mask R-CNN中添加了3个头部结构，用于预测NOCS映射的$x, y, z$分量，见图5：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/image-20231026190304830.png" alt="image-20231026190304830"></p>
+<p>对于每个提议的感兴趣区域（ROI），一个头部的输出大小为$28 \times 28 \times N$，其中$N$是类别的数量，每个类别包含该类别中所有检测到的对象的$x$（或$y, z$）坐标。</p>
+<p>与掩码头类似，我们在测试时使用对象类别，然后查找相应的预测通道。</p>
+<p>在训练过程中，损失函数中只使用了来自GT对象类别的NOCS映射组件。</p>
+<p>我们使用ResNet50[25]骨干网和特征金字塔网络（FPN）。</p>
+<h5 id="Regression-vs-Classification"><a href="#Regression-vs-Classification" class="headerlink" title="Regression vs. Classification"></a>Regression vs. Classification</h5><p>为了预测NOCS映射，我们要么回归每个像素值，要么将像素值离散化，将其作为一个分类问题（图5中(B)）。</p>
+<p>直接回归可能是一个更困难的任务，可能会在训练中引入不稳定性。类似地，具有大量类的像素分类（例如，$B = 128$或者$B = 256$，其中，$B$是像素的取值数）可能引入更多的参数，使训练比直接回归更具有挑战性。</p>
+<p>实验结果表明，$B = 32$的像素分类优于直接回归。</p>
+<h5 id="Loss-Function"><a href="#Loss-Function" class="headerlink" title="Loss Function"></a>Loss Function</h5><p>我们网络中的类、框和掩码头使用与[23]中描述的相同的损失函数。</p>
+<p>对于NOCS映射头，我们使用两个损失函数：</p>
+<ol>
+<li><p>一个标准的softmax损失函数用于分类</p>
+</li>
+<li><p>另一个soft $L^1$损失函数用于回归，使学习更鲁棒，表示如下：</p>
+<script type="math/tex; mode=display">
+ L(\mathbf{y}, \mathbf{y}^\ast)
+ = \frac{1}{n}\begin{cases}
+ \begin{array}{ll}
+ 5(\mathbf{y} - \mathbf{y}^\ast)^2, & \left|\mathbf{y} - \mathbf{y}^\ast\right| \le 0.1 \\
+ \left|\mathbf{y} - \mathbf{y}^\ast\right| - 0.05, & \left|\mathbf{y} - \mathbf{y}^\ast\right| > 0.1
+ \end{array}
+ \end{cases}</script><p> 其中，$\forall\mathbf{y} \in N, \mathbf{y}^\ast \in N_p$。</p>
+</li>
+</ol>
+<p>在该损失函数中：</p>
+<ul>
+<li>$\mathbf{y} \in \mathcal{R}^3$，是NOCS映射像素的GT值</li>
+<li>$\mathbf{y}^\ast$是NOCS映射像素的预测值</li>
+<li>$n$是ROI中掩码像素的个数</li>
+<li>$I$是NOCS的GT值</li>
+<li>$I_p$是NOCS的预测值</li>
+</ul>
+<h5 id="Object-Symmetry"><a href="#Object-Symmetry" class="headerlink" title="Object Symmetry"></a>Object Symmetry</h5><p>许多常见的家用物品（如瓶子）都展现出了绕轴对称的特性。我们的NOCS表示没有考虑到对称性，这导致了一些对象类的巨大错误。</p>
+<p>为了缓解这个问题，我们引入了一个考虑对称性的损失函数的变体。对于训练数据中的每个类别，我们定义了一个对称轴。在NOCS映射中，对象发生预定义的绕轴旋转时，会产生相同的损失函数值。</p>
+<p>例如，顶部为方形的长方体有一个垂直的对称轴。在这个轴上旋转$\theta = \{0^\circ, 90^\circ, 180^\circ, 270^\circ\}$时，会导致相同的映射，因此有相同的损失。</p>
+<p>对于非对称对象，$\theta = 0^\circ$是唯一的。</p>
+<p>我们发现$\left|\theta\right| \le 6$（$\left|\theta\right|$为$\theta$取值的数量）足以处理大多数对称类。</p>
+<p>我们生成GT NOCS映射，$\{\tilde{\mathbf{y}}_1, \tilde{\mathbf{y}}_2, \cdots, \tilde{\mathbf{y}}_{\left|\theta\right|}\}$，下标表示沿着对称轴旋转的次数。</p>
+<p>然后我们定义我们的对称损失函数$L_s$，$L_s = \min_{i = 1, \cdots, \left|\theta\right|}L(\tilde{\mathbf{y}}_i, \mathbf{y}^\ast)$，其中$\mathbf{y}^\ast$表示的是预测的NOCS映射像素$(x, y, z)$。</p>
+<p>这里相当于是将GT的NOCS旋转$\left|\theta\right|$次，分别计算损失函数值，然后选取一个最小的损失函数值来作为最后的损失函数值。</p>
+<h5 id="Training-Protocol"><a href="#Training-Protocol" class="headerlink" title="Training Protocol"></a>Training Protocol</h5><p>我们在COCO数据集[33]上，用在二维实例分割任务上训练的权值来初始化RESNET50主干、RPN和FPN。</p>
+<p>对于所有头，我们使用[24]中提出的初始化技术。</p>
+<p>我们使用的批量大小为$2$，初始学习率为$0.001$，SGD优化器的动量为$0.9$，权重衰减为$1 \times 10^{-4}$。</p>
+<p><strong>在训练的第一阶段</strong>，我们冻结ResNet50权重，只训练头部、RPN和FPN中的层，进行10K次迭代。</p>
+<p><strong>在第二阶段</strong>，我们将ResNet50层冻结在4级以下，并训练进行3K迭代。</p>
+<p><strong>在最后阶段</strong>，我们将ResNet50层冻结在第3级以下，持续70K次迭代。当切换到每个阶段时，我们将学习速度降低了10倍。</p>
+<h3 id="5-2-6D-Pose-and-Size-Estimation"><a href="#5-2-6D-Pose-and-Size-Estimation" class="headerlink" title="5.2. 6D Pose and Size Estimation"></a>5.2. 6D Pose and Size Estimation</h3><p>我们的目标是通过使用NOCS映射和输入深度图来估计被检测物体的全度量6D位姿和尺寸。</p>
+<p>为此，我们使用RGB-D相机的内部和外部特性来对齐深度图像和彩色图像。然后应用预测的对象掩码来得到被检测对象的三维点云$P_m$（如果语义分割正确，那么这个点云是真实点云）。我们还使用NOCS映射来获得$P_n$的3D表示（这个是在原点处的点云）。然后我们估计从$P_n$转换到$P_m$的缩放，旋转和平移。</p>
+<p>我们使用了Umeyama算法[47]来解决这个7维刚性变换估计问题，并使用RANSAC算法[16]来去除离群点。定性结果见补充资料。</p>
+<p>从NOCS得到的点云应该是在原点位置的，然后经过缩放，旋转和平移到深度相机处，从而得到6D姿态估计。</p>
+<h2 id="6-Experiments-and-Results"><a href="#6-Experiments-and-Results" class="headerlink" title="6. Experiments and Results"></a>6. Experiments and Results</h2><h3 id="Metrics"><a href="#Metrics" class="headerlink" title="Metrics"></a>Metrics</h3><p>我们报告了3D物体检测和6D姿态估计指标的结果。</p>
+<p>为了评估三维检测和目标尺寸估计，我们使用了阈值为50%[17]的交并比（IoU）度量。</p>
+<p>对于6D位姿估计，我们报告的对象实例的平均精度，其中平移的误差小于$m$ cm，旋转的误差小于$n^\circ$，类似于[39, 30]。</p>
+<p>我们将目标检测与6D姿态评估分离，因为它可以更清晰地显示性能。</p>
+<p>我们在预测和GT之间设置了10%的bounding box重叠检测阈值，以确保大多数目标都包含在评估中。</p>
+<p>对于对称对象类别（瓶、碗和罐），我们允许预测的3D bounding box围绕对象的垂直轴自由旋转，而不会受到任何惩罚。</p>
+<p>我们对马克杯类杯子进行了特殊处理，在手柄不可见的情况下使其对称，因为在这种情况下很难判断它的位姿，即使是人类。我们使用[52]来检测CAMERA数据的处理可视性，并手动标注真实数据。</p>
+<h3 id="Baselines"><a href="#Baselines" class="headerlink" title="Baselines"></a>Baselines</h3><p>由于我们不知道有其他方法来估计类别级6D的位姿和大小，我们建立了自己的基线来帮助比较性能。</p>
+<p>它由Mask R-CNN网络组成，在相同的数据上训练，但没有NOCS映射头。我们使用预测的实例掩码从深度图中获得对象的三维点云。我们（使用ICP[4]）将掩码点云与相应类别中随机选择的模型进行对齐。</p>
+<p>对于6D位姿估计，我们给出的结果可以很容易地与[51]进行比较。</p>
+<h3 id="Evaluation-Data"><a href="#Evaluation-Data" class="headerlink" title="Evaluation Data"></a>Evaluation Data</h3><p>我们所有的实验都使用这些评估数据集中的一个或两个：</p>
+<ol>
+<li>CAMERA验证数据集（CAMERA25）</li>
+<li>一个2.75K的真实数据集（REAL275），带有GT标签</li>
+</ol>
+<p>由于真实数据是有限的，这允许我们在不涉及姿态估计和域泛化的情况下研究性能。</p>
+<h3 id="6-1-Category-Level-6D-Pose-and-Size-Estimation"><a href="#6-1-Category-Level-6D-Pose-and-Size-Estimation" class="headerlink" title="6.1. Category-Level 6D Pose and Size Estimation"></a>6.1. Category-Level 6D Pose and Size Estimation</h3><h4 id="Test-on-CAMERA25"><a href="#Test-on-CAMERA25" class="headerlink" title="Test on CAMERA25"></a>Test on CAMERA25</h4><p>我们报告了我们的方法的类别级结果，CNN仅在275K CAMERA训练集（CAMERA$^\ast$）上训练。我们在CAMERA25上测试性能，它由训练中完全未见过的对象和背景组成。</p>
+<p>我们在3D IoU为50%时实现了83.9%的mAP，在$(5^\circ, 5 \text{ cm})$的测量中实现了40.9%的mAP。<strong>$(5^\circ, 5 \text{ cm})$是用于估计6D姿态的严格度量，即使对于已知实例[51, 6, 37]。</strong>更多细节请参见图6：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/image-20231027134714854.png" alt="image-20231027134714854"></p>
+<p>因为这里的测试集中都是在训练中没有见过的背景和对象，Baselines是无法处理的，所以在这个数据集上是无法将NOCS方法和Baselines方法进行比较的。</p>
+<h4 id="Test-on-REAL275"><a href="#Test-on-REAL275" class="headerlink" title="Test on REAL275"></a>Test on REAL275</h4><p>然后，我们在结合CAMERA$^\ast$、真实数据集（REAL$^\ast$）和来自COCO[33]的弱监督下训练我们的网络，并在真实测试集上对其进行评估。因为COCO没有GT的NOCS映射，所以我们在训练中不使用NOCS损失。</p>
+<p>我们使用了20K张包含我们类实例的COCO图片。</p>
+<p>为了平衡这些数据集，对于每个小批量，我们从三个数据源中选择图像，CAMERA$^\ast$的概率为60%，COCO的概率为20%，REAL$^\ast$的概率为20%。</p>
+<p>这个网络是我们产生的所有可视化结果中表现最好的，见图8：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/image-20231027135558831.png" alt="image-20231027135558831"></p>
+<p>在真实的测试集中，我们在3D IoU为50%时实现了76.4%的mAP，在$(5^\circ, 5 \text{ cm})$的测量中实现了10.2%的mAP，在$(10^\circ, 5 \text{ cm})$的测量中实现了23.1%的mAP。</p>
+<p>相比之下，基线算法（Mask R-CNN + ICP alignment）在3D IoU为50%时实现了43.8%的mAP，在$(5^\circ, 5 \text{ cm})$和$(10^\circ, 5 \text{ cm})$的测量中实现了0.8%的mAP，这显著低于我们算法的性能。</p>
+<p>图7显示了更详细的分析和比较：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/image-20231027140036076.png" alt="image-20231027140036076"></p>
+<p>该实验表明，通过学习去预测密集NOCS映射，我们的算法能够提供有关对象的形状，部件和可见性的额外详细信息，这些信息对于正确估计对象的6D姿态和大小都至关重要。</p>
+<h3 id="6-2-Ablation-Studies"><a href="#6-2-Ablation-Studies" class="headerlink" title="6.2. Ablation Studies"></a>6.2. Ablation Studies</h3><h4 id="CAMERA-Approach"><a href="#CAMERA-Approach" class="headerlink" title="CAMERA Approach"></a>CAMERA Approach</h4><p>为了评估我们的CAMERA数据生成方法，我们对在不同训练数据组合上训练的网络进行了实验。对于这个实验，我们设置网络架构来回归NOCS映射。</p>
+<p>表1显示了我们的网络在REAL275测试集上的性能：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/image-20231027140302082.png" alt="image-20231027140302082"></p>
+<p>我们还创建了CAMERA$^\ast$的变体，其中图像以非上下文感知的方式合成（在表1中由B表示）。</p>
+<p>如表中所示，由于域间隙，仅使用CAMERA$^\ast$会导致性能较差。我们看到了在添加COCO和REAL$^\ast$后的逐步改进。</p>
+<p>仅在REAL$^\ast$或在REAL$^\ast$和COCO上进行训练往往会由于数据集大小较小而过拟合到训练数据。使用COCO和REAL$^\ast$进行CAMERA$^\ast$训练可获得最佳效果。</p>
+<p>此外，我们看到，非上下文感知数据的结果比上下文感知数据的性能更差，这表明我们的CAMERA方法是有用的。</p>
+<h4 id="Classification-vs-Regression"><a href="#Classification-vs-Regression" class="headerlink" title="Classification vs. Regression"></a>Classification vs. Regression</h4><p>在CAMERA25和REAL275上，像素分类始终优于回归。</p>
+<p>使用32bits最适合姿态估计，而128bits在检测上更好，参见表2：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/image-20231027140845274.png" alt="image-20231027140845274"></p>
+<h4 id="Symmetry-Loss"><a href="#Symmetry-Loss" class="headerlink" title="Symmetry Loss"></a>Symmetry Loss</h4><p>这种损失对于许多日常对称对象类别来说是至关重要的。</p>
+<p>为了研究对称性损失的影响，我们在CAMERA25和REAL275集上对回归网络进行了消融实验。表2示出了如果不使用对称性损失（<code>Reg. w/o Sym.</code>表示不使用对称性损失），姿态精度显著降低，特别是对于6D姿态。</p>
+<h3 id="6-3-Instance-level-6D-Pose-Estimation"><a href="#6-3-Instance-level-6D-Pose-Estimation" class="headerlink" title="6.3. Instance-level 6D Pose Estimation"></a>6.3. Instance-level 6D Pose Estimation</h3><p>我们还评估了我们在OccludedLINEMOD[26]上的实例级6D姿态估计任务的方法，并与PoseCNN[51]进行了比较。</p>
+<p>OccludedLINEMOD数据集有9个对象实例，并为每个实例提供一个CAD模型。它有1214张带有标签的GT 6D姿态的图像。我们遵循[46, 27]中的协议，随机选择15%的数据集作为训练图像。然后，我们使用第4节中描述的技术生成15000个合成图像。</p>
+<p>使用32bits分类网络，我们实现了94.7%的检测率，在3D IoU为50%时实现了88.4%的mAP，在$(5^\circ, 5 \text{ cm})$的测量中实现了13.9%的mAP，在$(10^\circ, 5 \text{ cm})$的测量中实现了33.5%的mAP。这远远高于PoseCNN[51]，后者在没有迭代姿态细化的情况下仅实现了1.7%的mAP（在[30]中报告）。图9提供了更详细的分析：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/image-20231027141645905.png" alt="image-20231027141645905"></p>
+<p>这个实验表明，虽然我们的方法是为类别级姿态估计而设计的，但它也可以在标准6D姿态估计基准上实现最先进的性能。</p>
+<p>使用2D投影度量，其测量GT值和估计的对象姿态之间的平均像素距离，我们在5像素的2D投影上实现了30.2%mAP。我们的方法显著优于PoseCNN[51]，后者在[30]中报告了5像素的2D投影上实现的17.2%mAP。详细对比见补充文件。</p>
+<h4 id="Limitations-and-FutureWork"><a href="#Limitations-and-FutureWork" class="headerlink" title="Limitations and FutureWork"></a>Limitations and FutureWork</h4><p>据我们所知，我们是第一个解决类别级6D姿态和大小估计问题的方法。仍有许多悬而未决的问题需要解决。<strong>首先</strong>，在我们的方法中，位姿估计是以区域推荐和类别预测为条件的，这可能是不正确的，并对结果产生负面影响。<strong>其次</strong>，我们的方法依赖于深度图像来提升NOCS预测到真实世界的坐标。未来的工作应该研究直接从RGB图像估计6D姿态和大小。</p>
+<h2 id="7-Conclusion"><a href="#7-Conclusion" class="headerlink" title="7. Conclusion"></a>7. Conclusion</h2><p>我们提出了一种方法，为未见过的的对象实例做类别级的6D姿态和尺寸估计。</p>
+<p>我们提出了一个新的规范化对象坐标空间（NOCS），允许我们定义一个共享的空间与一致的对象缩放和方向。</p>
+<p>我们提出了一个CNN来预测NOCS映射，该映射可以与深度图一起使用，使用一种位姿拟合方法来估计未见过物体的全度量6D位姿和大小。</p>
+<p>我们的方法在增强现实，机器人和3D场景理解等领域有重要的应用。</p>
+<h2 id="A-Implementation-and-Computation-Times"><a href="#A-Implementation-and-Computation-Times" class="headerlink" title="A. Implementation and Computation Times"></a>A. Implementation and Computation Times</h2><p>我们的网络在Python 3，Keras和Tensorflow上实现。代码基于MatterPort的Mask RCNN实现[3]。该网络使用特征金字塔网络（FPN）[32]和ResNet50骨干网络[25]。</p>
+<p>我们的网络将分辨率为640×360的图像作为输入。我们在Intel Xeon Gold 5122 CPU@3.60GHz台式机上使用NVIDIA TITAN Xp实现了约4fps的交互速率。我们的实现使用Umeyama算法，神经网络推理的平均时间为210ms，姿态对齐的平均时间为34ms。</p>
+<h2 id="B-Scanned-Real-Instances"><a href="#B-Scanned-Real-Instances" class="headerlink" title="B. Scanned Real Instances"></a>B. Scanned Real Instances</h2><p>我们的真实数据集包含6个对象类别和42个真实扫描的唯一实例。对于每个类别，我们收集了7个实例，其中4个用于训练和验证，其余3个用于测试。图10显示了我们实例的一个子集：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/image-20231027144043766.png" alt="image-20231027144043766"></p>
+<p>在这里可以看到数据集中有很大的类内形状差异。</p>
+<p>第一行是在训练中使用的实例。第二行和第三行是为测试而保留的实例。</p>
+<h2 id="C-Result-Visualization"><a href="#C-Result-Visualization" class="headerlink" title="C. Result Visualization"></a>C. Result Visualization</h2><p>这里我们提供了6D位姿和尺寸估计的更多视觉结果。</p>
+<p>由于有足够的训练数据，我们的方法在CAMERA25验证集上取得了非常好的性能，如图11所示：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/image-20231027144353576.png" alt="image-20231027144353576"></p>
+<p>在REAL275测试集上，尽管实际训练数据量很小，但我们仍然观察到良好的性能，如图12所示：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/image-20231027144824279.png" alt="image-20231027144824279"></p>
+<p>我们观察到真实数据的几种失效模式，包括缺失检测、错误分类和预测坐标图的不一致。</p>
+<h2 id="D-Comparisons-on-the-OccludedLINEMOD-Dataset"><a href="#D-Comparisons-on-the-OccludedLINEMOD-Dataset" class="headerlink" title="D. Comparisons on the OccludedLINEMOD Dataset"></a>D. Comparisons on the OccludedLINEMOD Dataset</h2><p>我们的方法与现有的在OccludedLINEMOD数据集[6]上使用二维投影度量的方法的比较如图13所示：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/image-20231027144659132.png" alt="image-20231027144659132"></p>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/profile.jpg" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/profile.jpg" title="头像" alt="头像"></a><div class="post-copyright__author_name">Karl</div><div class="post-copyright__author_desc">日拱一卒，功不唐捐</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="http://blog.karltan.com/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('http://blog.karltan.com/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/')">论文笔记《Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation》</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="赞赏作者"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>打赏作者</div><div class="reward-main"><div class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/wechat.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/alipay.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="http://blog.karltan.com/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=论文笔记《Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation》&amp;url=http://blog.karltan.com/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/&amp;pic=https://img.karltan.com/covers/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation.png" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://blog.karltan.com" target="_blank">Karl的博客</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__category-list"><a class="post-meta__box__categoryes" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/"><span class="categoryes-punctuation"> <i class="anzhiyufont anzhiyu-icon-inbox"></i></span>论文笔记<span class="categoryesPageCount">9</span></a><a class="post-meta__box__categoryes" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/2019/"><span class="categoryes-punctuation"> <i class="anzhiyufont anzhiyu-icon-inbox"></i></span>2019<span class="categoryesPageCount">2</span></a></div><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>论文笔记<span class="tagsPageCount">9</span></a><a class="post-meta__box__tags" href="/tags/CVPR/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>CVPR<span class="tagsPageCount">3</span></a></div></div><div class="post_share"><div class="social-share" data-image="https://img.karltan.com/covers/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/notes-out-class/d2l/26/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/notes-out-class/d2l/26.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">动手学深度学习v2 26 网络中的网络 NiN</div></div></a></div><div class="next-post pull-right"><a href="/notes-out-class/detailed-explanation-of-mAP-in-object-detection/"><img class="next-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/notes-out-class/detailed-explanation-of-mAP-in-object-detection.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">详解目标检测中的mAP</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="anzhiyufont anzhiyu-icon-thumbs-up fa-fw" style="font-size: 1.5rem; margin-right: 4px"></i><span>喜欢这篇文章的人也看了</span></div><div class="relatedPosts-list"><div><a href="/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/" title="论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2023/Nguyen_et_al-2023-NOPE.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2024-03-28</div><div class="title">论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》</div></div></a></div><div><a href="/dissertation-notes/2023/Woo_et_al-2023-ConvNeXt_V2/" title="论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2023/Woo_et_al-2023-ConvNeXt_V2.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2024-04-04</div><div class="title">论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》</div></div></a></div><div><a href="/dissertation-notes/dissertation-summary/" title="论文总结"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/dissertation-summary.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-10-28</div><div class="title">论文总结</div></div></a></div><div><a href="/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/" title="论文笔记《Attention Is All You Need》"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2024-02-09</div><div class="title">论文笔记《Attention Is All You Need》</div></div></a></div><div><a href="/dissertation-notes/2018/Xiang_et_al-2018-PoseCNN/" title="论文笔记《PoseCNN：A Convolutional Neural Network for 6D Object Pose Estimation in Cluttered Scenes》"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2018/Xiang_et_al-2018-PoseCNN.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-10-19</div><div class="title">论文笔记《PoseCNN：A Convolutional Neural Network for 6D Object Pose Estimation in Cluttered Scenes》</div></div></a></div><div><a href="/dissertation-notes/2019/Tillet_et_al-2019-Triton/" title="论文笔记《Triton：An Intermediate Language and Compiler for Tiled Neural Network Computations》"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2019/Tillet_et_al-2019-Triton.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-12-26</div><div class="title">论文笔记《Triton：An Intermediate Language and Compiler for Tiled Neural Network Computations》</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="anzhiyufont anzhiyu-icon-comments"></i><span> 评论</span></div><div class="comment-randomInfo"><a onclick="anzhiyu.addRandomCommentInfo()" href="javascript:void(0)">匿名评论</a><a href="/privacy" style="margin-left: 4px">隐私政策</a></div><div class="comment-tips" id="comment-tips"><span>✅ 你无需删除空行，直接评论以获取最佳展示效果</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div><div class="comment-barrage"></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info__sayhi" id="author-info__sayhi" onclick="anzhiyu.changeSayHelloText()"></div><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/profile.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-status"><img class="g-status" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/chuoyichuo.gif" alt="status"/></div></div><div class="author-info__description"><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">直博狗一枚，日常会在博客上分享自己的学习笔记，希望可以帮到你。</div><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">相信你可以在这里找到对你有用的<b style="color:#fff">知识</b>和<b style="color:#fff">教程</b>。</div></div><div class="author-info__bottom-group"><a class="author-info__bottom-group-left" href="/"><h1 class="author-info__name">Karl</h1><div class="author-info__desc">日拱一卒，功不唐捐</div></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://github.com/karltan0328" target="_blank" title="Github"><i class="fa-brands fa-github faa-tada"></i></a><a class="social-icon faa-parent animated-hover" href="mailto:admin@karltan.com" target="_blank" title="Email"><i class="fa-solid fa-envelope faa-tada"></i></a></div></div></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bullhorn anzhiyu-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来看我的博客鸭~</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Normalized-Object-Coordinate-Space-for-Category-Level-6D-Object-Pose-and-Size-Estimation"><span class="toc-text">Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Abstract"><span class="toc-text">Abstract</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-Introduction"><span class="toc-text">1. Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Related-Work"><span class="toc-text">2. Related Work</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Category-Level-3D-Object-Detection"><span class="toc-text">Category-Level 3D Object Detection</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Instance-Level-6-DoF-Pose-Estimation"><span class="toc-text">Instance-Level 6 DoF Pose Estimation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Category-Level-4-DoF-Pose-Estimation"><span class="toc-text">Category-Level 4 DoF Pose Estimation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Training-Data-Generation"><span class="toc-text">Training Data Generation</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-Background-and-Overview"><span class="toc-text">3. Background and Overview</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Category-Level-6D-Object-Pose-and-Size-Estimation"><span class="toc-text">Category-Level 6D Object Pose and Size Estimation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Normalized-Object-Coordinate-Space-NOCS"><span class="toc-text">Normalized Object Coordinate Space (NOCS)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Method-Overview"><span class="toc-text">Method Overview</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-Datasets"><span class="toc-text">4. Datasets</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-Context-Aware-Mixed-Reality-Approach"><span class="toc-text">4.1. Context-Aware Mixed Reality Approach</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Real-Scenes"><span class="toc-text">Real Scenes</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Synthetic-Objects"><span class="toc-text">Synthetic Objects</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Context-Aware-Compositing"><span class="toc-text">Context-Aware Compositing</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-Real-World-Data"><span class="toc-text">4.2. Real-World Data</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-Method"><span class="toc-text">5. Method</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-NOCS-Map-Prediction-CNN"><span class="toc-text">5.1. NOCS Map Prediction CNN</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#5-1-1-NOCS-Map-Head"><span class="toc-text">5.1.1 NOCS Map Head</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Regression-vs-Classification"><span class="toc-text">Regression vs. Classification</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Loss-Function"><span class="toc-text">Loss Function</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Object-Symmetry"><span class="toc-text">Object Symmetry</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Training-Protocol"><span class="toc-text">Training Protocol</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-6D-Pose-and-Size-Estimation"><span class="toc-text">5.2. 6D Pose and Size Estimation</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-Experiments-and-Results"><span class="toc-text">6. Experiments and Results</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Metrics"><span class="toc-text">Metrics</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Baselines"><span class="toc-text">Baselines</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Evaluation-Data"><span class="toc-text">Evaluation Data</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-1-Category-Level-6D-Pose-and-Size-Estimation"><span class="toc-text">6.1. Category-Level 6D Pose and Size Estimation</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Test-on-CAMERA25"><span class="toc-text">Test on CAMERA25</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Test-on-REAL275"><span class="toc-text">Test on REAL275</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-2-Ablation-Studies"><span class="toc-text">6.2. Ablation Studies</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#CAMERA-Approach"><span class="toc-text">CAMERA Approach</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Classification-vs-Regression"><span class="toc-text">Classification vs. Regression</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Symmetry-Loss"><span class="toc-text">Symmetry Loss</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-3-Instance-level-6D-Pose-Estimation"><span class="toc-text">6.3. Instance-level 6D Pose Estimation</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Limitations-and-FutureWork"><span class="toc-text">Limitations and FutureWork</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-Conclusion"><span class="toc-text">7. Conclusion</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#A-Implementation-and-Computation-Times"><span class="toc-text">A. Implementation and Computation Times</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#B-Scanned-Real-Instances"><span class="toc-text">B. Scanned Real Instances</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-Result-Visualization"><span class="toc-text">C. Result Visualization</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#D-Comparisons-on-the-OccludedLINEMOD-Dataset"><span class="toc-text">D. Comparisons on the OccludedLINEMOD Dataset</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/" title="论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》"/></a><div class="content"><a class="title" href="/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/" title="论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》">论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》</a><time datetime="2024-04-15T07:00:00.000Z" title="发表于 2024-04-15 15:00:00">2024-04-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/dissertation-notes/2023/Woo_et_al-2023-ConvNeXt_V2/" title="论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2023/Woo_et_al-2023-ConvNeXt_V2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》"/></a><div class="content"><a class="title" href="/dissertation-notes/2023/Woo_et_al-2023-ConvNeXt_V2/" title="论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》">论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》</a><time datetime="2024-04-04T05:00:00.000Z" title="发表于 2024-04-04 13:00:00">2024-04-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/" title="论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2023/Nguyen_et_al-2023-NOPE.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》"/></a><div class="content"><a class="title" href="/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/" title="论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》">论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》</a><time datetime="2024-03-28T04:00:00.000Z" title="发表于 2024-03-28 12:00:00">2024-03-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/" title="论文笔记《Attention Is All You Need》"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文笔记《Attention Is All You Need》"/></a><div class="content"><a class="title" href="/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/" title="论文笔记《Attention Is All You Need》">论文笔记《Attention Is All You Need》</a><time datetime="2024-02-09T02:00:00.000Z" title="发表于 2024-02-09 10:00:00">2024-02-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/ac-diary/acwing/autumn-daily-question-2023/acwing5199/" title="AcWing 5199. 现代艺术"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/ac-diary/acwing/autumn-daily-question-2023.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AcWing 5199. 现代艺术"/></a><div class="content"><a class="title" href="/ac-diary/acwing/autumn-daily-question-2023/acwing5199/" title="AcWing 5199. 现代艺术">AcWing 5199. 现代艺术</a><time datetime="2024-01-18T08:00:00.000Z" title="发表于 2024-01-18 16:00:00">2024-01-18</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div id="footer_deal"><a class="deal_link" href="mailto:admin@karltan.com" title="email"><i class="fa-solid fa-envelope"></i></a><a class="deal_link" href="/atom.xml" title="RSS"><i class="fa-solid fa-rss"></i></a><img class="footer_mini_logo" title="返回顶部" alt="返回顶部" onclick="anzhiyu.scrollToDest(0, 500)" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/profile.jpg" size="50px"/><a class="deal_link" target="_blank" rel="noopener" href="https://github.com/karltan0328" title="Github"><i class="fa-brands fa-github"></i></a><a class="deal_link" target="_blank" rel="noopener" href="https://blog.csdn.net/karltan0328" title="CSDN"><i class="fa-solid fa-c"></i></a></div><div id="workboard"><img class="workSituationImg boardsign" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/work_img.svg" alt="paper快来，idea快来，我要毕业🥹" title="paper快来，idea快来，我要毕业🥹"/><div id="runtimeTextTip"></div></div><div id="anzhiyu-footer"><div class="footer-group"><div class="footer-title">服务</div><div class="footer-links"><a class="footer-item" title="51la统计" target="_blank" rel="noopener" href="https://v6.51.la/">51la统计</a><a class="footer-item" title="十年之约" target="_blank" rel="noopener" href="https://www.foreverblog.cn/">十年之约</a><a class="footer-item" title="开往" target="_blank" rel="noopener" href="https://github.com/travellings-link/travellings">开往</a></div></div><div class="footer-group"><div class="footer-title">主题</div><div class="footer-links"><a class="footer-item" title="文档" target="_blank" rel="noopener" href="https://docs.anheyu.com/">文档</a><a class="footer-item" title="源码" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu">源码</a><a class="footer-item" title="更新日志" target="_blank" rel="noopener" href="https://blog.anheyu.com/update/">更新日志</a></div></div><div class="footer-group"><div class="footer-title">导航</div><div class="footer-links"><a class="footer-item" title="即刻短文" href="/essay">即刻短文</a><a class="footer-item" title="友链文章" href="/fcircle">友链文章</a><a class="footer-item" title="留言板" href="/comments">留言板</a></div></div><div class="footer-group"><div class="footer-title">协议</div><div class="footer-links"><a class="footer-item" title="隐私协议" href="/privacy">隐私协议</a><a class="footer-item" title="Cookies" href="/cookies">Cookies</a><a class="footer-item" title="版权协议" href="/copyright">版权协议</a></div></div><div class="footer-group"><div class="footer-title-group"><div class="footer-title">友链</div><a class="random-friends-btn" id="footer-random-friends-btn" href="javascript:addFriendLinksInFooter();" title="换一批友情链接"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right"></i></a></div><div class="footer-links" id="friend-links-in-footer"></div></div></div><p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" data-title="博客框架为Hexo 7.0.0" title="博客框架为Hexo 7.0.0"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/frame-hexo.svg" alt="博客框架为Hexo 7.0.0"/></a><a class="github-badge" target="_blank" href="https://blog.anheyu.com/" style="margin-inline:5px" data-title="本站使用AnZhiYu主题" title="本站使用AnZhiYu主题"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/theme-anzhiyu.svg" alt="本站使用AnZhiYu主题"/></a><a class="github-badge" target="_blank" href="https://console.upyun.com/register/?invite=nVONH00RJ" style="margin-inline:5px" data-title="本网站由又拍云提供CDN加速/云储存服务" title="本网站由又拍云提供CDN加速/云储存服务"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/upyun.svg" alt="本网站由又拍云提供CDN加速/云储存服务"/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/copyright-by-nc-sa.svg" alt="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"/></a></p></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2023 - 2024 By <a class="footer-bar-link" href="/" title="Karl" target="_blank">Karl</a></div></div><div id="footer-type-tips"></div><div class="js-pjax"><script>function subtitleType () {
+  if (true) { 
+    window.typed = new Typed("#footer-type-tips", {
+      strings: ["不积跬步无以至千里","今日事，今日毕","有善始者实繁，能克终者盖寡","穷且益坚，不坠青云之志","若无闲事挂心头，便是人间好时节"],
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: true,
+      backSpeed: 50
+    })
+  } else {
+    document.getElementById("footer-type-tips").innerHTML = '不积跬步无以至千里'
+  }
+}
+
+if (true) {
+  if (typeof Typed === 'function') {
+    subtitleType()
+  } else {
+    getScript('https://cdn.cbd.int/typed.js@2.0.15/dist/typed.umd.js').then(subtitleType)
+  }
+} else {
+  subtitleType()
+}</script></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu" title="主题">主题</a><a class="footer-bar-link" target="_blank" rel="noopener" href="https://beian.miit.gov.cn/" title="湘ICP备2023018619号-1">湘ICP备2023018619号-1</a><a class="footer-bar-link cc" href="/copyright" title="cc协议"><i class="anzhiyufont anzhiyu-icon-copyright-line"></i><i class="anzhiyufont anzhiyu-icon-creative-commons-by-line"></i><i class="anzhiyufont anzhiyu-icon-creative-commons-nc-line"></i><i class="anzhiyufont anzhiyu-icon-creative-commons-nd-line"></i></a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">130</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">16</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" href="https://blog.karltan.com/" title="Karl的博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/logo.png" alt="Karl的博客"/><span class="back-menu-item-text">Karl的博客</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://www.karltan.com/" title="Karl的导航"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://www.karltan.com/favicon.ico" alt="Karl的导航"/><span class="back-menu-item-text">Karl的导航</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">博客分流</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://v.karltan.com/" title="Vercel"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://assets.vercel.com/image/upload/front/favicon/vercel/favicon.ico" alt="Vercel"/><span class="back-menu-item-text">Vercel</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://c.karltan.com/" title="Cloudflare"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://dash.cloudflare.com/favicon-32x32.png" alt="Cloudflare"/><span class="back-menu-item-text">Cloudflare</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">工具</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://npmzjk.karltan.com/" title="NPM"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npmzjk.karltan.com/images/favicons/favicon-32x32.png" alt="NPM"/><span class="back-menu-item-text">NPM</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://paste.karltan.com/" title="Free-Bin"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://paste.karltan.com/static/favicon.ico" alt="Free-Bin"/><span class="back-menu-item-text">Free-Bin</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://tools.karltan.com/" title="IT-TOOLS"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://tools.karltan.com/android-chrome-192x192.png" alt="IT-TOOLS"/><span class="back-menu-item-text">IT-TOOLS</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://memos.karltan.com/" title="Memos"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://memos.karltan.com/logo.png" alt="Memos"/><span class="back-menu-item-text">Memos</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://wbo.karltan.com/" title="WBO"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://wbo.karltan.com/favicon.ico" alt="WBO"/><span class="back-menu-item-text">WBO</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://git.karltan.com/" title="Gitea"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://git.karltan.com/assets/img/logo.svg" alt="Gitea"/><span class="back-menu-item-text">Gitea</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives"><i class="fa-solid fa-box-archive faa-tada"></i><span> 归档</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories"><i class="fa-solid fa-palette faa-tada"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags"><i class="fa-solid fa-tags faa-tada"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link"><i class="fa-solid fa-link faa-tada"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/fcircle"><i class="fa-brands fa-artstation faa-tada"></i><span> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments"><i class="fa-solid fa-comments faa-tada"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/essay"><i class="fa-solid fa-comment-dots faa-tada"></i><span> 说说</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/music"><i class="fa-solid fa-music faa-tada"></i><span> 音乐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album"><i class="fa-solid fa-images faa-tada"></i><span> 相册</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" target="_blank" rel="noopener" href="https://status.karltan.com/status/1"><i class="fa-solid fa-chart-line faa-tada"></i><span> 网站监控</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="fa-solid fa-shoe-prints faa-tada"></i><span> 随便逛逛</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/about"><i class="fa-solid fa-heart faa-tada"></i><span> 关于我</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/AcWing/" style="font-size: 0.88rem; color: rgb(85, 23, 91);">AcWing<sup>33</sup></a><a href="/tags/CUDA/" style="font-size: 0.88rem; color: rgb(12, 161, 160);">CUDA<sup>1</sup></a><a href="/tags/CVPR/" style="font-size: 0.88rem; color: rgb(147, 94, 197);">CVPR<sup>3</sup></a><a href="/tags/ICLR/" style="font-size: 0.88rem; color: rgb(43, 82, 180);">ICLR<sup>1</sup></a><a href="/tags/Linux/" style="font-size: 0.88rem; color: rgb(122, 113, 29);">Linux<sup>1</sup></a><a href="/tags/MAPL/" style="font-size: 0.88rem; color: rgb(36, 174, 170);">MAPL<sup>1</sup></a><a href="/tags/MySQL/" style="font-size: 0.88rem; color: rgb(181, 7, 113);">MySQL<sup>1</sup></a><a href="/tags/NIPS/" style="font-size: 0.88rem; color: rgb(7, 27, 3);">NIPS<sup>1</sup></a><a href="/tags/PyTorch/" style="font-size: 0.88rem; color: rgb(150, 37, 10);">PyTorch<sup>1</sup></a><a href="/tags/Python/" style="font-size: 0.88rem; color: rgb(141, 141, 197);">Python<sup>1</sup></a><a href="/tags/RSS/" style="font-size: 0.88rem; color: rgb(112, 22, 153);">RSS<sup>1</sup></a><a href="/tags/Ubuntu/" style="font-size: 0.88rem; color: rgb(19, 93, 120);">Ubuntu<sup>3</sup></a><a href="/tags/Windows/" style="font-size: 0.88rem; color: rgb(164, 101, 25);">Windows<sup>1</sup></a><a href="/tags/arXiv/" style="font-size: 0.88rem; color: rgb(9, 118, 154);">arXiv<sup>1</sup></a><a href="/tags/mAP/" style="font-size: 0.88rem; color: rgb(199, 124, 62);">mAP<sup>1</sup></a><a href="/tags/tmux/" style="font-size: 0.88rem; color: rgb(13, 185, 37);">tmux<sup>1</sup></a><a href="/tags/vim/" style="font-size: 0.88rem; color: rgb(4, 144, 16);">vim<sup>1</sup></a><a href="/tags/%E4%BB%A3%E7%A0%81/" style="font-size: 0.88rem; color: rgb(151, 15, 28);">代码<sup>1</sup></a><a href="/tags/%E4%BD%8D%E5%A7%BF%E4%BC%B0%E8%AE%A1/" style="font-size: 0.88rem; color: rgb(130, 27, 45);">位姿估计<sup>1</sup></a><a href="/tags/%E6%89%A9%E5%AE%B9/" style="font-size: 0.88rem; color: rgb(110, 175, 30);">扩容<sup>1</sup></a><a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 0.88rem; color: rgb(158, 42, 1);">数学<sup>1</sup></a><a href="/tags/%E6%97%8B%E8%BD%AC%E8%A1%A8%E7%A4%BA/" style="font-size: 0.88rem; color: rgb(11, 137, 41);">旋转表示<sup>1</sup></a><a href="/tags/%E6%9D%8E%E6%B2%90/" style="font-size: 0.88rem; color: rgb(109, 78, 54);">李沐<sup>76</sup></a><a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 0.88rem; color: rgb(99, 94, 68);">深度学习<sup>79</sup></a><a href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/" style="font-size: 0.88rem; color: rgb(141, 161, 139);">目标检测<sup>1</sup></a><a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 0.88rem; color: rgb(57, 29, 124);">笔记<sup>77</sup></a><a href="/tags/%E7%AE%97%E6%B3%95%E9%A2%98/" style="font-size: 0.88rem; color: rgb(153, 5, 199);">算法题<sup>33</sup></a><a href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" style="font-size: 0.88rem; color: rgb(186, 192, 126);">论文笔记<sup>9</sup></a><a href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91/" style="font-size: 0.88rem; color: rgb(159, 79, 86);">阿里云<sup>1</sup></a><a href="/tags/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6/" style="font-size: 0.88rem; color: rgb(7, 133, 128);">高等数学<sup>1</sup></a><a href="/tags/%E9%AD%94%E6%B3%95/" style="font-size: 0.88rem; color: rgb(99, 91, 1);">魔法<sup>1</sup></a></div></div><hr/></div></div><div id="keyboard-tips"><div class="keyboardTitle">博客快捷键</div><div class="keybordList"><div class="keybordItem"><div class="keyGroup"><div class="key">shift K</div></div><div class="keyContent"><div class="content">关闭快捷键功能</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift A</div></div><div class="keyContent"><div class="content">打开/关闭中控台</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift M</div></div><div class="keyContent"><div class="content">播放/暂停音乐</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift D</div></div><div class="keyContent"><div class="content">深色/浅色显示模式</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift S</div></div><div class="keyContent"><div class="content">站内搜索</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift R</div></div><div class="keyContent"><div class="content">随机访问</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift H</div></div><div class="keyContent"><div class="content">返回首页</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift F</div></div><div class="keyContent"><div class="content">友链鱼塘</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift L</div></div><div class="keyContent"><div class="content">友链页面</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift P</div></div><div class="keyContent"><div class="content">关于本站</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift I</div></div><div class="keyContent"><div class="content">原版/本站右键菜单</div></div></div></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="anzhiyufont anzhiyu-icon-comment-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="anzhiyufont anzhiyu-icon-comments"></i></a><a id="switch-commentBarrage" href="javascript:anzhiyu.switchCommentBarrage();" title="开关弹幕"><i class="anzhiyufont anzhiyu-icon-danmu"></i></a><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="anzhiyufont anzhiyu-icon-xmark"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.20/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.4/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script async src="/anzhiyu/random.js"></script><script async="async">(function () {
+  var grt = new Date("07/15/2023 00:00:00"); //设置网站上线时间
+  var now = new Date();
+  var dnum;
+  var hnum;
+  var mnum;
+  var snum;
+  var nowHour;
+
+  // 计算并更新天数、小时数、分钟数和秒数
+  function updateTime() {
+    now = new Date(); // 更新 now 的值
+    nowHour = now.getHours(); // 更新 nowHour 的值
+    var days = (now - grt) / 1000 / 60 / 60 / 24;
+    dnum = Math.floor(days);
+    var hours = (now - grt) / 1000 / 60 / 60 - 24 * dnum;
+    hnum = Math.floor(hours);
+    if (String(hnum).length == 1) {
+      hnum = "0" + hnum;
+    }
+    var minutes = (now - grt) / 1000 / 60 - 24 * 60 * dnum - 60 * hnum;
+    mnum = Math.floor(minutes);
+    if (String(mnum).length == 1) {
+      mnum = "0" + mnum;
+    }
+    var seconds = (now - grt) / 1000 - 24 * 60 * 60 * dnum - 60 * 60 * hnum - 60 * mnum;
+    snum = Math.round(seconds);
+    if (String(snum).length == 1) {
+      snum = "0" + snum;
+    }
+  }
+
+  // 更新网页中显示的网站运行时间
+  function updateHtml() {
+    const footer = document.getElementById("footer");
+    if (!footer) return
+    let currentTimeHtml = "";
+    if (nowHour < 18 && nowHour >= 9) {
+      // 如果是上班时间，默认就是"安知鱼-上班摸鱼中.svg"图片，不需要更改
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    } else {
+      // 如果是下班时间，插入"安知鱼-下班啦.svg"图片
+      let img = document.querySelector("#workboard .workSituationImg");
+      if (img != null) {
+        img.src = "/img/label/offduty_img.svg";
+        img.title = "延毕就延毕，我先玩了再说🤡";
+        img.alt = "延毕就延毕，我先玩了再说🤡";
+      }
+
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    }
+
+    if (document.getElementById("runtimeTextTip")) {
+      document.getElementById("runtimeTextTip").innerHTML = currentTimeHtml;
+    }
+  }
+
+  setInterval(() => {
+    updateTime();
+    updateHtml();
+  }, 1000);
+})();</script><script src="https://cdn.cbd.int/algoliasearch@4.18.0/dist/algoliasearch-lite.umd.js"></script><script src="https://cdn.cbd.int/instantsearch.js@4.56.5/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.cbd.int/mathjax@3.2.2/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.cbd.int/mermaid@10.2.4/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  anzhiyu.addGlobalFn('themeChange', runMermaid, 'mermaid')
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo.karltan.com/.netlify/functions/twikoo',
+      region: '',
+      onCommentLoaded: () => {
+        anzhiyu.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') setTimeout(runFn,0)
+    else getScript('https://cdn.cbd.int/twikoo@1.6.25/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo.karltan.com/.netlify/functions/twikoo',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const runFn = () => {
+    init();
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) anzhiyu.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else {
+      loadTwikoo()
+    }
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script><input type="hidden" name="page-type" id="page-type" value="post"><script async src="/js/anzhiyu/comment_barrage.js"></script></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://twikoo.karltan.com/.netlify/functions/twikoo',
+        region: '',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.textContent= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn.cbd.int/twikoo@1.6.25/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'><div class='name'><span>${array[i].nick} </span></div></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <time datetime="${array[i].date}">${anzhiyu.diffDate(array[i].date, true)}</time></div>
+        </div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script async data-pjax src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.1/bubble/bubble.js"></script><script>var visitorMail = "visitor@karltan.com";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><script src="/js/anzhiyu/right_click_menu.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script><script defer src="/_vercel/insights/script.js"></script><script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script src="https://sdk.51.la/perf/js-sdk-perf.min.js" crossorigin="anonymous"></script><script>LA.init({id:"{3GbfAYtZPDEan7kS}",ck:"{3Gbf0O9t4EtAOhf1}"})</script><script>new LingQue.Monitor().init({id:"3GbfAYtZPDEan7kS",sendSuspicious:true});</script><script>(() => {
+  window.$crisp = [];
+  window.CRISP_WEBSITE_ID = "99975f47-0cf6-4a4b-8088-49fd5cb33ab0";
+  (function () {
+    d = document;
+    s = d.createElement("script");
+    s.src = "https://client.crisp.chat/l.js";
+    s.async = 1;
+    d.getElementsByTagName("head")[0].appendChild(s);
+  })();
+  $crisp.push(["safe", true])
+
+  const isChatBtn = true
+  const isChatHideShow = false
+
+  if (isChatBtn) {
+    const open = () => {
+      $crisp.push(["do", "chat:show"])
+      $crisp.push(["do", "chat:open"])
+    }
+
+    const close = () => {
+      $crisp.push(["do", "chat:hide"])
+    }
+
+    close()
+    $crisp.push(["on", "chat:closed", function() {
+      close()
+    }])
+
+    window.chatBtnFn = () => {
+      $crisp.is("chat:visible") ? close() : open()
+    }
+  } else if (isChatHideShow) {
+    window.chatBtn = {
+      hide: () => {
+        $crisp.push(["do", "chat:hide"])
+      },
+      show: () => {
+        $crisp.push(["do", "chat:show"])
+      }
+    }
+  }
+})()</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:type\"]","meta[property=\"og:site_name\"]","meta[property=\"og:description\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>

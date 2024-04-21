@@ -1,0 +1,794 @@
+<!-- ./node_modules/hexo-theme-anzhiyu/layout/includes/layout.pug--><!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><title>论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》 | Karl的博客</title><meta name="keywords" content="论文笔记,ICLR"><meta name="author" content="Karl"><meta name="copyright" content="Karl"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#f7f9fe"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-touch-fullscreen" content="yes"><meta name="apple-mobile-web-app-title" content="论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》"><meta name="application-name" content="论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="#f7f9fe"><meta property="og:type" content="article"><meta property="og:title" content="论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》"><meta property="og:url" content="http://blog.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/index.html"><meta property="og:site_name" content="Karl的博客"><meta property="og:description" content="AN IMAGE IS WORTH 16X16 WORDS：用于大规模图像识别的Transformers。"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://img.karltan.com/covers/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words.png"><meta property="article:author" content="Karl"><meta property="article:tag"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://img.karltan.com/covers/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words.png"><meta name="description" content="AN IMAGE IS WORTH 16X16 WORDS：用于大规模图像识别的Transformers。"><link rel="shortcut icon" href="/img/logo.png"><link rel="canonical" href="http://blog.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/"><link rel="preconnect" href="//cdn.cbd.int"/><link rel="preconnect" href="//hm.baidu.com"/><link rel="preconnect" href="//static.cloudflareinsights.com"/><link rel="preconnect" href="//www.clarity.ms"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="google-site-verification" content="ItAgqL0bGv4TvuAzDl6nNhCuwt5RdBLYRkwae25qGzU"/><meta name="baidu-site-verification" content="codeva-Y7ehYLkADp"/><meta name="msvalidate.01" content="xxx"/><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@1.0.17/lib/assets/font-awesome-animation.min.css"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.cbd.int/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.cbd.int/@fancyapps/ui@5.0.20/dist/fancybox/fancybox.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/swiper/swiper.min.css" media="print" onload="this.media='all'"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?0f2c96ab05c3c6d77e2d8fbf3240e404";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script><script defer="defer" data-pjax="data-pjax" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon="{&quot;token&quot;: &quot;758e166757ec488583caf56b7dd7f095&quot;}"></script><script>(function(c,l,a,r,i,t,y){
+    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+})(window, document, "clarity", "script", "i0moouu8jj");</script><script>const GLOBAL_CONFIG = {
+  linkPageTop: {"enable":true,"title":"与数百名博主无限进步","addFriendPlaceholder":"昵称（请勿包含博客等字样）：\n网站地址（要求博客地址，请勿提交个人主页）：\n头像图片url（请提供尽可能清晰的图片）：\n描述：\n站点截图（可选）：\n"},
+  peoplecanvas: undefined,
+  postHeadAiDescription: {"enable":true,"gptName":"AnZhiYu","mode":"tianli","switchBtn":false,"btnLink":"https://afdian.net/item/886a79d4db6711eda42a52540025c377","randomNum":3,"basicWordCount":1000,"key":"a93a787ee06b121647ed","Referer":"https://blog.karltan.com/"},
+  diytitle: undefined,
+  LA51: {"enable":true,"ck":"3Gbf0O9t4EtAOhf1","LingQueMonitorID":"3GbfAYtZPDEan7kS"},
+  greetingBox: {"enable":true,"default":"晚上好👋","list":[{"greeting":"晚安😴","startTime":0,"endTime":5},{"greeting":"早上好鸭👋, 祝你一天好心情！","startTime":6,"endTime":9},{"greeting":"上午好👋, 状态很好，鼓励一下～","startTime":10,"endTime":10},{"greeting":"11点多啦, 在坚持一下就吃饭啦～","startTime":11,"endTime":11},{"greeting":"午安👋, 宝贝","startTime":12,"endTime":13},{"greeting":"🌈充实的一天辛苦啦！","startTime":14,"endTime":17},{"greeting":"18点喽, 奖励一顿丰盛的大餐吧🍔。","startTime":18,"endTime":19},{"greeting":"晚上好👋, 在属于自己的时间好好放松😌~","startTime":20,"endTime":24}]},
+  twikooEnvId: 'https://twikoo.karltan.com/.netlify/functions/twikoo',
+  commentBarrageConfig:{"enable":true,"maxBarrage":1,"barrageTime":4000,"accessToken":"6f88301de4664d9d9a7cadf39a9f6e5a","mailMd5":""},
+  root: '/',
+  preloader: {"source":2},
+  friends_vue_info: {"apiurl":"https://fcircle.karltan.com/"},
+  navMusic: false,
+  mainTone: undefined,
+  authorStatus: {"skills":["🤖️ 数码科技爱好者","🔍 分享与热心帮助","🏠 智能家居小能手","🔨 设计开发一条龙","🤝 专修交互与设计","🏃 脚踏实地行动派","🧱 团队小组发动机","💢 壮汉人狠话不多"]},
+  algolia: {"appId":"8C3UHN3LPN","apiKey":"e00dcc69cdc423d89a288bc784a14012","indexName":"blog-search","hits":{"per_page":6},"languages":{"input_placeholder":"输入关键词后按下回车查找","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简","rightMenuMsgToTraditionalChinese":"转为繁体","rightMenuMsgToSimplifiedChinese":"转为简体"},
+  noticeOutdate: {"limitDay":1,"position":"top","messagePrev":"本文距上次修改已经","messageNext":"天，其中的内容可能已经不再适用。"},
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":330},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    simplehomepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"copy":true,"copyrightEbable":false,"limitCount":50,"languages":{"author":"作者: Karl","link":"链接: ","source":"来源: Karl的博客","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。","copySuccess":"复制成功，复制和转载请标注本文地址"}},
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"你已切换为繁体","cht_to_chs":"你已切换为简体","day_to_night":"你已切换为深色模式","night_to_day":"你已切换为浅色模式","bgLight":"#425AEF","bgDark":"#1f1f1f","position":"top-right"},
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.min.js',
+      css: 'https://cdn.cbd.int/flickr-justified-gallery@2.1.2/dist/fjGallery.css'
+    }
+  },
+  isPhotoFigcaption: true,
+  islazyload: true,
+  isAnchor: false,
+  shortcutKey: {"enable":true,"delay":100,"shiftDelay":200},
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  configTitle: 'Karl的博客',
+  title: '论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》',
+  postAI: 'true',
+  pageFillDescription: 'AN IMAGE IS WORTH 16X16 WORDS TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE, ABSTRACT, 1 INTRODUCTION, 2 RELATED WORK, 3 METHOD, 3.1 VISION TRANSFORMER (VIT), 3.2 FINE-TUNING AND HIGHER RESOLUTION, 4 EXPERIMENTS, 4.1 SETUP, 4.2 COMPARISON TO STATE OF THE ART, 4.3 PRE-TRAINING DATA REQUIREMENTS, 4.4 SCALING STUDY, 4.5 INSPECTING VISION TRANSFORMER, 4.6 SELF-SUPERVISION, 5 CONCLUSION, ACKNOWLEDGEMENTS, APPENDIX, A MULTIHEAD SELF-ATTENTION, B EXPERIMENT DETAILS, B.1 TRAINING, B.1.1 FINE-TUNING, B.1.2 SELF-SUPERVISION, C ADDITIONAL RESULTS, D ADDITIONAL ANALYSES, D.1 SGD VS. ADAM FOR RESNETS, D.2 TRANSFORMER SHAPE, D.3 HEAD TYPE AND CLASS TOKEN, D.4 POSITIONAL EMBEDDING, D.5 EMPIRICAL COMPUTATIONAL COSTS, D.6 AXIAL ATTENTION, D.7 ATTENTION DISTANCE, D.8 ATTENTION MAPS, D.9 OBJECTNET RESULTS, D.10 VTAB BREAKDOWN原文链接论文笔记的博客链接论文笔记博客论文链接代码链接虽然架构已经成为自然语言处理任务的事实上的标准但它在计算机视觉上的应用仍然有限在视觉方面注意力要么与卷积网络结合使用要么用于替换卷积网络的某些组件同时保持其整体结构不变我们证明这种对的依赖是不必要的直接应用于图像序列的纯可以很好地完成图像分类任务当对大量数据进行预训练并转移到多个中型或小型图像识别基准等时与最先进的卷积网络相比获得了出色的结果同时需要更少的计算资源来训练基于自注意力的架构特别是已经成为自然语言处理的首选模型主要的方法是在大型文本语料库上进行预训练然后在较小的特定任务数据集上进行微调由于的计算效率和可扩展性它可以训练前所未有的规模超过个参数的模型随着模型和数据集的增长仍然没有出现性能饱和的迹象然而在计算机视觉领域卷积架构仍然占主导地位受成功的启发许多工作尝试将类架构与自注意力相结合有些完全取代了卷积后一种模型虽然在理论上是有效的但由于使用了专门的注意力模式还没有在现代硬件加速器上有效地扩展因此在大规模图像识别中经典的类架构仍然是最先进的受中缩放成功的启发我们尝试将标准直接应用于图像并尽可能减少修改为此我们将图像分割成小块并提供这些小块的线性嵌入序列作为的输入在应用程序中图像的处理方式与令牌单词相同我们以监督的方式对模型进行图像分类训练当在中等规模的数据集如上进行训练时没有进行强正则化这些模型产生的精度比同等规模的低几个百分点这个看似令人沮丧的结果是可以预料的缺乏固有的一些归纳偏差例如平移不变性和局部性因此在数据量不足的情况下训练时不能很好地泛化然而如果模型在更大的数据集图像上训练情况就会发生变化我们发现大规模训练胜过归纳偏见我们的在足够的规模上进行预训练并转移到具有更少数据点的任务时获得了出色的结果当在公共数据集或室内数据集上进行预训练时在多个图像识别基准上接近或超过了最先进的水平特别是最佳模型在上达到的准确率在上达到的准确率在上达到的准确率在套件的个任务上达到的准确率是由等人提出的用于机器翻译并且已经成为许多任务中最先进的方法基于大型的模型通常在大型语料库上进行预训练然后针对手头的任务进行微调使用去噪自监督预训练任务而系列则使用语言建模作为其预训练任务对图像进行注意力的朴素应用会要求每个像素都注意其他像素由于像素数量的代价是二次的因此不能按实际的输入大小进行缩放因此为了在图像处理的背景下应用过去已经尝试了几种近似方法等人仅在局部邻域对每个查询像素应用自注意力而不是全局这种局部多头点积自注意块可以完全取代卷积在不同的工作中稀疏采用可扩展的全局自注意力近似以便适用于图像另一种扩展注意力的方法是将其应用于不同大小的块在极端情况下仅沿着单个轴许多这些专门的注意力架构在计算机视觉任务上显示出有希望的结果但需要复杂的工程才能在硬件加速器上有效地实现与我们最相关的是等人的模型该模型从输入图像中提取大小为的并在其上应用完全的自注意力该模型与非常相似但我们的工作进一步证明了大规模预训练能够使普通的与最先进的竞争甚至更好此外等人使用了像素的小尺寸这使得该模型仅适用于小分辨率图像而我们也可以处理中分辨率图像人们对将卷积神经网络与自注意力形式相结合也很感兴趣例如通过增强图像分类的特征映射或通过使用自注意进一步处理的输出例如用于目标检测视频处理图像分类无监督对象发现或统一文本视觉任务另一个最近的相关模型是图像它在降低图像分辨率和色彩空间后将应用于图像像素该模型以无监督的方式作为生成模型进行训练然后可以对结果表示进行微调或线性探测以获得分类性能在上实现的最大准确率我们的工作增加了越来越多的论文这些论文探索了比标准数据集更大规模的图像识别使用额外的数据源可以在标准基准上获得最先进的结果此外等人研究了性能如何随数据集大小而扩展等人等人在和等大规模数据集上对迁移学习进行了实证探索我们也关注后两个数据集但是训练的是而不是在以前的工作中使用的基于的模型在模型设计中我们尽可能地遵循原始这种故意简单设置的一个优点是可扩展的架构以及它们的高效实现几乎可以开箱即用该模型的概述如图所示标准接收标记嵌入的序列作为输入为了处理图像我们将图像重塑为一系列平坦的其中为原始图像的分辨率为通道数为每个图像的分辨率为得到的数它也作为的有效输入序列长度在其所有层中使用恒定的潜在向量大小因此我们用可训练的线性投影将展平并映射到维我们将该投影的输出称为与的令牌类似我们在嵌入的序列上添加一个可学习的嵌入其在编码器输出处的状态作为图像表示在预训练和微调过程中都附加了一个分类头分类头在预训练时由一个隐藏层的实现在微调时由一个线性层实现将位置嵌入添加到嵌入中以保留位置信息我们使用标准的可学习的位置嵌入因为我们没有观察到使用更先进的感知位置嵌入的显著性能提升附录得到的嵌入向量序列作为编码器的输入编码器由多头自注意见附录和块交替层组成在每个区块之前应用层在每个区块之后应用残差连接包含两个具有非线性的层我们注意到具有比少得多的图像特定的感应偏置在中局部性二维邻域结构和平移等方差被嵌入到整个模型的每一层中在中只有层是局部和平移不变的而自注意力层是全局的二维邻域结构的使用非常少在模型开始时通过将图像切割成小块以及在微调时用于调整不同分辨率图像的位置嵌入如下所述除此之外初始化时的位置嵌入不携带关于的二维位置信息所有之间的空间关系都需要从头学习作为原始图像的替代方案输入序列可以由的特征映射形成在该混合模型中将投影应用于从中提取的作为一种特殊情况的空间大小可以是这意味着输入序列是通过简单地将的空间维度平坦化并投影到维度得到的如上所述添加分类输入嵌入和位置嵌入通常我们在大型数据集上预训练并对较小的下游任务进行微调为此我们移除预训练的预测头并附加一个零初始化的前传层其中是下游类的数量与预训练相比在更高分辨率下进行微调通常是有益的当输入更高分辨率的图像时我们保持大小不变从而获得更大的有效序列长度可以处理任意序列长度直到内存限制但是预训练的位置嵌入可能不再有意义因此我们根据预训练的位置嵌入在原始图像中的位置对其进行二维插值请注意此分辨率调整和提取是将图像的二维结构的感应偏置手动注入的唯一点我们评估了和混合架构的表示学习能力为了了解每个模型的数据需求我们在不同大小的数据集上进行预训练并评估许多基准任务当考虑到预训练模型的计算成本时表现非常好以较低的预训练成本在大多数识别基准上达到最先进的水平最后我们使用自监督进行了一个小实验并表明自监督的在未来是有希望的为了探索模型的可扩展性我们使用了数据集其中包含个类和万张图像我们将其称为其超集包含个类和张图像以及包含个类和张高分辨率图像我们在等人之后对下游任务的测试集进行了预训练数据集的去重复处理我们将在这些数据集上训练的模型迁移到几个基准任务原始验证标签和清理后的标签上的和对于这些数据集预处理遵循等人我们还对个任务的分类套件进行了评估评估小样本迁移学习到不同任务每个任务使用个训练示例任务分为三组自然任务如上述任务宠物等专业任务医学和卫星图像以及结构任务需要几何理解的任务比如定位我们基于使用的配置如表所示和模型直接取自我们加入了较大的模型在接下来的内容中我们使用简短的符号来表示模型大小和输入大小例如表示具有输入大小的变体请注意的序列长度与大小的平方成反比因此大小较小的模型在计算上更昂贵对于基线我们使用但将批归一化层替换为组归一化层并使用标准化卷积这些修改改善了迁移我们将修改后的模型命名为对于混合架构我们将中间特征映射以一个像素的大小馈送到中为了实验不同的序列长度我们要么获取普通的阶段的输出要么删除阶段在阶段中放置相同数量的层保持层总数并获取这个扩展阶段的输出选项的结果是倍长的序列长度和更昂贵的模型我们使用训练所有模型包括其中批大小为并应用的高权重衰减我们发现这对所有模型的转移都很有用附录显示与常规做法相比在我们的设置中比对的效果略好我们使用线性学习率预热和衰减详见附录对于微调我们使用动量批大小对于所有模型见附录对于表中的结果我们在更高的分辨率下进行了微调为为并且还使用了平均系数为我们通过小样本精度或微调精度报告下游数据集的结果微调精度捕获每个模型在各自的数据集上进行微调后的性能通过求解正则化最小二乘回归问题将训练图像子集的冻结表示映射到个目标向量获得小样本精度这个公式使我们可以得到封闭形式的精确解虽然我们主要关注微调性能但我们有时会使用线性的小样本精度来进行快速的动态评估因为微调的成本太高我们首先将我们最大的模型和与文献中最先进的进行比较第一个比较点是它使用大型执行监督迁移学习第二个是它是一个大型的高效网络使用半监督学习在和上进行训练去掉了标签目前在上是最先进的在这里报道的其他数据集上是最先进的所有模型都在硬件上进行训练我们报告预训练每个模型所需的即用于训练的核数每个芯片个乘以训练时间天表显示了结果在上预训练的较小的模型在所有任务上都优于在相同的数据集上预训练同时需要更少的计算资源来训练更大的模型进一步提高了性能特别是在更具挑战性的数据集和套件上有趣的是与之前的技术相比这个模型仍然需要更少的计算来进行预训练然而我们注意到预训练效率可能不仅受到体系结构选择的影响还受到其他参数的影响如训练计划优化器权值衰减等在第节中我们对不同架构的性能与计算进行了对照研究最后在公共数据集上预训练的模型在大多数数据集上也表现良好同时需要较少的资源进行预训练它可以使用标准的核云在大约天内进行训练图将任务分解为各自的组并在此基准上与之前的方法进行比较在和上共同训练的以及在上监督和半监督学习在自然任务和结构任务上优于和其他方法在专业任务上前两个型号的性能相似在大型数据集上进行预训练时表现良好与相比对于视觉的归纳偏差更少那么数据集的大小有多重要呢我们进行了两个系列的实验首先我们在越来越大的数据集上预训练模型和为了提高在较小数据集上的性能我们优化了三个基本的正则化参数权重衰减和标签平滑图显示了调优到后的结果表显示了其他数据集上的结果注意预训练的模型也进行了微调但还是在上这是因为在微调过程中分辨率的提高提高了性能当在最小的数据集上进行预训练时尽管适度正则化模型的表现仍不如模型使用预训练它们的性能是相似的只有使用我们才能看到更大型号的全部好处图还显示了不同大小的模型所跨越的性能区域在上的表现优于但在更大的数据集上超越了它其次我们在和的随机子集以及完整的数据集上训练我们的模型我们没有对较小的子集执行额外的正则化并对所有设置使用相同的超参数这样我们评估的是模型的内在属性而不是正则化的影响然而我们确实使用了早期停止并报告了在训练期间实现的最佳验证准确性为了节省计算我们报告了小样本线性精度而不是全微调精度图包含了结果在较小的数据集上比过拟合得多计算成本相当例如略快于它在的子集上表现得更差但在以上的子集上表现得更好和也是如此这个结果强化了卷积归纳偏差对较小数据集有用的直觉但对于较大的数据集直接从数据中学习相关模式是足够的甚至是有益的总的来说上的小样本结果图以及上的小样本结果表似乎表明小样本迁移学习很有希望进一步分析的小样本特性是未来工作的一个令人兴奋的方向我们通过评估的迁移学习性能对不同模型进行了控制缩放研究在这种情况下数据大小不会成为模型性能的瓶颈我们根据每个模型的预训练成本来评估性能模型集包括个预训练个加上和预训练个个预训练个加上和预训练个和个混合架构预训练个加上预训练个对于混合架构数量为模型名称的末尾不代表大小而是代表主干中的总下采样率图包含了迁移学习性能与总预训练计算的对比参见附录有关计算成本的详细信息每个模型的详细结果见附录表可以观察到一些模式首先在性能计算权衡方面比有优势节省了大约倍的计算来获得相同的性能平均超过个数据集其次混合架构在较小的计算预算下略优于但对于较大的模型这种差异就消失了这个结果有些令人惊讶因为人们可能期望卷积局部特征处理能够帮助任何规模的第三在尝试的范围内似乎没有饱和这激励了未来的扩展努力为了开始理解如何处理图像数据我们分析其内部表示的第一层将展平后的线性投影到较低维空间图左显示了学习到的嵌入过滤器的顶部主成分这些成分类似于每个内精细结构的低维表示的可信基函数投影后将学习到的位置嵌入添加到表示中图中显示该模型在位置嵌入的相似性中学习对图像内的距离进行编码即距离越近的往往有更多相似的位置嵌入此外出现了行列结构同一行列中的具有相似的嵌入最后对于较大的网格有时会出现正弦结构附录位置嵌入学习表示二维图像拓扑解释了为什么手工制作的二维感知嵌入变体没有产生改进附录自注意力允许在整个图像中集成信息即使是在最低层我们研究了网络在多大程度上利用了这种能力具体来说我们计算图像空间中信息被整合的平均距离这是基于注意力权重的图右这种注意距离类似于的感受野大小我们发现一些人的大脑已经注意到了最低层的大部分图像这表明该模型确实使用了整体整合信息的能力其他注意头在低层的注意距离一直很小在之前应用的混合模型中这种高度局部化的注意力不那么明显图右这表明它可能与中的早期卷积层具有类似的功能注意距离随网络深度的增加而增加从全局来看我们发现该模型关注与分类在语义上相关的图像区域图在任务上表现出色然而它们的成功不仅源于出色的可扩展性还源于大规模的自监督预训练我们还模拟中使用的掩码语言建模任务对自我监督的掩码预测进行了初步探索通过自我监督预训练我们较小的模型在上达到了的准确率与从头开始训练相比显著提高了但仍比监督预训练低附录载有进一步的细节我们留下对比预训练的探索对未来工作的影响我们探索了在图像识别中的直接应用与之前在计算机视觉中使用自注意的工作不同除了初始提取步骤外我们没有将特定于图像的归纳偏差引入体系结构相反我们将图像解释为一系列并通过中使用的标准编码器对其进行处理当与大型数据集的预训练相结合时这种简单但可扩展的策略效果出奇地好因此在许多图像分类数据集上达到或超过了最先进的水平同时预训练相对便宜虽然这些初步结果令人鼓舞但仍存在许多挑战一是将应用于其他计算机视觉任务如检测和分割我们的结果加上等人的结果表明了这种方法的前景另一个挑战是继续探索自我监督的预训练方法我们的初步实验显示了自监督预训练的改进但自监督预训练与大规模监督预训练之间仍有很大差距最后进一步扩展可能会提高性能这项工作在柏林苏黎世和阿姆斯特丹执行我们感谢谷歌的许多同事的帮助特别是他在基础设施和代码的开源发布方面提供了至关重要的帮助和提供大规模训练基础设施的帮助和进行了有益的讨论标准自注意是神经架构的流行构建块对于输入序列中的每个元素我们计算序列中所有值的加权和注意力权重基于序列中两个元素的成对相似度及其各自的查询和键表示多头自注意是自注意的扩展其中我们并行运行个自注意操作称为头并投影它们的连接输出为了在改变时保持计算量和参数数量不变通常将设为表总结了不同模型的训练设置我们发现在上从头开始训练模型时强正则化是关键使用时应用于除投影之外的每个密集层之后以及直接在添加位置到嵌入之后应用混合模型使用与模型完全相同的设置进行训练最后所有的训练都是在分辨率上完成的我们使用动量为的对所有模型进行微调我们在学习率上运行一个小的网格搜索参见表中的学习率范围为此我们使用训练集中的小分支宠物和鲜花为为为作为开发集并在剩余数据上进行训练对于最终结果我们对整个训练集进行训练并对各自的测试数据进行评估对于微调和混合模型我们使用完全相同的设置唯一的例外是我们在学习率扫描中添加另一个值此外对于我们还运行等人的设置并在本次运行和扫描中选择最佳结果最后如果没有特别提到所有的微调实验都在分辨率下运行在不同于训练的分辨率下运行微调是常见的做法当将模型转移到另一个数据集时我们删除整个头部两个线性层并将其替换为单个零初始化的线性层输出目标数据集所需的类数我们发现这比简单地重新初始化最后一层要健壮一些对于我们遵循等人的协议并对所有任务使用相同的超参数设置我们使用学习率为训练步表我们通过在两个学习率和两个时间表上运行一个小扫描来选择这个设置并在个示例验证集中选择得分最高的设置我们遵循等人使用的预处理除了我们不使用特定于任务的输入分辨率相反我们发现受益于所有任务的高分辨率我们采用掩模预测目标进行初步的自我监督实验为了做到这一点我们通过用可学习的嵌入随机的其他嵌入或保持原样替换它们的嵌入来破坏的嵌入这种设置与等人使用的语言非常相似最后我们使用各自的表示来预测每个损坏的位平均颜色即总共种颜色我们在上训练了步约个的自监督模型批大小为我们使用其基本学习率为预热为步余弦学习率衰减作为预训练的预测目标我们尝试了以下设置仅预测平均的位颜色即种颜色的种预测预测的缩小版本并行使用位颜色即种颜色的种预测使用在完整上进行回归即在个通道上进行种回归令人惊讶的是我们发现所有这些都运行得很好尽管稍微差一些我们只报告选项的最终结果因为它显示了最佳的少数镜头性能我们还用等人使用的腐败率进行了实验但在我们的少数几个指标上结果也略差最后我们想指出的是我们的掩码预测实例化不需要如此大量的预训练也不需要像这样的大型数据集以便在分类上获得类似的性能提升也就是说我们观察到在万步预训练后下游性能的收益递减并且在上预训练时看到类似的收益我们报告了与论文中给出的数字相对应的详细结果表对应于本文的图显示了不同模型在和数据集上预训练的迁移训练性能表对应于本文的图显示了不同大小的和混合模型的迁移学习性能以及预训练的估计计算成本通常使用进行训练我们使用作为优化器是非常非常规的在这里我们展示了激发这一选择的实验也就是说我们比较了和在上预训练的两个和的微调性能对于我们使用等人推荐的超参数结果如表所示预训练在大多数数据集和平均水平上优于预训练这证明了选择作为在上预训练的优化器是合理的请注意绝对数字低于等人报告的数字因为我们只预训练了个而不是个我们对架构的不同维度进行了扩展以找出最适合扩展到非常大的模型的维度图显示了不同配置下上的次性能测试所有配置都基于层的模型大小为所有线相交我们可以看到缩放深度带来了最大的改进这一点在层之前非常明显然而在层之后收益递减已经很明显了有趣的是扩展网络的宽度似乎只会导致最小的变化在不引入参数的情况下减小大小从而增加有效序列长度显示出惊人的鲁棒性改进这些发现表明计算可能比参数数量更好地预测性能并且缩放应该强调深度而不是宽度如果有的话总体而言我们发现按比例缩放所有维度会产生稳健的改进为了尽可能接近原始的模型我们使用了一个额外的令牌它被用作图像表示然后该令牌的输出通过一个小型多层感知器转换为类预测其中为单个隐藏层中的非线性这种设计继承自文本的模型我们在整个主要论文中都使用它最初的尝试是只使用图像嵌入全局平均池化然后是线性分类器就像的最终特征图一样表现非常糟糕然而我们发现这既不是由于额外的令牌也不是由于操作相反性能上的差异完全可以通过对不同学习率的需求来解释参见图我们使用位置嵌入对不同的空间信息编码方式进行了消融我们尝试了以下情况不提供位置信息将输入视为一维位置嵌入将输入视为栅格顺序的序列本文中所有其他实验的默认值二维位置嵌入将输入视为二维的网格在这种情况下学习了两组嵌入每组用于一个轴嵌入和嵌入每个轴的大小为然后基于输入路径上的坐标我们将嵌入和嵌入连接起来得到该的最终位置嵌入相对位置嵌入考虑之间的相对距离来编码空间信息而不是它们的绝对位置为此我们使用一维相对注意其中我们定义了所有可能的对的相对距离因此对于每个给定的对一个作为查询另一个作为注意机制中的键值我们有一个偏移量其中每个偏移量都与嵌入相关联然后在应用之前我们使用相对注意的作为偏差项并将其添加到主要注意基于内容的注意的中除了不同的空间信息编码方式我们还尝试了不同的方式将这些信息整合到我们的模型中对于一维和二维位置嵌入我们尝试了三种不同的情况在它们模型的主干之后和将输入馈给编码器之前向输入添加位置嵌入本文中所有其他实验的默认值学习并在每层开始的输入中添加位置嵌入在每层开始的输入中添加一个学习到的位置嵌入层与层之间共享表总结了在模型上的消融研究结果我们可以看到虽然没有位置嵌入的模型和有位置嵌入的模型在性能上有很大的差距但是不同的位置信息编码方式之间几乎没有差别我们推测由于我们的编码器在级输入上操作而不是像素级输入因此如何编码空间信息的差异不太重要更准确地说在级输入中空间维度比原始像素级输入小得多例如而不是并且对于这些不同的位置编码策略来说学习在这种分辨率下表示空间关系同样容易即便如此网络学习到的位置嵌入相似度的具体模式取决于训练超参数图我们还对硬件上架构的实际速度感兴趣由于通道宽度和缓存大小等细节理论并不总是很好地预测为此我们在加速器上对感兴趣的主要模型执行推理速度计时推理速度和反传速度之间的差异是一个恒定的模型无关因素图左显示了在不同的输入大小下一个核每秒可以处理多少图像每个单点都是指在广泛的批大小范围内测量的峰值性能可以看到与图像大小的理论双二次缩放仅在最大分辨率下的最大模型中才刚刚开始发生另一个感兴趣的量是每个模型可以容纳在一个核心上的最大批处理大小更大的批处理更适合扩展到大型数据集图右显示了同一组模型的数量这表明大型模型在内存效率方面比模型有明显的优势轴向注意力是一种简单而有效的技术可以在组织为多维张量的大输入上运行自注意力轴向注意力的一般思想是执行多个注意力操作每个操作沿着输入张量的单个轴进行而不是将一维注意力应用于展平后的输入在轴向注意力中每个注意力沿特定轴混合信息同时保持沿其他轴的信息独立沿着这条路线等人提出了模型其中中所有内核大小为的卷积都被轴向自注意力即行和列注意力取代并通过相对位置编码增强我们已经实现了作为一个基线模型我们的实现基于中的开源实现在我们的实验中我们在准确性方面复制了中报告的分数然而我们的实现与开源实现类似在上非常慢因此我们无法将其用于广泛的大规模实验这些可以通过精心优化的实现来解锁此外我们修改了以处理二维形状的输入而不是一维序列的并合并了轴向块其中不是自注意力后面跟着而是行自注意力加上然后是列自注意力加上图展示了在数据集上进行预训练时轴向轴向和轴向在线性上与预训练计算的性能包括数和推理时间每秒示例数正如我们所看到的就性能而言轴向和轴向都比它们的对应物做得更好但这是以更多的计算为代价的这是因为在轴向模型中每个具有全局自注意力的块被两个轴向块取代一个具有行自注意力一个具有列自注意力尽管自注意力操作的序列长度在轴向情况下较小但每个轴向块都有一个额外的对于尽管它在精度计算权衡方面看起来是合理的图左但是这种朴素的实现在上非常慢图右为了理解如何使用自注意力来整合图像上的信息我们分析了不同层的注意力权重所跨越的平均距离图这种注意距离类似于的感受野大小在较低的层中注意力头之间的平均注意距离变化很大一些注意力头注意图像的大部分而另一些则注意查询位置或附近的小区域随着深度的增加所有注意力头的注意距离都会增加在网络的后半段大多数注意力头都能够注意大部分令牌为了计算从输出标记到输入空间的注意力映射图和我们使用了注意力简单地说我们在所有头部上平均的注意力权重然后递归地乘以所有层的权重矩阵这解释了所有层的令牌之间的注意力混合我们还根据等人的评估设置在基准上评估了我们的旗舰模型得到了的前准确率和的前准确率表显示了每个任务的得分',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-04-20 22:00:00',
+  postMainColor: '',
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#18171d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#f7f9fe')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/mycss.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css" integrity="sha384-AfEj0r4/OFrOo5t7NnNe46zW/tFgW6x/bCJG8FqQCEo3+Aro6EYUG4+cU+KJWu/X" crossorigin="anonymous"><script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.js" integrity="sha384-g7c+Jr9ZivxKLnZTDUhnkOnsh30B4H0rpLUpJ4jAIKs4fnJI+sEnkvrMWph2EDg4" crossorigin="anonymous"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/contrib/auto-render.min.js" integrity="sha384-mll67QQFJfxn0IYznZYonOWZ644AWYC+Pt2cHqMaRhXVrursRwvLnLaebdGIlYNa" crossorigin="anonymous"></script><meta name="generator" content="Hexo 7.0.0"><link rel="alternate" href="/atom.xml" title="Karl的博客" type="application/atom+xml">
+<link rel="alternate" href="/rss2.xml" title="Karl的博客" type="application/rss+xml">
+</head><body data-type="anzhiyu"><div id="web_bg"></div><div id="an_music_bg"></div><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.10/progress_bar/progress_bar.css"/><script async="async" src="https://cdn.cbd.int/pace-js@1.2.4/pace.min.js" data-pace-options="{ &quot;restartOnRequestAfter&quot;:false,&quot;eventLag&quot;:false}"></script><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><div id="nav-group"><span id="blog_name"><div class="back-home-button"><i class="anzhiyufont anzhiyu-icon-grip-vertical"></i><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" href="https://blog.karltan.com/" title="Karl的博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/logo.png" alt="Karl的博客"/><span class="back-menu-item-text">Karl的博客</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://www.karltan.com/" title="Karl的导航"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://www.karltan.com/favicon.ico" alt="Karl的导航"/><span class="back-menu-item-text">Karl的导航</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">博客分流</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://v.karltan.com/" title="Vercel"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://assets.vercel.com/image/upload/front/favicon/vercel/favicon.ico" alt="Vercel"/><span class="back-menu-item-text">Vercel</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://c.karltan.com/" title="Cloudflare"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://dash.cloudflare.com/favicon-32x32.png" alt="Cloudflare"/><span class="back-menu-item-text">Cloudflare</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">工具</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://npmzjk.karltan.com/" title="NPM"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npmzjk.karltan.com/images/favicons/favicon-32x32.png" alt="NPM"/><span class="back-menu-item-text">NPM</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://paste.karltan.com/" title="Free-Bin"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://paste.karltan.com/static/favicon.ico" alt="Free-Bin"/><span class="back-menu-item-text">Free-Bin</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://tools.karltan.com/" title="IT-TOOLS"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://tools.karltan.com/android-chrome-192x192.png" alt="IT-TOOLS"/><span class="back-menu-item-text">IT-TOOLS</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://memos.karltan.com/" title="Memos"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://memos.karltan.com/logo.png" alt="Memos"/><span class="back-menu-item-text">Memos</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://wbo.karltan.com/" title="WBO"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://wbo.karltan.com/favicon.ico" alt="WBO"/><span class="back-menu-item-text">WBO</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://git.karltan.com/" title="Gitea"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://git.karltan.com/assets/img/logo.svg" alt="Gitea"/><span class="back-menu-item-text">Gitea</span></a></div></div></div></div><a id="site-name" href="/" accesskey="h"><div class="title">Karl的博客</div><i class="anzhiyufont anzhiyu-icon-house-chimney"></i></a></span><div class="mask-name-container"><div id="name-container"><a id="page-name" href="javascript:anzhiyu.scrollToDest(0, 500)">PAGE_NAME</a></div></div><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives"><i class="fa-solid fa-box-archive faa-tada"></i><span> 归档</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories"><i class="fa-solid fa-palette faa-tada"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags"><i class="fa-solid fa-tags faa-tada"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link"><i class="fa-solid fa-link faa-tada"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/fcircle"><i class="fa-brands fa-artstation faa-tada"></i><span> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments"><i class="fa-solid fa-comments faa-tada"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/essay"><i class="fa-solid fa-comment-dots faa-tada"></i><span> 说说</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/music"><i class="fa-solid fa-music faa-tada"></i><span> 音乐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album"><i class="fa-solid fa-images faa-tada"></i><span> 相册</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" target="_blank" rel="noopener" href="https://status.karltan.com/status/1"><i class="fa-solid fa-chart-line faa-tada"></i><span> 网站监控</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="fa-solid fa-shoe-prints faa-tada"></i><span> 随便逛逛</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/about"><i class="fa-solid fa-heart faa-tada"></i><span> 关于我</span></a></li></ul></div></div></div><div id="nav-right"><div class="nav-button only-home" id="travellings_button" title="随机前往一个开往项目网站"><a class="site-page" onclick="anzhiyu.totraveling()" title="随机前往一个开往项目网站" href="javascript:void(0);" rel="external nofollow" data-pjax-state="external"><i class="anzhiyufont anzhiyu-icon-train"></i></a></div><div class="nav-button" id="randomPost_button"><a class="site-page" onclick="toRandomPost()" title="随机前往一个文章" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-dice"></i></a></div><div class="nav-button" id="search-button"><a class="site-page social-icon search" href="javascript:void(0);" title="搜索🔍" accesskey="s"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span> 搜索</span></a></div><input id="center-console" type="checkbox"/><label class="widget" for="center-console" title="中控台" onclick="anzhiyu.switchConsole();"><i class="left"></i><i class="widget center"></i><i class="widget right"></i></label><div id="console"><div class="console-card-group-reward"><ul class="reward-all console-card"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" alt="微信" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/wechat.jpg"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" alt="支付宝" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/alipay.jpg"/></a><div class="post-qr-code-desc">支付宝</div></li></ul></div><div class="console-card-group"><div class="console-card-group-left"><div class="console-card" id="card-newest-comments"><div class="card-content"><div class="author-content-item-tips">互动</div><span class="author-content-item-title"> 最新评论</span></div><div class="aside-list"><span>正在加载中...</span></div></div></div><div class="console-card-group-right"><div class="console-card tags"><div class="card-content"><div class="author-content-item-tips">兴趣点</div><span class="author-content-item-title">寻找你感兴趣的领域</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/AcWing/" style="font-size: 1.05rem;">AcWing<sup>33</sup></a><a href="/tags/CUDA/" style="font-size: 1.05rem;">CUDA<sup>1</sup></a><a href="/tags/CVPR/" style="font-size: 1.05rem;">CVPR<sup>3</sup></a><a href="/tags/ICLR/" style="font-size: 1.05rem;">ICLR<sup>1</sup></a><a href="/tags/Linux/" style="font-size: 1.05rem;">Linux<sup>1</sup></a><a href="/tags/MAPL/" style="font-size: 1.05rem;">MAPL<sup>1</sup></a><a href="/tags/MySQL/" style="font-size: 1.05rem;">MySQL<sup>1</sup></a><a href="/tags/NIPS/" style="font-size: 1.05rem;">NIPS<sup>1</sup></a><a href="/tags/PyTorch/" style="font-size: 1.05rem;">PyTorch<sup>1</sup></a><a href="/tags/Python/" style="font-size: 1.05rem;">Python<sup>1</sup></a><a href="/tags/RSS/" style="font-size: 1.05rem;">RSS<sup>1</sup></a><a href="/tags/Ubuntu/" style="font-size: 1.05rem;">Ubuntu<sup>3</sup></a><a href="/tags/Windows/" style="font-size: 1.05rem;">Windows<sup>1</sup></a><a href="/tags/arXiv/" style="font-size: 1.05rem;">arXiv<sup>1</sup></a><a href="/tags/mAP/" style="font-size: 1.05rem;">mAP<sup>1</sup></a><a href="/tags/tmux/" style="font-size: 1.05rem;">tmux<sup>1</sup></a><a href="/tags/vim/" style="font-size: 1.05rem;">vim<sup>1</sup></a><a href="/tags/%E4%BB%A3%E7%A0%81/" style="font-size: 1.05rem;">代码<sup>1</sup></a><a href="/tags/%E4%BD%8D%E5%A7%BF%E4%BC%B0%E8%AE%A1/" style="font-size: 1.05rem;">位姿估计<sup>1</sup></a><a href="/tags/%E6%89%A9%E5%AE%B9/" style="font-size: 1.05rem;">扩容<sup>1</sup></a><a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 1.05rem;">数学<sup>1</sup></a><a href="/tags/%E6%97%8B%E8%BD%AC%E8%A1%A8%E7%A4%BA/" style="font-size: 1.05rem;">旋转表示<sup>1</sup></a><a href="/tags/%E6%9D%8E%E6%B2%90/" style="font-size: 1.05rem;">李沐<sup>76</sup></a><a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 1.05rem;">深度学习<sup>79</sup></a><a href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/" style="font-size: 1.05rem;">目标检测<sup>1</sup></a><a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 1.05rem;">笔记<sup>77</sup></a><a href="/tags/%E7%AE%97%E6%B3%95%E9%A2%98/" style="font-size: 1.05rem;">算法题<sup>33</sup></a><a href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" style="font-size: 1.05rem;">论文笔记<sup>9</sup></a><a href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91/" style="font-size: 1.05rem;">阿里云<sup>1</sup></a><a href="/tags/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6/" style="font-size: 1.05rem;">高等数学<sup>1</sup></a><a href="/tags/%E9%AD%94%E6%B3%95/" style="font-size: 1.05rem;">魔法<sup>1</sup></a></div></div><hr/></div></div><div class="console-card history"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-box-archiv"></i><span>文章</span></div><div class="card-archives"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-archive"></i><span>归档</span><a class="card-more-btn" href="/archives/" title="查看更多">
+    <i class="anzhiyufont anzhiyu-icon-angle-right"></i></a></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/04/"><span class="card-archive-list-date">2024年04月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">2</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/03/"><span class="card-archive-list-date">2024年03月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/02/"><span class="card-archive-list-date">2024年02月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">1</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/01/"><span class="card-archive-list-date">2024年01月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">10</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/12/"><span class="card-archive-list-date">2023年12月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">48</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/11/"><span class="card-archive-list-date">2023年11月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">7</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/10/"><span class="card-archive-list-date">2023年10月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">32</span><span>篇</span></div></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/09/"><span class="card-archive-list-date">2023年09月</span><div class="card-archive-list-count-group"><span class="card-archive-list-count">6</span><span>篇</span></div></a></li></ul></div><hr/></div></div></div><div class="button-group"><div class="console-btn-item"><a class="darkmode_switchbutton" title="显示模式切换" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-moon"></i></a></div><div class="console-btn-item" id="consoleHideAside" onclick="anzhiyu.hideAsideBtn()" title="边栏显示控制"><a class="asideSwitch"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></a></div><div class="console-btn-item on" id="consoleCommentBarrage" onclick="anzhiyu.switchCommentBarrage()" title="热评开关"><a class="commentBarrage"><i class="anzhiyufont anzhiyu-icon-message"></i></a></div><div class="console-btn-item" id="consoleKeyboard" onclick="anzhiyu.keyboardToggle()" title="快捷键开关"><a class="keyboard-switch"><i class="anzhiyufont anzhiyu-icon-keyboard"></i></a></div></div><div class="console-mask" onclick="anzhiyu.hideConsole()" href="javascript:void(0);"></div></div><div class="nav-button" id="nav-totop"><a class="totopbtn" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i><span id="percent" onclick="anzhiyu.scrollToDest(0,500)">0</span></a></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);" title="切换"><i class="anzhiyufont anzhiyu-icon-bars"></i></a></div></div></div></nav><div id="post-info"><div id="post-firstinfo"><div class="meta-firstline"><a class="post-meta-original">原创</a><span class="post-meta-categories"><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" itemprop="url">论文笔记</a><i class="anzhiyufont anzhiyu-icon-angle-right post-meta-separator"></i><i class="anzhiyufont anzhiyu-icon-inbox post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/2021/" itemprop="url">2021</a></span><span class="article-meta tags"><a class="article-meta__tags" href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>论文笔记</span></a><a class="article-meta__tags" href="/tags/ICLR/" tabindex="-1" itemprop="url"> <span> <i class="anzhiyufont anzhiyu-icon-hashtag"></i>ICLR</span></a></span></div></div><h1 class="post-title" itemprop="name headline">论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="anzhiyufont anzhiyu-icon-calendar-days post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" itemprop="dateCreated datePublished" datetime="2024-04-15T07:00:00.000Z" title="发表于 2024-04-15 15:00:00">2024-04-15</time><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-history post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" itemprop="dateCreated datePublished" datetime="2024-04-20T14:00:00.000Z" title="更新于 2024-04-20 22:00:00">2024-04-20</time></span></div><div class="meta-secondline"><span class="post-meta-separator"></span><span class="post-meta-wordcount"><i class="anzhiyufont anzhiyu-icon-file-word post-meta-icon" title="文章字数"></i><span class="post-meta-label" title="文章字数">字数总计:</span><span class="word-count" title="文章字数">11.1k</span><span class="post-meta-separator"></span><i class="anzhiyufont anzhiyu-icon-clock post-meta-icon" title="阅读时长"></i><span class="post-meta-label" title="阅读时长">阅读时长:</span><span>37分钟</span></span><span class="post-meta-separator"></span><span class="post-meta-pv-cv" id="" data-flag-title="论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》"><i class="anzhiyufont anzhiyu-icon-fw-eye post-meta-icon"></i><span class="post-meta-label" title="阅读量">阅读量:</span><span id="busuanzi_value_page_pv"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></span><span class="post-meta-separator">       </span><span class="post-meta-position" title="作者IP属地为长沙"><i class="anzhiyufont anzhiyu-icon-location-dot"></i>长沙</span><span class="post-meta-separator"></span><span class="post-meta-commentcount"><i class="anzhiyufont anzhiyu-icon-comments post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/#post-comment" tabindex="-1"><span id="twikoo-count"><i class="anzhiyufont anzhiyu-icon-spinner anzhiyu-spin"></i></span></a></span></div></div></div><section class="main-hero-waves-area waves-area"><svg class="waves-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto"><defs><path id="gentle-wave" d="M -160 44 c 30 0 58 -18 88 -18 s 58 18 88 18 s 58 -18 88 -18 s 58 18 88 18 v 44 h -352 Z"></path></defs><g class="parallax"><use href="#gentle-wave" x="48" y="0"></use><use href="#gentle-wave" x="48" y="3"></use><use href="#gentle-wave" x="48" y="5"></use><use href="#gentle-wave" x="48" y="7"></use></g></svg></section><div id="post-top-cover"><img class="nolazyload" id="post-top-bg" src="https://img.karltan.com/covers/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words.png"></div></header><main id="blog-container"><div class="layout" id="content-inner"><div id="post"><div class="post-ai-description"><div class="ai-title"><i class="anzhiyufont anzhiyu-icon-bilibili"></i><div class="ai-title-text">AI-摘要</div><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right"></i><i class="anzhiyufont anzhiyu-icon-circle-dot" title="朗读摘要"></i><div id="ai-tag">Tianli GPT</div></div><div class="ai-explanation">AI初始化中...</div><div class="ai-btn-box"><div class="ai-btn-item">介绍自己 🙈</div><div class="ai-btn-item">生成本文简介 👋</div><div class="ai-btn-item">推荐相关文章 📖</div><div class="ai-btn-item">前往主页 🏠</div><div class="ai-btn-item" id="go-tianli-blog">前往爱发电购买</div></div><script data-pjax src="/js/anzhiyu/ai_abstract.js"></script></div><article class="post-content" id="article-container" itemscope itemtype="http://blog.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/"><header><a class="post-meta-categories" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" itemprop="url">论文笔记</a><a class="post-meta-categories" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/2021/" itemprop="url">2021</a><a href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" tabindex="-1" itemprop="url">论文笔记</a><a href="/tags/ICLR/" tabindex="-1" itemprop="url">ICLR</a><h1 id="CrawlerTitle" itemprop="name headline">论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》</h1><span itemprop="author" itemscope itemtype="http://schema.org/Person">Karl</span><time itemprop="dateCreated datePublished" datetime="2024-04-15T07:00:00.000Z" title="发表于 2024-04-15 15:00:00">2024-04-15</time><time itemprop="dateCreated datePublished" datetime="2024-04-20T14:00:00.000Z" title="更新于 2024-04-20 22:00:00">2024-04-20</time></header><h1 id="AN-IMAGE-IS-WORTH-16X16-WORDS-TRANSFORMERS-FOR-IMAGE-RECOGNITION-AT-SCALE"><a href="#AN-IMAGE-IS-WORTH-16X16-WORDS-TRANSFORMERS-FOR-IMAGE-RECOGNITION-AT-SCALE" class="headerlink" title="AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE"></a>AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE</h1><p>原文链接：<a href="https://blog.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/">论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》 | Karl的博客</a></p>
+<p>CSDN链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/karltan0328/article/details/138014340">论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》-CSDN博客</a></p>
+<p>论文链接：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2010.11929">[2010.11929] An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale (arxiv.org)</a></p>
+<p>代码链接：<a target="_blank" rel="noopener" href="https://github.com/google-research/vision_transformer">google-research/vision_transformer (github.com)</a></p>
+<h2 id="ABSTRACT"><a href="#ABSTRACT" class="headerlink" title="ABSTRACT"></a>ABSTRACT</h2><p>虽然Transformer架构已经成为自然语言处理任务的事实上的标准，但它在计算机视觉上的应用仍然有限。在视觉方面，注意力要么与卷积网络结合使用，要么用于替换卷积网络的某些组件，同时保持其整体结构不变。我们证明这种对CNNs的依赖是不必要的，直接应用于图像patch序列的纯Transformer可以很好地完成图像分类任务。当对大量数据进行预训练并转移到多个中型或小型图像识别基准（ImageNet，CIFAR-100，VTAB等）时，Vision Transformer（ViT）与最先进的卷积网络相比获得了出色的结果，同时需要更少的计算资源来训练。</p>
+<blockquote>
+<p>Fine-tuning code and pre-trained models are available at <a target="_blank" rel="noopener" href="https://github.com/google-research/vision_transformer">https://github.com/google-research/vision_transformer</a>.</p>
+</blockquote>
+<h2 id="1-INTRODUCTION"><a href="#1-INTRODUCTION" class="headerlink" title="1 INTRODUCTION"></a>1 INTRODUCTION</h2><p>基于自注意力的架构，特别是Transformers（Vaswani et al., 2017），已经成为自然语言处理（NLP）的首选模型。主要的方法是在大型文本语料库上进行预训练，然后在较小的特定任务数据集上进行微调（Devlin et al., 2019）。由于Transformers的计算效率和可扩展性，它可以训练前所未有的规模，超过100B个参数的模型（Brown et al., 2020; Lepikhin et al., 2020）。随着模型和数据集的增长，仍然没有出现性能饱和的迹象。</p>
+<p>然而，在计算机视觉领域，卷积架构仍然占主导地位（LeCun et al., 1989; Krizhevsky et al., 2012; He et al., 2016）。受NLP成功的启发，许多工作尝试将类CNN架构与自注意力相结合（Wang et al., 2018; Carion et al., 2020），有些完全取代了卷积（Ramachandran et al., 2019; Wang et al., 2020a）。后一种模型虽然在理论上是有效的，但由于使用了专门的注意力模式，还没有在现代硬件加速器上有效地扩展。因此，在大规模图像识别中，经典的类ResNet架构仍然是最先进的（Mahajan et al., 2018; Xie et al., 2020; Kolesnikov et al., 2020）。</p>
+<p>受NLP中Transformer缩放成功的启发，我们尝试将标准Transformer直接应用于图像，并尽可能减少修改。为此，我们将图像分割成小块，并提供这些小块的线性嵌入序列作为Transformer的输入。在NLP应用程序中，图像patch的处理方式与令牌（单词）相同。我们以监督的方式对模型进行图像分类训练。</p>
+<p>当在中等规模的数据集（如ImageNet）上进行训练时，没有进行强正则化，这些模型产生的精度比同等规模的ResNets低几个百分点。这个看似令人沮丧的结果是可以预料的：Transformers缺乏CNNs固有的一些归纳偏差，例如平移不变性和局部性，因此在数据量不足的情况下训练时不能很好地泛化。</p>
+<p>然而，如果模型在更大的数据集（14M-300M图像）上训练，情况就会发生变化。我们发现大规模训练胜过归纳偏见。我们的Vision Transformer（ViT）在足够的规模上进行预训练并转移到具有更少数据点的任务时获得了出色的结果。当在公共ImageNet-21k数据集或室内JFT-300M数据集上进行预训练时，ViT在多个图像识别基准上接近或超过了最先进的水平。特别是，最佳模型在ImageNet上达到88.55%的准确率，在ImageNet- real上达到90.72%的准确率，在CIFAR-100上达到94.55%的准确率，在VTAB套件的19个任务上达到77.63%的准确率。</p>
+<h2 id="2-RELATED-WORK"><a href="#2-RELATED-WORK" class="headerlink" title="2 RELATED WORK"></a>2 RELATED WORK</h2><p>Transformers是由Vaswani等人（2017）提出的，用于机器翻译，并且已经成为许多NLP任务中最先进的方法。基于大型Transformer的模型通常在大型语料库上进行预训练，然后针对手头的任务进行微调：BERT（Devlin et al., 2019）使用去噪自监督预训练任务，而GPT系列则使用语言建模作为其预训练任务（Radford et al., 2018; 2019; Brown et al., 2020）。</p>
+<p>对图像进行注意力的朴素应用会要求每个像素都注意其他像素。由于像素数量的代价是二次的，因此不能按实际的输入大小进行缩放。因此，为了在图像处理的背景下应用Transformers，过去已经尝试了几种近似方法。Parmar等人（2018）仅在局部邻域对每个查询像素应用自注意力，而不是全局。这种局部多头点积自注意块可以完全取代卷积（Hu et al., 2019; Ramachandran et al., 2019; Zhao et a., 2020）。在不同的工作中，稀疏Transformers（Child et al., 2019）采用可扩展的全局自注意力近似，以便适用于图像。另一种扩展注意力的方法是将其应用于不同大小的块（Weissenborn et al., 2019），在极端情况下，仅沿着单个轴（Ho et al., 2019; Wang et al., 2020a）。许多这些专门的注意力架构在计算机视觉任务上显示出有希望的结果，但需要复杂的工程才能在硬件加速器上有效地实现。</p>
+<p>与我们最相关的是Cordonnier等人（2020）的模型，该模型从输入图像中提取大小为$2 \times 2$的patch，并在其上应用完全的自注意力。该模型与ViT非常相似，但我们的工作进一步证明了大规模预训练能够使普通的Transformers与最先进的CNNs竞争（甚至更好）。此外，Cordonnier等人（2020）使用了$2 \times 2$像素的小patch尺寸，这使得该模型仅适用于小分辨率图像，而我们也可以处理中分辨率图像。</p>
+<p>人们对将卷积神经网络（CNNs）与自注意力形式相结合也很感兴趣，例如通过增强图像分类的特征映射（Bello et al., 2019）或通过使用自注意进一步处理CNN的输出，例如用于目标检测（Hu et al., 2018; Carion et al., 2020），视频处理（Wang et al., 2018; Sun et al., 2019）、图像分类（Wu et al., 2020）、无监督对象发现（Locatello et al., 2020）或统一文本视觉任务（Chen et al., 2020c; Lu et al., 2019; Li et al., 2019）。</p>
+<p>另一个最近的相关模型是图像GPT（iGPT）（Chen et al., 2020a），它在降低图像分辨率和色彩空间后，将Transformers应用于图像像素。该模型以无监督的方式作为生成模型进行训练，然后可以对结果表示进行微调或线性探测以获得分类性能，在ImageNet上实现72%的最大准确率。</p>
+<p>我们的工作增加了越来越多的论文，这些论文探索了比标准ImageNet数据集更大规模的图像识别。使用额外的数据源可以在标准基准上获得最先进的结果（Mahajan et al., 2018; Touvron et al., 2019; Xie et al., 2020）。此外，Sun等人（2017）研究了CNN性能如何随数据集大小而扩展，Kolesnikov等人（2020）；Djolonga等人（2020）在ImageNet-21k和JFT-300M等大规模数据集上对CNN迁移学习进行了实证探索。我们也关注后两个数据集，但是训练的是Transformers而不是在以前的工作中使用的基于ResNet的模型。</p>
+<h2 id="3-METHOD"><a href="#3-METHOD" class="headerlink" title="3 METHOD"></a>3 METHOD</h2><p>在模型设计中，我们尽可能地遵循原始Transformer（Vaswani et al., 2017）。这种故意简单设置的一个优点是，可扩展的NLP Transformer架构——以及它们的高效实现——几乎可以开箱即用。</p>
+<h3 id="3-1-VISION-TRANSFORMER-VIT"><a href="#3-1-VISION-TRANSFORMER-VIT" class="headerlink" title="3.1 VISION TRANSFORMER (VIT)"></a>3.1 VISION TRANSFORMER (VIT)</h3><p>该模型的概述如图1所示：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416090340705.png" alt="image-20240416090340705"></p>
+<p>标准Transformer接收标记嵌入的1D序列作为输入。为了处理2D图像，我们将图像$\mathbf{x} \in \mathbb{R}^{H \times W \times C}$重塑为一系列平坦的2D patch $\mathbf{x}_p \in \mathbb{R}^{N \times (P^2 \cdot C)}$，其中$(H, W)$为原始图像的分辨率，$C$为通道数，$(P, P)$为每个图像patch的分辨率，$N = \frac{HW}{P^2}$为得到的patch数，它也作为Transformer的有效输入序列长度。Transformer在其所有层中使用恒定的潜在向量大小$D$，因此我们用可训练的线性投影：</p>
+<script type="math/tex; mode=display">
+\mathbf{z}_0 = \left[\mathbf{x}_\text{class};\ \mathbf{x}_p^1\mathbf{E};\ \mathbf{x}_p^2\mathbf{E};\ \cdots;\ \mathbf{x}_p^N\mathbf{E}\right] + \mathbf{E}_{pos}, \quad \mathbf{E} \in \mathbb{R}^{(P^2 \cdot C) \times D},\ \mathbf{E}_{pos} \in \mathbb{R}^{(N + 1) \times D}</script><p>将patch展平并映射到$D$维。我们将该投影的输出称为patch embedding。</p>
+<p>与BERT的<code>[class]</code>令牌类似，我们在嵌入的patch序列（$\mathbf{z}_0^0 = \mathbf{x}_\text{class}$）上添加一个可学习的嵌入，其在Transformer编码器（$\mathbf{z}_L^0$）输出处的状态作为图像表示$\mathbf{y}$：</p>
+<script type="math/tex; mode=display">
+\mathbf{y} = \text{LN}(\mathbf{z}_L^0)</script><p>在预训练和微调过程中，$\mathbf{z}_L^0$都附加了一个分类头。分类头在预训练时由一个隐藏层的MLP实现，在微调时由一个线性层实现。</p>
+<p>将位置嵌入添加到patch嵌入中以保留位置信息。我们使用标准的可学习的1D位置嵌入，因为我们没有观察到使用更先进的2D感知位置嵌入的显著性能提升（附录D.4）。得到的嵌入向量序列作为编码器的输入。</p>
+<p>Transformer编码器（Vaswani et al., 2017）由多头自注意（MSA，见附录A）和MLP块交替层组成：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\mathbf{z}^\prime_\ell &= \text{MSA}(\text{LN}(\mathbf{z}_{\ell - 1})) + \mathbf{z}_{\ell - 1} & & \ell = 1 \dots L \\
+\mathbf{z}_\ell &= \text{MSA}(\text{LN}(\mathbf{z}^\prime_\ell)) + \mathbf{z}^\prime_\ell & & \ell = 1 \dots L
+\end{aligned}</script><p>在每个区块之前应用层Layernorm（LN），在每个区块之后应用残差连接（Wang et al., 2019; Baevski &amp; Auli, 2019）。</p>
+<p>MLP包含两个具有GELU非线性的层：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\mathbf{z}_0 &= \left[\mathbf{x}_\text{class};\ \mathbf{x}_p^1\mathbf{E};\ \mathbf{x}_p^2\mathbf{E};\cdots\ ;\ \mathbf{x}_p^N\mathbf{E}\right] + \mathbf{E}_{pos}, & & \mathbf{E} \in \mathbb{R}^{(P^2 \cdot C) \times D}, \mathbf{E}_{pos} \in \mathbb{R}^{(N + 1) \times D} \\
+\mathbf{z}^\prime_\ell &= \text{MSA}(\text{LN}(\mathbf{z}_{\ell - 1})) + \mathbf{z}_{\ell - 1}, & & \ell = 1 \dots L \\
+\mathbf{z}_\ell &= \text{MLP}(\text{LN}(\mathbf{z}^\prime_\ell)) + \mathbf{z}^\prime_\ell, & & \ell = 1 \dots L \\
+\mathbf{y} &= \text{LN}(\mathbf{z}^0_L)
+\end{aligned}</script><p><strong>Inductive bias.</strong> 我们注意到Vision Transformer具有比CNNs少得多的图像特定的感应偏置。在CNNs中，局部性、二维邻域结构和平移等方差被嵌入到整个模型的每一层中。在ViT中，只有MLP层是局部和平移不变的，而自注意力层是全局的。二维邻域结构的使用非常少：在模型开始时通过将图像切割成小块，以及在微调时用于调整不同分辨率图像的位置嵌入（如下所述）。除此之外，初始化时的位置嵌入不携带关于patch的二维位置信息，所有patch之间的空间关系都需要从头学习。</p>
+<p><strong>Hybrid Architecture.</strong> 作为原始图像patch的替代方案，输入序列可以由CNN的特征映射形成（LeCun et al., 1989）。在该混合模型中，将patch embedding投影$\mathbf{E}$应用于从CNN feature map中提取的patch。作为一种特殊情况，patch的空间大小可以是$1 \times 1$，这意味着输入序列是通过简单地将feature map的空间维度平坦化并投影到Transformer维度得到的。如上所述添加分类输入嵌入和位置嵌入。</p>
+<h3 id="3-2-FINE-TUNING-AND-HIGHER-RESOLUTION"><a href="#3-2-FINE-TUNING-AND-HIGHER-RESOLUTION" class="headerlink" title="3.2 FINE-TUNING AND HIGHER RESOLUTION"></a>3.2 FINE-TUNING AND HIGHER RESOLUTION</h3><p>通常，我们在大型数据集上预训练ViT，并对（较小的）下游任务进行微调。为此，我们移除预训练的预测头，并附加一个零初始化的$D \times K$前传层，其中$K$是下游类的数量。与预训练相比，在更高分辨率下进行微调通常是有益的（Touvron et al., 2019; Kolesnikov et al., 2020）。当输入更高分辨率的图像时，我们保持patch大小不变，从而获得更大的有效序列长度。Vision Transformer可以处理任意序列长度（直到内存限制），但是，预训练的位置嵌入可能不再有意义。因此，我们根据预训练的位置嵌入在原始图像中的位置对其进行二维插值。请注意，此分辨率调整和patch提取是将图像的二维结构的感应偏置手动注入Vision Transformer的唯一点。</p>
+<h2 id="4-EXPERIMENTS"><a href="#4-EXPERIMENTS" class="headerlink" title="4 EXPERIMENTS"></a>4 EXPERIMENTS</h2><p>我们评估了ResNet、Vision Transformer（ViT）和混合架构的表示学习能力。为了了解每个模型的数据需求，我们在不同大小的数据集上进行预训练，并评估许多基准任务。当考虑到预训练模型的计算成本时，ViT表现非常好，以较低的预训练成本在大多数识别基准上达到最先进的水平。最后，我们使用自监督进行了一个小实验，并表明自监督的ViT在未来是有希望的。</p>
+<h3 id="4-1-SETUP"><a href="#4-1-SETUP" class="headerlink" title="4.1 SETUP"></a>4.1 SETUP</h3><p><strong>Datasets.</strong> 为了探索模型的可扩展性，我们使用了ILSVRC-2012 ImageNet数据集，其中包含1k个类和130万张图像（我们将其称为ImageNet），其超集ImageNet-21k包含21k个类和14M张图像（Deng et al., 2009），以及JFT（Sun et al., 2017）包含18k个类和303M张高分辨率图像。我们在Kolesnikov等人（2020）之后，对下游任务的测试集进行了预训练数据集的去重复处理。我们将在这些数据集上训练的模型迁移到几个基准任务：原始验证标签和清理后的ReaL标签上的ImageNet（Beyer et al., 2020）、CIFAR-10/100 （Krizhevsky, 2009）、Oxford-IIIT Pets（Parkhi et al., 2012）和Oxford Flowers-102（Nilsback &amp; Zisserman, 2008）。对于这些数据集，预处理遵循Kolesnikov等人（2020）。</p>
+<p>我们还对19个任务的VTAB分类套件进行了评估（Zhai et al., 2019b）。VTAB评估小样本迁移学习到不同任务，每个任务使用1000个训练示例。任务分为三组：<em>自然</em>任务，如上述任务，宠物，CIFAR等；<em>专业</em>任务——医学和卫星图像；以及<em>结构</em>任务——需要几何理解的任务，比如定位。</p>
+<p><strong>Model Variants.</strong> 我们基于BERT使用的ViT配置（Devlin et al., 2019），如表1所示：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416095317427.png" alt="image-20240416095317427"></p>
+<p>“Base”和“Large”模型直接取自BERT，我们加入了较大的“Huge”模型。在接下来的内容中，我们使用简短的符号来表示模型大小和输入patch大小：例如，ViT-L/16表示具有$16 \times 16$输入patch大小的“Large”变体。请注意，Transformer的序列长度与patch大小的平方成反比，因此patch大小较小的模型在计算上更昂贵。</p>
+<p>对于基线CNNs，我们使用ResNet（He et al., 2016），但将批归一化层（Ioffe &amp; Szegedy, 2015）替换为组归一化层（Wu &amp; He, 2018），并使用标准化卷积（Qiao et al., 2019）。这些修改改善了迁移（Kolesnikov et al., 2020），我们将修改后的模型命名为“ResNet (BiT)”。对于混合架构，我们将中间特征映射以一个“像素”的patch大小馈送到ViT中。为了实验不同的序列长度，我们：</p>
+<ol>
+<li>要么获取普通ResNet50的阶段4的输出；</li>
+<li>要么删除阶段4，在阶段3中放置相同数量的层（保持层总数），并获取这个扩展阶段3的输出。</li>
+</ol>
+<p>选项2的结果是4倍长的序列长度和更昂贵的ViT模型。</p>
+<p><strong>Training &amp; Fine-tuning.</strong> 我们使用Adam（Kingma &amp; Ba, 2015）训练所有模型，包括ResNets，其中$\beta_1 = 0.9, \beta_2 = 0.999$，批大小为4096，并应用0.1的高权重衰减，我们发现这对所有模型的转移都很有用（附录D.1显示，与常规做法相比，Adam在我们的设置中比SGD对ResNets的效果略好）。我们使用线性学习率预热和衰减，详见附录B.1。对于微调，我们使用SGD动量，批大小512，对于所有模型，见附录B.1.1。对于表2中的ImageNet结果：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416100725539.png" alt="image-20240416100725539"></p>
+<p>我们在更高的分辨率下进行了微调：ViT-L/16为512，ViT-H/14为518，并且还使用了Polyak &amp; Juditsky（1992）平均系数为0.9999（Ramachandran et al., 2019; Wang et al., 2020b）。</p>
+<p><strong>Metrics.</strong> 我们通过小样本精度或微调精度报告下游数据集的结果。微调精度捕获每个模型在各自的数据集上进行微调后的性能。通过求解正则化最小二乘回归问题，将训练图像子集的（冻结）表示映射到$\{-1, 1\}^K$个目标向量，获得小样本精度。这个公式使我们可以得到封闭形式的精确解。虽然我们主要关注微调性能，但我们有时会使用线性的小样本精度来进行快速的动态评估，因为微调的成本太高。</p>
+<h3 id="4-2-COMPARISON-TO-STATE-OF-THE-ART"><a href="#4-2-COMPARISON-TO-STATE-OF-THE-ART" class="headerlink" title="4.2 COMPARISON TO STATE OF THE ART"></a>4.2 COMPARISON TO STATE OF THE ART</h3><p>我们首先将我们最大的模型——ViT-H/14和ViT-L/16，与文献中最先进的CNNs进行比较。第一个比较点是Big Transfer（BiT）（Kolesnikov et al., 2020），它使用大型ResNets执行监督迁移学习。第二个是Noisy Student（Xie et al., 2020），它是一个大型的高效网络，使用半监督学习在ImageNet和JFT300M上进行训练，去掉了标签。目前，Noisy Student在ImageNet上是最先进的，BiT-L在这里报道的其他数据集上是最先进的。所有模型都在TPUv3硬件上进行训练，我们报告预训练每个模型所需的TPUv3-core-days，即用于训练的TPUv3核数（每个芯片2个）乘以训练时间（天）。</p>
+<p>表2显示了结果：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416100725539.png" alt="image-20240416100725539"></p>
+<p>在JFT-300M上预训练的较小的ViT-L/16模型在所有任务上都优于BiT-L（在相同的数据集上预训练），同时需要更少的计算资源来训练。更大的模型ViT-H/14进一步提高了性能，特别是在更具挑战性的数据集——ImageNet，CIFAR-100和VTAB套件上。有趣的是，与之前的技术相比，这个模型仍然需要更少的计算来进行预训练。然而，我们注意到预训练效率可能不仅受到体系结构选择的影响，还受到其他参数的影响，如训练计划、优化器、权值衰减等。在第4.4节中，我们对不同架构的性能与计算进行了对照研究。最后，在公共ImageNet-21k数据集上预训练的ViT-L/16模型在大多数数据集上也表现良好，同时需要较少的资源进行预训练：它可以使用标准的8核云TPUv3在大约30天内进行训练。</p>
+<p>图2将VTAB任务分解为各自的组：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416102513943.png" alt="image-20240416102513943"></p>
+<p>并在此基准上与之前的SOTA方法进行比较：BiT，VIVI在ImageNet和Youtube上共同训练的ResNet（Tschannen et al., 2020），以及S4L在ImageNet上监督和半监督学习（Zhai et al., 2019a）。ViT-H/14在<em>自然</em>任务和<em>结构</em>任务上优于BiT-R152x4和其他方法。 在<em>专业</em>任务上，前两个型号的性能相似。</p>
+<h3 id="4-3-PRE-TRAINING-DATA-REQUIREMENTS"><a href="#4-3-PRE-TRAINING-DATA-REQUIREMENTS" class="headerlink" title="4.3 PRE-TRAINING DATA REQUIREMENTS"></a>4.3 PRE-TRAINING DATA REQUIREMENTS</h3><p>Vision Transformer在大型JFT-300M数据集上进行预训练时表现良好。与ResNets相比，对于视觉的归纳偏差更少，那么数据集的大小有多重要呢？我们进行了两个系列的实验。</p>
+<p>首先，我们在越来越大的数据集上预训练ViT模型：ImageNet、ImageNet-21k和JFT300M。为了提高在较小数据集上的性能，我们优化了三个基本的正则化参数——权重衰减、dropout和标签平滑。图3显示了调优到ImageNet后的结果（表5显示了其他数据集上的结果）：</p>
+<blockquote>
+<p>注意，ImageNet预训练的模型也进行了微调，但还是在ImageNet上。这是因为在微调过程中分辨率的提高提高了性能。</p>
+</blockquote>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416104401140.png" alt="image-20240416104401140"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416104427137.png" alt="image-20240416104427137"></p>
+<p>当在最小的数据集ImageNet上进行预训练时，尽管（适度）正则化，ViT-Large模型的表现仍不如ViT-Base模型。使用ImageNet-21k预训练，它们的性能是相似的。只有使用JFT-300M，我们才能看到更大型号的全部好处。图3还显示了不同大小的BiT模型所跨越的性能区域：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416104401140.png" alt="image-20240416104401140"></p>
+<p>BiT CNNs在ImageNet上的表现优于ViT，但在更大的数据集上，ViT超越了它。</p>
+<p>其次，我们在9M、30M和90M的随机子集以及完整的JFT300M数据集上训练我们的模型。我们没有对较小的子集执行额外的正则化，并对所有设置使用相同的超参数。这样，我们评估的是模型的内在属性，而不是正则化的影响。然而，我们确实使用了早期停止，并报告了在训练期间实现的最佳验证准确性。为了节省计算，我们报告了小样本线性精度而不是全微调精度。图4包含了结果：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416104452907.png" alt="image-20240416104452907"></p>
+<p>在较小的数据集上，Vision Transformers比ResNets过拟合得多，计算成本相当。例如，ViT-B/32略快于ResNet50；它在9M的子集上表现得更差，但在90M以上的子集上表现得更好。ResNet152x2和ViT-L/16也是如此。这个结果强化了卷积归纳偏差对较小数据集有用的直觉，但对于较大的数据集，直接从数据中学习相关模式是足够的，甚至是有益的。</p>
+<p>总的来说，ImageNet上的小样本结果（图4）：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416104452907.png" alt="image-20240416104452907"></p>
+<p>以及VTAB上的小样本结果（表2）：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416100725539.png" alt="image-20240416100725539"></p>
+<p>似乎表明小样本迁移学习很有希望。进一步分析ViT的小样本特性是未来工作的一个令人兴奋的方向。</p>
+<h3 id="4-4-SCALING-STUDY"><a href="#4-4-SCALING-STUDY" class="headerlink" title="4.4 SCALING STUDY"></a>4.4 SCALING STUDY</h3><p>我们通过评估JFT-300M的迁移学习性能，对不同模型进行了控制缩放研究。在这种情况下，数据大小不会成为模型性能的瓶颈，我们根据每个模型的预训练成本来评估性能。模型集包括：</p>
+<ul>
+<li>7个ResNets：R50x1、R50x2、R101x1、R152x1、R152x2，预训练7个epoch，加上R152x2和R200x3预训练14个epoch；</li>
+<li>6个Vision Transformers，ViT-B/32、B/16、L/32、L/16，预训练7个epoch，加上L/16和H/14预训练14个epoch；</li>
+<li>和5个混合架构，R50+ViT-B/32、B/16、L/32、L/16 预训练7个epoch，加上R50+ViT-L/16预训练14个epoch（对于混合架构，数量为模型名称的末尾不代表patch大小，而是代表ResNet主干中的总下采样率）。</li>
+</ul>
+<p>图5包含了迁移学习性能与总预训练计算的对比（参见附录D.5有关计算成本的详细信息）：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416110147363.png" alt="image-20240416110147363"></p>
+<p>每个模型的详细结果见附录表6：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416110255797.png" alt="image-20240416110255797"></p>
+<p>可以观察到一些模式。首先，Vision Transformers在性能/计算权衡方面比ResNets有优势。ViT节省了大约2-4倍的计算来获得相同的性能（平均超过5个数据集）。其次，混合架构在较小的计算预算下略优于ViT，但对于较大的模型，这种差异就消失了。这个结果有些令人惊讶，因为人们可能期望卷积局部特征处理能够帮助任何规模的ViT。第三，Vision Transformers在尝试的范围内似乎没有饱和，这激励了未来的扩展努力。</p>
+<h3 id="4-5-INSPECTING-VISION-TRANSFORMER"><a href="#4-5-INSPECTING-VISION-TRANSFORMER" class="headerlink" title="4.5 INSPECTING VISION TRANSFORMER"></a>4.5 INSPECTING VISION TRANSFORMER</h3><p>为了开始理解Vision Transformer如何处理图像数据，我们分析其内部表示。Vision Transformer的第一层将展平后的patch线性投影到较低维空间：</p>
+<script type="math/tex; mode=display">
+\mathbf{z}_0 = \left[\mathbf{x}_\text{class};\ \mathbf{x}_p^1\mathbf{E};\ \mathbf{x}_p^2\mathbf{E};\ \cdots;\ \mathbf{x}_p^N\mathbf{E}\right] + \mathbf{E}_{pos}, \quad \mathbf{E} \in \mathbb{R}^{(P^2 \cdot C) \times D},\ \mathbf{E}_{pos} \in \mathbb{R}^{(N + 1) \times D}</script><p>图7（左）显示了学习到的嵌入过滤器的顶部主成分：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416110823259.png" alt="image-20240416110823259"></p>
+<p>这些成分类似于每个patch内精细结构的低维表示的可信基函数。</p>
+<p>投影后，将学习到的位置嵌入添加到patch表示中。图7（中）显示，该模型在位置嵌入的相似性中学习对图像内的距离进行编码，即距离越近的patch往往有更多相似的位置嵌入。此外，出现了行-列结构：同一行/列中的patch具有相似的嵌入。最后，对于较大的网格，有时会出现正弦结构（附录D）。位置嵌入学习表示二维图像拓扑解释了为什么手工制作的二维感知嵌入变体没有产生改进（附录D.4）。</p>
+<p>自注意力允许ViT在整个图像中集成信息，即使是在最低层。我们研究了网络在多大程度上利用了这种能力。具体来说，我们计算图像空间中信息被整合的平均距离，这是基于注意力权重的（图7，右）。这种“注意距离”类似于CNNs的感受野大小。我们发现，一些人的大脑已经注意到了最低层的大部分图像，这表明该模型确实使用了整体整合信息的能力。其他注意头在低层的注意距离一直很小。在Transformer之前应用ResNet的混合模型中，这种高度局部化的注意力不那么明显（图7，右），这表明它可能与CNN中的早期卷积层具有类似的功能。注意距离随网络深度的增加而增加。从全局来看，我们发现该模型关注与分类在语义上相关的图像区域（图6）：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416112342509.png" alt="image-20240416112342509"></p>
+<h3 id="4-6-SELF-SUPERVISION"><a href="#4-6-SELF-SUPERVISION" class="headerlink" title="4.6 SELF-SUPERVISION"></a>4.6 SELF-SUPERVISION</h3><p>Transformers在NLP任务上表现出色。然而，它们的成功不仅源于出色的可扩展性，还源于大规模的自监督预训练（Devlin et al., 2019; Radford et al., 2018）。我们还模拟BERT中使用的掩码语言建模任务，对自我监督的掩码patch预测进行了初步探索。通过自我监督预训练，我们较小的ViT-B/16模型在ImageNet上达到了79.9%的准确率，与从头开始训练相比显著提高了2%，但仍比监督预训练低4%。附录B.1.2载有进一步的细节。我们留下对比预训练的探索（Chen et al., 2020b; He et al., 2020; Bachman et al., 2019; Henaff et al., 2020）对未来工作的影响。</p>
+<h2 id="5-CONCLUSION"><a href="#5-CONCLUSION" class="headerlink" title="5 CONCLUSION"></a>5 CONCLUSION</h2><p>我们探索了Transformers在图像识别中的直接应用。与之前在计算机视觉中使用自注意的工作不同，除了初始patch提取步骤外，我们没有将特定于图像的归纳偏差引入体系结构。相反，我们将图像解释为一系列patch，并通过NLP中使用的标准Transformer编码器对其进行处理。当与大型数据集的预训练相结合时，这种简单但可扩展的策略效果出奇地好。因此，Vision Transformer在许多图像分类数据集上达到或超过了最先进的水平，同时预训练相对便宜。</p>
+<p>虽然这些初步结果令人鼓舞，但仍存在许多挑战。一是将ViT应用于其他计算机视觉任务，如检测和分割。我们的结果，加上Carion等人（2020）的结果，表明了这种方法的前景。另一个挑战是继续探索自我监督的预训练方法。我们的初步实验显示了自监督预训练的改进，但自监督预训练与大规模监督预训练之间仍有很大差距。最后，进一步扩展ViT可能会提高性能。</p>
+<h2 id="ACKNOWLEDGEMENTS"><a href="#ACKNOWLEDGEMENTS" class="headerlink" title="ACKNOWLEDGEMENTS"></a>ACKNOWLEDGEMENTS</h2><p>这项工作在柏林、苏黎世和阿姆斯特丹执行。我们感谢谷歌的许多同事的帮助，特别是Andreas Steiner，他在基础设施和代码的开源发布方面提供了至关重要的帮助；Joan Puigcerver和Maxim Neumann提供大规模训练基础设施的帮助；Dmitry Lepikhin，Aravindh Mahendran，Daniel Keysers，Mario Lucic，Noam Shazeer，Ashish Vaswani和Colin Raffel进行了有益的讨论。</p>
+<h2 id="APPENDIX"><a href="#APPENDIX" class="headerlink" title="APPENDIX"></a>APPENDIX</h2><h3 id="A-MULTIHEAD-SELF-ATTENTION"><a href="#A-MULTIHEAD-SELF-ATTENTION" class="headerlink" title="A MULTIHEAD SELF-ATTENTION"></a>A MULTIHEAD SELF-ATTENTION</h3><p>标准$\mathbf{qkv}$自注意（SA, Vaswani et al.(2017)）是神经架构的流行构建块。对于输入序列$\mathbf{z} \in \mathbb{R}^{N \times D}$，中的每个元素，我们计算序列中所有值$\mathbf{v}$的加权和。注意力权重$A_{ij}$基于序列中两个元素的成对相似度及其各自的查询$\mathbf{q}^i$和键$\mathbf{k}^j$表示。</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\left[\mathbf{q}, \mathbf{k}, \mathbf{v}\right] &= \mathbf{z}\mathbf{U}_{qkv} & & \mathbf{U}_{qkv} \in \mathbb{R}^{D \times 3D_h}, \\
+A &= \text{softmax}(\frac{\mathbf{qk}^\mathrm{T}}{\sqrt{D_h}}) & & A \in \mathbb{R}^{N \times N}, \\
+\text{SA}(\mathbf{z}) &= A\mathbf{v}.
+\end{aligned}</script><p>多头自注意（MSA）是自注意的扩展，其中我们并行运行$k$个自注意操作，称为“头”，并投影它们的连接输出。为了在改变$k$时保持计算量和参数数量不变，通常将$D_h$设为$\frac{D}{k}$。</p>
+<script type="math/tex; mode=display">
+\text{MSA}(\mathbf{z}) = \left[\text{SA}_1(z); \text{SA}_2(z);\cdots\ ; \text{SA}_k(z)\right]\mathbf{U}_{msa} \quad \mathbf{U}_{msa} \in \mathbb{R}^{k \cdot D_k \times D}</script><h3 id="B-EXPERIMENT-DETAILS"><a href="#B-EXPERIMENT-DETAILS" class="headerlink" title="B EXPERIMENT DETAILS"></a>B EXPERIMENT DETAILS</h3><h4 id="B-1-TRAINING"><a href="#B-1-TRAINING" class="headerlink" title="B.1 TRAINING"></a>B.1 TRAINING</h4><p>表3总结了不同模型的训练设置：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416150315182.png" alt="image-20240416150315182"></p>
+<p>我们发现在ImageNet上从头开始训练模型时，强正则化是关键。 使用时，Dropout应用于除qkv投影之外的每个密集层之后，以及直接在添加位置到patch嵌入之后应用。 混合模型使用与ViT模型完全相同的设置进行训练。最后，所有的训练都是在分辨率224上完成的。</p>
+<h5 id="B-1-1-FINE-TUNING"><a href="#B-1-1-FINE-TUNING" class="headerlink" title="B.1.1 FINE-TUNING"></a>B.1.1 FINE-TUNING</h5><p>我们使用动量为0.9的SGD对所有ViT模型进行微调。我们在学习率上运行一个小的网格搜索，参见表4中的学习率范围。为此，我们使用训练集中的小分支（宠物和鲜花为10%，CIFAR为2%，ImageNet为1%）作为开发集，并在剩余数据上进行训练。对于最终结果，我们对整个训练集进行训练，并对各自的测试数据进行评估。对于微调ResNets和混合模型，我们使用完全相同的设置，唯一的例外是ImageNet，我们在学习率扫描中添加另一个值0.06。此外，对于ResNets，我们还运行Kolesnikov等人（2020）的设置，并在本次运行和扫描中选择最佳结果。最后，如果没有特别提到，所有的微调实验都在384分辨率下运行（在不同于训练的分辨率下运行微调是常见的做法（Kolesnikov et al., 2020））。</p>
+<p>当将ViT模型转移到另一个数据集时，我们删除整个头部（两个线性层）并将其替换为单个，零初始化的线性层，输出目标数据集所需的类数。我们发现这比简单地重新初始化最后一层要健壮一些。</p>
+<p>对于VTAB，我们遵循Kolesnikov等人（2020）的协议，并对所有任务使用相同的超参数设置。我们使用学习率为0.01，训练2500步（表4）：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416152204680.png" alt="image-20240416152204680"></p>
+<p>我们通过在两个学习率和两个时间表上运行一个小扫描来选择这个设置，并在200个示例验证集中选择VTAB得分最高的设置。我们遵循Kolesnikov等人（2020）使用的预处理，除了我们不使用特定于任务的输入分辨率。相反，我们发现Vision Transformer受益于所有任务的高分辨率（$384 \times 384$）。</p>
+<h5 id="B-1-2-SELF-SUPERVISION"><a href="#B-1-2-SELF-SUPERVISION" class="headerlink" title="B.1.2 SELF-SUPERVISION"></a>B.1.2 SELF-SUPERVISION</h5><p>我们采用掩模patch预测目标进行初步的自我监督实验。为了做到这一点，我们通过用可学习的<code>[mask]</code>嵌入（80%），随机的其他patch嵌入（10%）或保持原样（10%）替换它们的嵌入来破坏50%的patch嵌入。这种设置与Devlin等人（2019）使用的语言非常相似。最后，我们使用各自的patch表示来预测每个损坏patch的3位平均颜色（即总共512种颜色）。</p>
+<p>我们在JFT上训练了1M步（约14个epoch）的自监督模型，批大小为4096。我们使用Adam，其基本学习率为$2 \cdot 10^{−4}$，预热为10k步，余弦学习率衰减。作为预训练的预测目标，我们尝试了以下设置：</p>
+<ol>
+<li>仅预测平均的3位颜色（即512种颜色的1种预测）；</li>
+<li>预测$16 \times 16$ patch的$4 \times 4$缩小版本，并行使用3位颜色（即512种颜色的16种预测）；</li>
+<li>使用L2在完整patch上进行回归（即在3个RGB通道上进行256种回归）。</li>
+</ol>
+<p>令人惊讶的是，我们发现所有这些都运行得很好，尽管L2稍微差一些。我们只报告选项1的最终结果，因为它显示了最佳的少数镜头性能。我们还用Devlin等人（2019）使用的15%腐败率进行了实验，但在我们的少数几个指标上，结果也略差。</p>
+<p>最后，我们想指出的是，我们的掩码patch预测实例化不需要如此大量的预训练，也不需要像JFT这样的大型数据集，以便在ImageNet分类上获得类似的性能提升。也就是说，我们观察到在10万步预训练后下游性能的收益递减，并且在ImageNet上预训练时看到类似的收益。</p>
+<h3 id="C-ADDITIONAL-RESULTS"><a href="#C-ADDITIONAL-RESULTS" class="headerlink" title="C ADDITIONAL RESULTS"></a>C ADDITIONAL RESULTS</h3><p>我们报告了与论文中给出的数字相对应的详细结果。表5对应于本文的图3：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416153934345.png" alt="image-20240416153934345"></p>
+<p>显示了不同ViT模型在ImageNet、ImageNet-21k和JFT-300M数据集上预训练的迁移训练性能。表6对应于本文的图5：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416155028868.png" alt="image-20240416155028868"></p>
+<p>显示了不同大小的ViT、ResNet和混合模型的迁移学习性能，以及预训练的估计计算成本。</p>
+<h3 id="D-ADDITIONAL-ANALYSES"><a href="#D-ADDITIONAL-ANALYSES" class="headerlink" title="D ADDITIONAL ANALYSES"></a>D ADDITIONAL ANALYSES</h3><h4 id="D-1-SGD-VS-ADAM-FOR-RESNETS"><a href="#D-1-SGD-VS-ADAM-FOR-RESNETS" class="headerlink" title="D.1 SGD VS. ADAM FOR RESNETS"></a>D.1 SGD VS. ADAM FOR RESNETS</h4><p>ResNets通常使用SGD进行训练，我们使用Adam作为优化器是非常非常规的。在这里，我们展示了激发这一选择的实验。也就是说，我们比较了SGD和Adam在JFT上预训练的两个ResNets-50x1和152x2的微调性能。对于SGD，我们使用Kolesnikov等人（2020）推荐的超参数。结果如表7所示：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416155220564.png" alt="image-20240416155220564"></p>
+<p>Adam预训练在大多数数据集和平均水平上优于SGD预训练。这证明了选择Adam作为在JFT上预训练ResNets的优化器是合理的。请注意，绝对数字低于Kolesnikov等人（2020）报告的数字，因为我们只预训练了7个epoch，而不是30个epoch。</p>
+<h4 id="D-2-TRANSFORMER-SHAPE"><a href="#D-2-TRANSFORMER-SHAPE" class="headerlink" title="D.2 TRANSFORMER SHAPE"></a>D.2 TRANSFORMER SHAPE</h4><p>我们对Transformer架构的不同维度进行了扩展，以找出最适合扩展到非常大的模型的维度。图8显示了不同配置下ImageNet上的5次性能测试：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416155723027.png" alt="image-20240416155723027"></p>
+<p>所有配置都基于8层的ViT模型，$D = 1024, D_{MLP} = 2048$，patch大小为32，所有线相交。我们可以看到，缩放深度带来了最大的改进，这一点在64层之前非常明显。然而，在16层之后，收益递减已经很明显了。有趣的是，扩展网络的宽度似乎只会导致最小的变化。在不引入参数的情况下，减小patch大小从而增加有效序列长度显示出惊人的鲁棒性改进。这些发现表明，计算可能比参数数量更好地预测性能，并且缩放应该强调深度而不是宽度（如果有的话）。总体而言，我们发现按比例缩放所有维度会产生稳健的改进。</p>
+<h4 id="D-3-HEAD-TYPE-AND-CLASS-TOKEN"><a href="#D-3-HEAD-TYPE-AND-CLASS-TOKEN" class="headerlink" title="D.3 HEAD TYPE AND CLASS TOKEN"></a>D.3 HEAD TYPE AND <code>CLASS</code> TOKEN</h4><p>为了尽可能接近原始的Transformer模型，我们使用了一个额外的<code>[class]</code>令牌，它被用作图像表示。然后，该令牌的输出通过一个小型多层感知器（MLP）转换为类预测，其中$\tanh$为单个隐藏层中的非线性。</p>
+<p>这种设计继承自文本的Transformer模型，我们在整个主要论文中都使用它。最初的尝试是只使用图像patch嵌入，全局平均池化（GAP），然后是线性分类器——就像ResNet的最终特征图一样——表现非常糟糕。然而，我们发现这既不是由于额外的令牌，也不是由于GAP操作。相反，性能上的差异完全可以通过对不同学习率的需求来解释，参见图9：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416160136254.png" alt="image-20240416160136254"></p>
+<h4 id="D-4-POSITIONAL-EMBEDDING"><a href="#D-4-POSITIONAL-EMBEDDING" class="headerlink" title="D.4 POSITIONAL EMBEDDING"></a>D.4 POSITIONAL EMBEDDING</h4><p>我们使用位置嵌入对不同的空间信息编码方式进行了消融。我们尝试了以下情况：</p>
+<ul>
+<li>不提供位置信息：将输入视为a bag of patchs；</li>
+<li>一维位置嵌入：将输入视为栅格顺序的patch序列（本文中所有其他实验的默认值）；</li>
+<li>二维位置嵌入：将输入视为二维的patch网格。在这种情况下，学习了两组嵌入，每组用于一个轴，$X$嵌入和$Y$嵌入，每个轴的大小为$\frac{D}{2}$；然后，基于输入路径上的坐标，我们将$X$嵌入和$Y$嵌入连接起来，得到该patch的最终位置嵌入。</li>
+<li>相对位置嵌入：考虑patch之间的相对距离来编码空间信息，而不是它们的绝对位置。为此，我们使用一维相对注意，其中我们定义了所有可能的patch对的相对距离。因此，对于每个给定的对（一个作为查询，另一个作为注意机制中的键/值），我们有一个偏移量$p_q − p_k$，其中每个偏移量都与嵌入相关联。然后，在应用softmax之前，我们使用相对注意的logit作为偏差项，并将其添加到主要注意（基于内容的注意）的logit中。</li>
+</ul>
+<p>除了不同的空间信息编码方式，我们还尝试了不同的方式将这些信息整合到我们的模型中。对于一维和二维位置嵌入，我们尝试了三种不同的情况：</p>
+<ol>
+<li>在它们模型的主干之后和将输入馈给Transformer编码器之前向输入添加位置嵌入（本文中所有其他实验的默认值）；</li>
+<li>学习并在每层开始的输入中添加位置嵌入；</li>
+<li>在每层开始的输入中添加一个学习到的位置嵌入（层与层之间共享）。</li>
+</ol>
+<p>表8总结了在ViT-B/16模型上的消融研究结果：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416215253321.png" alt="image-20240416215253321"></p>
+<p>我们可以看到，虽然没有位置嵌入的模型和有位置嵌入的模型在性能上有很大的差距，但是不同的位置信息编码方式之间几乎没有差别。我们推测，由于我们的Transformer编码器在patch级输入上操作，而不是像素级输入，因此如何编码空间信息的差异不太重要。更准确地说，在patch级输入中，空间维度比原始像素级输入小得多，例如，$14 \times 14$而不是$224 \times 224$，并且对于这些不同的位置编码策略来说，学习在这种分辨率下表示空间关系同样容易。即便如此，网络学习到的位置嵌入相似度的具体模式取决于训练超参数（图10）：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416215549761.png" alt="image-20240416215549761"></p>
+<h4 id="D-5-EMPIRICAL-COMPUTATIONAL-COSTS"><a href="#D-5-EMPIRICAL-COMPUTATIONAL-COSTS" class="headerlink" title="D.5 EMPIRICAL COMPUTATIONAL COSTS"></a>D.5 EMPIRICAL COMPUTATIONAL COSTS</h4><p>我们还对硬件上架构的实际速度感兴趣，由于通道宽度和缓存大小等细节，理论FLOPs并不总是很好地预测。为此，我们在TPUv3加速器上对感兴趣的主要模型执行推理速度计时；推理速度和反传速度之间的差异是一个恒定的模型无关因素。</p>
+<p>图12（左）显示了在不同的输入大小下，一个核每秒可以处理多少图像：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416215738272.png" alt="image-20240416215738272"></p>
+<p>每个单点都是指在广泛的批大小范围内测量的峰值性能。可以看到，ViT与图像大小的理论双二次缩放仅在最大分辨率下的最大模型中才刚刚开始发生。</p>
+<p>另一个感兴趣的量是每个模型可以容纳在一个核心上的最大批处理大小，更大的批处理更适合扩展到大型数据集。图12（右）显示了同一组模型的数量。这表明大型ViT模型在内存效率方面比ResNet模型有明显的优势。</p>
+<h4 id="D-6-AXIAL-ATTENTION"><a href="#D-6-AXIAL-ATTENTION" class="headerlink" title="D.6 AXIAL ATTENTION"></a>D.6 AXIAL ATTENTION</h4><p>轴向注意力（Huang et al., 2020; Ho et al., 2019）是一种简单而有效的技术，可以在组织为多维张量的大输入上运行自注意力。轴向注意力的一般思想是执行多个注意力操作，每个操作沿着输入张量的单个轴进行，而不是将一维注意力应用于展平后的输入。在轴向注意力中，每个注意力沿特定轴混合信息，同时保持沿其他轴的信息独立。沿着这条路线，Wang等人（2020b）提出了AxialResNet模型，其中ResNet50中所有内核大小为$3 \times 3$的卷积都被轴向自注意力（即行和列注意力）取代，并通过相对位置编码增强。我们已经实现了AxialResNet作为一个基线模型。</p>
+<blockquote>
+<p>我们的实现基于<a target="_blank" rel="noopener" href="https://github.com/csrhddlam/axial-deeplab">https://github.com/csrhddlam/axial-deeplab</a>中的开源PyTorch实现。在我们的实验中，我们在准确性方面复制了（Wang et al., 2020b）中报告的分数，然而，我们的实现与开源实现类似，在TPUs上非常慢。因此，我们无法将其用于广泛的大规模实验。这些可以通过精心优化的实现来解锁。</p>
+</blockquote>
+<p>此外，我们修改了ViT以处理二维形状的输入，而不是一维序列的patch，并合并了轴向Transformer块，其中不是自注意力后面跟着MLP，而是行自注意力加上MLP，然后是列自注意力加上MLP。</p>
+<p>图13展示了在JFT数据集上进行预训练时，轴向ResNet、轴向ViT-B/32和轴向ViT-B/16在ImageNet 5shot线性上与预训练计算的性能，包括FLOPs数和推理时间（每秒示例数）。正如我们所看到的，就性能而言，轴向ViT-B/32和轴向ViT-B/16都比它们的ViT-B对应物做得更好，但这是以更多的计算为代价的。这是因为在轴向ViT模型中，每个具有全局自注意力的Transformer块被两个轴向Transformer块取代，一个具有行自注意力，一个具有列自注意力，尽管自注意力操作的序列长度在轴向情况下较小，但每个轴向ViT块都有一个额外的MLP。对于AxialResNet，尽管它在精度/计算权衡方面看起来是合理的（图13，左），但是这种朴素的实现在TPUs上非常慢（图13，右）：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416221154910.png" alt="image-20240416221154910"></p>
+<h4 id="D-7-ATTENTION-DISTANCE"><a href="#D-7-ATTENTION-DISTANCE" class="headerlink" title="D.7 ATTENTION DISTANCE"></a>D.7 ATTENTION DISTANCE</h4><p>为了理解ViT如何使用自注意力来整合图像上的信息，我们分析了不同层的注意力权重所跨越的平均距离（图11）：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416221306823.png" alt="image-20240416221306823"></p>
+<p>这种“注意距离”类似于CNNs的感受野大小。在较低的层中，注意力头之间的平均注意距离变化很大，一些注意力头注意图像的大部分，而另一些则注意查询位置或附近的小区域。随着深度的增加，所有注意力头的注意距离都会增加。在网络的后半段，大多数注意力头都能够注意大部分令牌。</p>
+<h4 id="D-8-ATTENTION-MAPS"><a href="#D-8-ATTENTION-MAPS" class="headerlink" title="D.8 ATTENTION MAPS"></a>D.8 ATTENTION MAPS</h4><p>为了计算从输出标记到输入空间的注意力映射（图6和14）：</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416112342509.png" alt="image-20240416112342509"></p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416221926761.png" alt="image-20240416221926761"></p>
+<p>我们使用了注意力Rollout（Abnar &amp; Zuidema, 2020）。简单地说，我们在所有头部上平均ViT-L/16的注意力权重，然后递归地乘以所有层的权重矩阵。这解释了所有层的令牌之间的注意力混合。</p>
+<h4 id="D-9-OBJECTNET-RESULTS"><a href="#D-9-OBJECTNET-RESULTS" class="headerlink" title="D.9 OBJECTNET RESULTS"></a>D.9 OBJECTNET RESULTS</h4><p>我们还根据Kolesnikov等人（2020）的评估设置，在ObjectNet基准上评估了我们的旗舰ViT-H/14模型，得到了82.1%的前5准确率和61.7%的前1准确率。</p>
+<h4 id="D-10-VTAB-BREAKDOWN"><a href="#D-10-VTAB-BREAKDOWN" class="headerlink" title="D.10 VTAB BREAKDOWN"></a>D.10 VTAB BREAKDOWN</h4><p>表9显示了每个VTAB-1k任务的得分。</p>
+<p><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/image-20240416222304154.png" alt="image-20240416222304154"></p>
+</article><div class="post-copyright"><div class="copyright-cc-box"><i class="anzhiyufont anzhiyu-icon-copyright"></i></div><div class="post-copyright__author_box"><a class="post-copyright__author_img" href="/" title="头像"><img class="post-copyright__author_img_back" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/profile.jpg" title="头像" alt="头像"><img class="post-copyright__author_img_front" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/profile.jpg" title="头像" alt="头像"></a><div class="post-copyright__author_name">Karl</div><div class="post-copyright__author_desc">日拱一卒，功不唐捐</div></div><div class="post-copyright__post__info"><a class="post-copyright__original" title="该文章为原创文章，注意版权协议" href="http://blog.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/">原创</a><a class="post-copyright-title"><span onclick="rm.copyPageUrl('http://blog.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/')">论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》</span></a></div><div class="post-tools" id="post-tools"><div class="post-tools-left"><div class="rewardLeftButton"><div class="post-reward" onclick="anzhiyu.addRewardMask()"><div class="reward-button button--animated" title="赞赏作者"><i class="anzhiyufont anzhiyu-icon-hand-heart-fill"></i>打赏作者</div><div class="reward-main"><div class="reward-all"><span class="reward-title">感谢你赐予我前进的力量</span><ul class="reward-group"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/wechat.jpg" alt="微信"/></a><div class="post-qr-code-desc">微信</div></li><li class="reward-item"><a href="/img/alipay.jpg" target="_blank"><img class="post-qr-code-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/alipay.jpg" alt="支付宝"/></a><div class="post-qr-code-desc">支付宝</div></li></ul><a class="reward-main-btn" href="/about/#about-reward" target="_blank"><div class="reward-text">赞赏者名单</div><div class="reward-dec">因为你们的支持让我意识到写文章的价值🙏</div></a></div></div></div><div id="quit-box" onclick="anzhiyu.removeRewardMask()" style="display: none"></div></div><div class="shareRight"><div class="share-link mobile"><div class="share-qrcode"><div class="share-button" title="使用手机访问这篇文章"><i class="anzhiyufont anzhiyu-icon-qrcode"></i></div><div class="share-main"><div class="share-main-all"><div id="qrcode" title="http://blog.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/"></div><div class="reward-dec">使用手机访问这篇文章</div></div></div></div></div><div class="share-link weibo"><a class="share-button" target="_blank" href="https://service.weibo.com/share/share.php?title=论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》&amp;url=http://blog.karltan.com/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/&amp;pic=https://img.karltan.com/covers/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words.png" rel="external nofollow noreferrer noopener"><i class="anzhiyufont anzhiyu-icon-weibo"></i></a></div><script>function copyCurrentPageUrl() {
+  var currentPageUrl = window.location.href;
+  var input = document.createElement("input");
+  input.setAttribute("value", currentPageUrl);
+  document.body.appendChild(input);
+  input.select();
+  input.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  document.body.removeChild(input);
+}</script><div class="share-link copyurl"><div class="share-button" id="post-share-url" title="复制链接" onclick="copyCurrentPageUrl()"><i class="anzhiyufont anzhiyu-icon-link"></i></div></div></div></div></div><div class="post-copyright__notice"><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://blog.karltan.com" target="_blank">Karl的博客</a>！</span></div></div><div class="post-tools-right"><div class="tag_share"><div class="post-meta__box"><div class="post-meta__box__category-list"><a class="post-meta__box__categoryes" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/"><span class="categoryes-punctuation"> <i class="anzhiyufont anzhiyu-icon-inbox"></i></span>论文笔记<span class="categoryesPageCount">9</span></a><a class="post-meta__box__categoryes" href="/categories/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/2021/"><span class="categoryes-punctuation"> <i class="anzhiyufont anzhiyu-icon-inbox"></i></span>2021<span class="categoryesPageCount">1</span></a></div><div class="post-meta__box__tag-list"><a class="post-meta__box__tags" href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>论文笔记<span class="tagsPageCount">9</span></a><a class="post-meta__box__tags" href="/tags/ICLR/"><span class="tags-punctuation"> <i class="anzhiyufont anzhiyu-icon-tag"></i></span>ICLR<span class="tagsPageCount">1</span></a></div></div><div class="post_share"><div class="social-share" data-image="https://img.karltan.com/covers/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"/><script src="https://cdn.cbd.int/butterfly-extsrc@1.1.3/sharejs/dist/js/social-share.min.js" defer="defer"></script></div></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-full"><a href="/dissertation-notes/2023/Woo_et_al-2023-ConvNeXt_V2/"><img class="prev-cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2023/Woo_et_al-2023-ConvNeXt_V2.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="anzhiyufont anzhiyu-icon-thumbs-up fa-fw" style="font-size: 1.5rem; margin-right: 4px"></i><span>喜欢这篇文章的人也看了</span></div><div class="relatedPosts-list"><div><a href="/dissertation-notes/dissertation-summary/" title="论文总结"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/dissertation-summary.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-10-28</div><div class="title">论文总结</div></div></a></div><div><a href="/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/" title="论文笔记《Attention Is All You Need》"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2024-02-09</div><div class="title">论文笔记《Attention Is All You Need》</div></div></a></div><div><a href="/dissertation-notes/2018/Xiang_et_al-2018-PoseCNN/" title="论文笔记《PoseCNN：A Convolutional Neural Network for 6D Object Pose Estimation in Cluttered Scenes》"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2018/Xiang_et_al-2018-PoseCNN.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-10-19</div><div class="title">论文笔记《PoseCNN：A Convolutional Neural Network for 6D Object Pose Estimation in Cluttered Scenes》</div></div></a></div><div><a href="/dissertation-notes/2019/Tillet_et_al-2019-Triton/" title="论文笔记《Triton：An Intermediate Language and Compiler for Tiled Neural Network Computations》"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2019/Tillet_et_al-2019-Triton.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-12-26</div><div class="title">论文笔记《Triton：An Intermediate Language and Compiler for Tiled Neural Network Computations》</div></div></a></div><div><a href="/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation/" title="论文笔记《Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation》"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2019/Wang_et_al-2019-Normalized_Object_Coordinate_Space_for_Category-Level_6D_Object_Pose_and_Size_Estimation.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-10-25</div><div class="title">论文笔记《Normalized Object Coordinate Space for Category-Level 6D Object Pose and Size Estimation》</div></div></a></div><div><a href="/dissertation-notes/2023/Fan_et_al-2023-POPE/" title="论文笔记《POPE：6-DoF Promptable Pose Estimation of Any Object, in Any Scene, with One Reference》"><img class="cover" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2023/Fan_et_al-2023-POPE.png" alt="cover"><div class="content is-center"><div class="date"><i class="anzhiyufont anzhiyu-icon-calendar-days fa-fw"></i> 2023-11-15</div><div class="title">论文笔记《POPE：6-DoF Promptable Pose Estimation of Any Object, in Any Scene, with One Reference》</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="anzhiyufont anzhiyu-icon-comments"></i><span> 评论</span></div><div class="comment-randomInfo"><a onclick="anzhiyu.addRandomCommentInfo()" href="javascript:void(0)">匿名评论</a><a href="/privacy" style="margin-left: 4px">隐私政策</a></div><div class="comment-tips" id="comment-tips"><span>✅ 你无需删除空行，直接评论以获取最佳展示效果</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div><div class="comment-barrage"></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="card-content"><div class="author-info__sayhi" id="author-info__sayhi" onclick="anzhiyu.changeSayHelloText()"></div><div class="author-info-avatar"><img class="avatar-img" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/profile.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-status"><img class="g-status" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/chuoyichuo.gif" alt="status"/></div></div><div class="author-info__description"><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">直博狗一枚，日常会在博客上分享自己的学习笔记，希望可以帮到你。</div><div style="line-height:1.38;margin:0.6rem 0;text-align:justify;color:rgba(255, 255, 255, 0.8);">相信你可以在这里找到对你有用的<b style="color:#fff">知识</b>和<b style="color:#fff">教程</b>。</div></div><div class="author-info__bottom-group"><a class="author-info__bottom-group-left" href="/"><h1 class="author-info__name">Karl</h1><div class="author-info__desc">日拱一卒，功不唐捐</div></a><div class="card-info-social-icons is-center"><a class="social-icon faa-parent animated-hover" href="https://github.com/karltan0328" target="_blank" title="Github"><i class="fa-brands fa-github faa-tada"></i></a><a class="social-icon faa-parent animated-hover" href="mailto:admin@karltan.com" target="_blank" title="Email"><i class="fa-solid fa-envelope faa-tada"></i></a></div></div></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bullhorn anzhiyu-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来看我的博客鸭~</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-bars"></i><span>文章目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#AN-IMAGE-IS-WORTH-16X16-WORDS-TRANSFORMERS-FOR-IMAGE-RECOGNITION-AT-SCALE"><span class="toc-text">AN IMAGE IS WORTH 16X16 WORDS: TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ABSTRACT"><span class="toc-text">ABSTRACT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-INTRODUCTION"><span class="toc-text">1 INTRODUCTION</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-RELATED-WORK"><span class="toc-text">2 RELATED WORK</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-METHOD"><span class="toc-text">3 METHOD</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-VISION-TRANSFORMER-VIT"><span class="toc-text">3.1 VISION TRANSFORMER (VIT)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-FINE-TUNING-AND-HIGHER-RESOLUTION"><span class="toc-text">3.2 FINE-TUNING AND HIGHER RESOLUTION</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-EXPERIMENTS"><span class="toc-text">4 EXPERIMENTS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-SETUP"><span class="toc-text">4.1 SETUP</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-COMPARISON-TO-STATE-OF-THE-ART"><span class="toc-text">4.2 COMPARISON TO STATE OF THE ART</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-PRE-TRAINING-DATA-REQUIREMENTS"><span class="toc-text">4.3 PRE-TRAINING DATA REQUIREMENTS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-4-SCALING-STUDY"><span class="toc-text">4.4 SCALING STUDY</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-5-INSPECTING-VISION-TRANSFORMER"><span class="toc-text">4.5 INSPECTING VISION TRANSFORMER</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-6-SELF-SUPERVISION"><span class="toc-text">4.6 SELF-SUPERVISION</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-CONCLUSION"><span class="toc-text">5 CONCLUSION</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ACKNOWLEDGEMENTS"><span class="toc-text">ACKNOWLEDGEMENTS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#APPENDIX"><span class="toc-text">APPENDIX</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#A-MULTIHEAD-SELF-ATTENTION"><span class="toc-text">A MULTIHEAD SELF-ATTENTION</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#B-EXPERIMENT-DETAILS"><span class="toc-text">B EXPERIMENT DETAILS</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#B-1-TRAINING"><span class="toc-text">B.1 TRAINING</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#B-1-1-FINE-TUNING"><span class="toc-text">B.1.1 FINE-TUNING</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#B-1-2-SELF-SUPERVISION"><span class="toc-text">B.1.2 SELF-SUPERVISION</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-ADDITIONAL-RESULTS"><span class="toc-text">C ADDITIONAL RESULTS</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#D-ADDITIONAL-ANALYSES"><span class="toc-text">D ADDITIONAL ANALYSES</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#D-1-SGD-VS-ADAM-FOR-RESNETS"><span class="toc-text">D.1 SGD VS. ADAM FOR RESNETS</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#D-2-TRANSFORMER-SHAPE"><span class="toc-text">D.2 TRANSFORMER SHAPE</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#D-3-HEAD-TYPE-AND-CLASS-TOKEN"><span class="toc-text">D.3 HEAD TYPE AND CLASS TOKEN</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#D-4-POSITIONAL-EMBEDDING"><span class="toc-text">D.4 POSITIONAL EMBEDDING</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#D-5-EMPIRICAL-COMPUTATIONAL-COSTS"><span class="toc-text">D.5 EMPIRICAL COMPUTATIONAL COSTS</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#D-6-AXIAL-ATTENTION"><span class="toc-text">D.6 AXIAL ATTENTION</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#D-7-ATTENTION-DISTANCE"><span class="toc-text">D.7 ATTENTION DISTANCE</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#D-8-ATTENTION-MAPS"><span class="toc-text">D.8 ATTENTION MAPS</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#D-9-OBJECTNET-RESULTS"><span class="toc-text">D.9 OBJECTNET RESULTS</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#D-10-VTAB-BREAKDOWN"><span class="toc-text">D.10 VTAB BREAKDOWN</span></a></li></ol></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="anzhiyufont anzhiyu-icon-history"></i><span>最近发布</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/" title="论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》"/></a><div class="content"><a class="title" href="/dissertation-notes/2021/Dosovitskiy_et_al-2021-An_Image_is_Worth_16x16_Words/" title="论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》">论文笔记《AN IMAGE IS WORTH 16X16 WORDS：TRANSFORMERS FOR IMAGE RECOGNITION AT SCALE》</a><time datetime="2024-04-15T07:00:00.000Z" title="发表于 2024-04-15 15:00:00">2024-04-15</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/dissertation-notes/2023/Woo_et_al-2023-ConvNeXt_V2/" title="论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2023/Woo_et_al-2023-ConvNeXt_V2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》"/></a><div class="content"><a class="title" href="/dissertation-notes/2023/Woo_et_al-2023-ConvNeXt_V2/" title="论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》">论文笔记《ConvNeXt V2：Co-designing and Scaling ConvNets with Masked Autoencoders》</a><time datetime="2024-04-04T05:00:00.000Z" title="发表于 2024-04-04 13:00:00">2024-04-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/" title="论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2023/Nguyen_et_al-2023-NOPE.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》"/></a><div class="content"><a class="title" href="/dissertation-notes/2023/Nguyen_et_al-2023-NOPE/" title="论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》">论文笔记《NOPE：Novel Object Pose Estimation from a Single Image》</a><time datetime="2024-03-28T04:00:00.000Z" title="发表于 2024-03-28 12:00:00">2024-03-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/" title="论文笔记《Attention Is All You Need》"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="论文笔记《Attention Is All You Need》"/></a><div class="content"><a class="title" href="/dissertation-notes/2017/Vaswani_et_al-2017-Attention_is_all_you_need/" title="论文笔记《Attention Is All You Need》">论文笔记《Attention Is All You Need》</a><time datetime="2024-02-09T02:00:00.000Z" title="发表于 2024-02-09 10:00:00">2024-02-09</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/ac-diary/acwing/autumn-daily-question-2023/acwing5199/" title="AcWing 5199. 现代艺术"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://img.karltan.com/covers/ac-diary/acwing/autumn-daily-question-2023.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="AcWing 5199. 现代艺术"/></a><div class="content"><a class="title" href="/ac-diary/acwing/autumn-daily-question-2023/acwing5199/" title="AcWing 5199. 现代艺术">AcWing 5199. 现代艺术</a><time datetime="2024-01-18T08:00:00.000Z" title="发表于 2024-01-18 16:00:00">2024-01-18</time></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div id="footer_deal"><a class="deal_link" href="mailto:admin@karltan.com" title="email"><i class="fa-solid fa-envelope"></i></a><a class="deal_link" href="/atom.xml" title="RSS"><i class="fa-solid fa-rss"></i></a><img class="footer_mini_logo" title="返回顶部" alt="返回顶部" onclick="anzhiyu.scrollToDest(0, 500)" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/profile.jpg" size="50px"/><a class="deal_link" target="_blank" rel="noopener" href="https://github.com/karltan0328" title="Github"><i class="fa-brands fa-github"></i></a><a class="deal_link" target="_blank" rel="noopener" href="https://blog.csdn.net/karltan0328" title="CSDN"><i class="fa-solid fa-c"></i></a></div><div id="workboard"><img class="workSituationImg boardsign" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/work_img.svg" alt="paper快来，idea快来，我要毕业🥹" title="paper快来，idea快来，我要毕业🥹"/><div id="runtimeTextTip"></div></div><div id="anzhiyu-footer"><div class="footer-group"><div class="footer-title">服务</div><div class="footer-links"><a class="footer-item" title="51la统计" target="_blank" rel="noopener" href="https://v6.51.la/">51la统计</a><a class="footer-item" title="十年之约" target="_blank" rel="noopener" href="https://www.foreverblog.cn/">十年之约</a><a class="footer-item" title="开往" target="_blank" rel="noopener" href="https://github.com/travellings-link/travellings">开往</a></div></div><div class="footer-group"><div class="footer-title">主题</div><div class="footer-links"><a class="footer-item" title="文档" target="_blank" rel="noopener" href="https://docs.anheyu.com/">文档</a><a class="footer-item" title="源码" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu">源码</a><a class="footer-item" title="更新日志" target="_blank" rel="noopener" href="https://blog.anheyu.com/update/">更新日志</a></div></div><div class="footer-group"><div class="footer-title">导航</div><div class="footer-links"><a class="footer-item" title="即刻短文" href="/essay">即刻短文</a><a class="footer-item" title="友链文章" href="/fcircle">友链文章</a><a class="footer-item" title="留言板" href="/comments">留言板</a></div></div><div class="footer-group"><div class="footer-title">协议</div><div class="footer-links"><a class="footer-item" title="隐私协议" href="/privacy">隐私协议</a><a class="footer-item" title="Cookies" href="/cookies">Cookies</a><a class="footer-item" title="版权协议" href="/copyright">版权协议</a></div></div><div class="footer-group"><div class="footer-title-group"><div class="footer-title">友链</div><a class="random-friends-btn" id="footer-random-friends-btn" href="javascript:addFriendLinksInFooter();" title="换一批友情链接"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right"></i></a></div><div class="footer-links" id="friend-links-in-footer"></div></div></div><p id="ghbdages"><a class="github-badge" target="_blank" href="https://hexo.io/" style="margin-inline:5px" data-title="博客框架为Hexo 7.0.0" title="博客框架为Hexo 7.0.0"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/frame-hexo.svg" alt="博客框架为Hexo 7.0.0"/></a><a class="github-badge" target="_blank" href="https://blog.anheyu.com/" style="margin-inline:5px" data-title="本站使用AnZhiYu主题" title="本站使用AnZhiYu主题"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/theme-anzhiyu.svg" alt="本站使用AnZhiYu主题"/></a><a class="github-badge" target="_blank" href="https://console.upyun.com/register/?invite=nVONH00RJ" style="margin-inline:5px" data-title="本网站由又拍云提供CDN加速/云储存服务" title="本网站由又拍云提供CDN加速/云储存服务"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/upyun.svg" alt="本网站由又拍云提供CDN加速/云储存服务"/></a><a class="github-badge" target="_blank" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" style="margin-inline:5px" data-title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可" title="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"><img src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/label/copyright-by-nc-sa.svg" alt="本站采用知识共享署名-非商业性使用-相同方式共享4.0国际许可协议进行许可"/></a></p></div><div id="footer-bar"><div class="footer-bar-links"><div class="footer-bar-left"><div id="footer-bar-tips"><div class="copyright">&copy;2023 - 2024 By <a class="footer-bar-link" href="/" title="Karl" target="_blank">Karl</a></div></div><div id="footer-type-tips"></div><div class="js-pjax"><script>function subtitleType () {
+  if (true) { 
+    window.typed = new Typed("#footer-type-tips", {
+      strings: ["不积跬步无以至千里","今日事，今日毕","有善始者实繁，能克终者盖寡","穷且益坚，不坠青云之志","若无闲事挂心头，便是人间好时节"],
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: true,
+      backSpeed: 50
+    })
+  } else {
+    document.getElementById("footer-type-tips").innerHTML = '不积跬步无以至千里'
+  }
+}
+
+if (true) {
+  if (typeof Typed === 'function') {
+    subtitleType()
+  } else {
+    getScript('https://cdn.cbd.int/typed.js@2.0.15/dist/typed.umd.js').then(subtitleType)
+  }
+} else {
+  subtitleType()
+}</script></div></div><div class="footer-bar-right"><a class="footer-bar-link" target="_blank" rel="noopener" href="https://github.com/anzhiyu-c/hexo-theme-anzhiyu" title="主题">主题</a><a class="footer-bar-link" target="_blank" rel="noopener" href="https://beian.miit.gov.cn/" title="湘ICP备2023018619号-1">湘ICP备2023018619号-1</a><a class="footer-bar-link cc" href="/copyright" title="cc协议"><i class="anzhiyufont anzhiyu-icon-copyright-line"></i><i class="anzhiyufont anzhiyu-icon-creative-commons-by-line"></i><i class="anzhiyufont anzhiyu-icon-creative-commons-nc-line"></i><i class="anzhiyufont anzhiyu-icon-creative-commons-nd-line"></i></a></div></div></div></footer></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="sidebar-site-data site-data is-center"><a href="/archives/" title="archive"><div class="headline">文章</div><div class="length-num">130</div></a><a href="/tags/" title="tag"><div class="headline">标签</div><div class="length-num">31</div></a><a href="/categories/" title="category"><div class="headline">分类</div><div class="length-num">16</div></a></div><span class="sidebar-menu-item-title">功能</span><div class="sidebar-menu-item"><a class="darkmode_switchbutton menu-child" href="javascript:void(0);" title="显示模式"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span>显示模式</span></a></div><div class="back-menu-list-groups"><div class="back-menu-list-group"><div class="back-menu-list-title">网页</div><div class="back-menu-list"><a class="back-menu-item" href="https://blog.karltan.com/" title="Karl的博客"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="/img/logo.png" alt="Karl的博客"/><span class="back-menu-item-text">Karl的博客</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://www.karltan.com/" title="Karl的导航"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://www.karltan.com/favicon.ico" alt="Karl的导航"/><span class="back-menu-item-text">Karl的导航</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">博客分流</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://v.karltan.com/" title="Vercel"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://assets.vercel.com/image/upload/front/favicon/vercel/favicon.ico" alt="Vercel"/><span class="back-menu-item-text">Vercel</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://c.karltan.com/" title="Cloudflare"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://dash.cloudflare.com/favicon-32x32.png" alt="Cloudflare"/><span class="back-menu-item-text">Cloudflare</span></a></div></div><div class="back-menu-list-group"><div class="back-menu-list-title">工具</div><div class="back-menu-list"><a class="back-menu-item" target="_blank" rel="noopener" href="https://npmzjk.karltan.com/" title="NPM"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://npmzjk.karltan.com/images/favicons/favicon-32x32.png" alt="NPM"/><span class="back-menu-item-text">NPM</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://paste.karltan.com/" title="Free-Bin"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://paste.karltan.com/static/favicon.ico" alt="Free-Bin"/><span class="back-menu-item-text">Free-Bin</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://tools.karltan.com/" title="IT-TOOLS"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://tools.karltan.com/android-chrome-192x192.png" alt="IT-TOOLS"/><span class="back-menu-item-text">IT-TOOLS</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://memos.karltan.com/" title="Memos"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://memos.karltan.com/logo.png" alt="Memos"/><span class="back-menu-item-text">Memos</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://wbo.karltan.com/" title="WBO"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://wbo.karltan.com/favicon.ico" alt="WBO"/><span class="back-menu-item-text">WBO</span></a><a class="back-menu-item" target="_blank" rel="noopener" href="https://git.karltan.com/" title="Gitea"><img class="back-menu-item-icon" src= "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="this.onerror=null,this.src=&quot;/img/404.jpg&quot;" data-lazy-src="https://git.karltan.com/assets/img/logo.svg" alt="Gitea"/><span class="back-menu-item-text">Gitea</span></a></div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 文章</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/archives"><i class="fa-solid fa-box-archive faa-tada"></i><span> 归档</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/categories"><i class="fa-solid fa-palette faa-tada"></i><span> 分类</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/tags"><i class="fa-solid fa-tags faa-tada"></i><span> 标签</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 友链</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/link"><i class="fa-solid fa-link faa-tada"></i><span> 友人帐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/fcircle"><i class="fa-brands fa-artstation faa-tada"></i><span> 朋友圈</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/comments"><i class="fa-solid fa-comments faa-tada"></i><span> 留言板</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 我的</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" href="/essay"><i class="fa-solid fa-comment-dots faa-tada"></i><span> 说说</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/music"><i class="fa-solid fa-music faa-tada"></i><span> 音乐</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/album"><i class="fa-solid fa-images faa-tada"></i><span> 相册</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="javascript:void(0);"><span> 关于</span></a><ul class="menus_item_child"><li><a class="site-page child faa-parent animated-hover" target="_blank" rel="noopener" href="https://status.karltan.com/status/1"><i class="fa-solid fa-chart-line faa-tada"></i><span> 网站监控</span></a></li><li><a class="site-page child faa-parent animated-hover" href="javascript:toRandomPost()"><i class="fa-solid fa-shoe-prints faa-tada"></i><span> 随便逛逛</span></a></li><li><a class="site-page child faa-parent animated-hover" href="/about"><i class="fa-solid fa-heart faa-tada"></i><span> 关于我</span></a></li></ul></div></div><span class="sidebar-menu-item-title">标签</span><div class="card-tags"><div class="item-headline"></div><div class="card-tag-cloud"><a href="/tags/AcWing/" style="font-size: 0.88rem; color: rgb(85, 23, 91);">AcWing<sup>33</sup></a><a href="/tags/CUDA/" style="font-size: 0.88rem; color: rgb(12, 161, 160);">CUDA<sup>1</sup></a><a href="/tags/CVPR/" style="font-size: 0.88rem; color: rgb(147, 94, 197);">CVPR<sup>3</sup></a><a href="/tags/ICLR/" style="font-size: 0.88rem; color: rgb(43, 82, 180);">ICLR<sup>1</sup></a><a href="/tags/Linux/" style="font-size: 0.88rem; color: rgb(122, 113, 29);">Linux<sup>1</sup></a><a href="/tags/MAPL/" style="font-size: 0.88rem; color: rgb(36, 174, 170);">MAPL<sup>1</sup></a><a href="/tags/MySQL/" style="font-size: 0.88rem; color: rgb(181, 7, 113);">MySQL<sup>1</sup></a><a href="/tags/NIPS/" style="font-size: 0.88rem; color: rgb(7, 27, 3);">NIPS<sup>1</sup></a><a href="/tags/PyTorch/" style="font-size: 0.88rem; color: rgb(150, 37, 10);">PyTorch<sup>1</sup></a><a href="/tags/Python/" style="font-size: 0.88rem; color: rgb(141, 141, 197);">Python<sup>1</sup></a><a href="/tags/RSS/" style="font-size: 0.88rem; color: rgb(112, 22, 153);">RSS<sup>1</sup></a><a href="/tags/Ubuntu/" style="font-size: 0.88rem; color: rgb(19, 93, 120);">Ubuntu<sup>3</sup></a><a href="/tags/Windows/" style="font-size: 0.88rem; color: rgb(164, 101, 25);">Windows<sup>1</sup></a><a href="/tags/arXiv/" style="font-size: 0.88rem; color: rgb(9, 118, 154);">arXiv<sup>1</sup></a><a href="/tags/mAP/" style="font-size: 0.88rem; color: rgb(199, 124, 62);">mAP<sup>1</sup></a><a href="/tags/tmux/" style="font-size: 0.88rem; color: rgb(13, 185, 37);">tmux<sup>1</sup></a><a href="/tags/vim/" style="font-size: 0.88rem; color: rgb(4, 144, 16);">vim<sup>1</sup></a><a href="/tags/%E4%BB%A3%E7%A0%81/" style="font-size: 0.88rem; color: rgb(151, 15, 28);">代码<sup>1</sup></a><a href="/tags/%E4%BD%8D%E5%A7%BF%E4%BC%B0%E8%AE%A1/" style="font-size: 0.88rem; color: rgb(130, 27, 45);">位姿估计<sup>1</sup></a><a href="/tags/%E6%89%A9%E5%AE%B9/" style="font-size: 0.88rem; color: rgb(110, 175, 30);">扩容<sup>1</sup></a><a href="/tags/%E6%95%B0%E5%AD%A6/" style="font-size: 0.88rem; color: rgb(158, 42, 1);">数学<sup>1</sup></a><a href="/tags/%E6%97%8B%E8%BD%AC%E8%A1%A8%E7%A4%BA/" style="font-size: 0.88rem; color: rgb(11, 137, 41);">旋转表示<sup>1</sup></a><a href="/tags/%E6%9D%8E%E6%B2%90/" style="font-size: 0.88rem; color: rgb(109, 78, 54);">李沐<sup>76</sup></a><a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/" style="font-size: 0.88rem; color: rgb(99, 94, 68);">深度学习<sup>79</sup></a><a href="/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/" style="font-size: 0.88rem; color: rgb(141, 161, 139);">目标检测<sup>1</sup></a><a href="/tags/%E7%AC%94%E8%AE%B0/" style="font-size: 0.88rem; color: rgb(57, 29, 124);">笔记<sup>77</sup></a><a href="/tags/%E7%AE%97%E6%B3%95%E9%A2%98/" style="font-size: 0.88rem; color: rgb(153, 5, 199);">算法题<sup>33</sup></a><a href="/tags/%E8%AE%BA%E6%96%87%E7%AC%94%E8%AE%B0/" style="font-size: 0.88rem; color: rgb(186, 192, 126);">论文笔记<sup>9</sup></a><a href="/tags/%E9%98%BF%E9%87%8C%E4%BA%91/" style="font-size: 0.88rem; color: rgb(159, 79, 86);">阿里云<sup>1</sup></a><a href="/tags/%E9%AB%98%E7%AD%89%E6%95%B0%E5%AD%A6/" style="font-size: 0.88rem; color: rgb(7, 133, 128);">高等数学<sup>1</sup></a><a href="/tags/%E9%AD%94%E6%B3%95/" style="font-size: 0.88rem; color: rgb(99, 91, 1);">魔法<sup>1</sup></a></div></div><hr/></div></div><div id="keyboard-tips"><div class="keyboardTitle">博客快捷键</div><div class="keybordList"><div class="keybordItem"><div class="keyGroup"><div class="key">shift K</div></div><div class="keyContent"><div class="content">关闭快捷键功能</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift A</div></div><div class="keyContent"><div class="content">打开/关闭中控台</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift M</div></div><div class="keyContent"><div class="content">播放/暂停音乐</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift D</div></div><div class="keyContent"><div class="content">深色/浅色显示模式</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift S</div></div><div class="keyContent"><div class="content">站内搜索</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift R</div></div><div class="keyContent"><div class="content">随机访问</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift H</div></div><div class="keyContent"><div class="content">返回首页</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift F</div></div><div class="keyContent"><div class="content">友链鱼塘</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift L</div></div><div class="keyContent"><div class="content">友链页面</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift P</div></div><div class="keyContent"><div class="content">关于本站</div></div></div><div class="keybordItem"><div class="keyGroup"><div class="key">shift I</div></div><div class="keyContent"><div class="content">原版/本站右键菜单</div></div></div></div></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="anzhiyufont anzhiyu-icon-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="anzhiyufont anzhiyu-icon-arrows-left-right"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="anzhiyufont anzhiyu-icon-gear"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="anzhiyufont anzhiyu-icon-list-ul"></i></button><button id="chat-btn" type="button" title="聊天"><i class="anzhiyufont anzhiyu-icon-comment-sms"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="anzhiyufont anzhiyu-icon-comments"></i></a><a id="switch-commentBarrage" href="javascript:anzhiyu.switchCommentBarrage();" title="开关弹幕"><i class="anzhiyufont anzhiyu-icon-danmu"></i></a><button id="go-up" type="button" title="回到顶部"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="anzhiyufont anzhiyu-icon-xmark"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div id="rightMenu"><div class="rightMenu-group rightMenu-small"><div class="rightMenu-item" id="menu-backward"><i class="anzhiyufont anzhiyu-icon-arrow-left"></i></div><div class="rightMenu-item" id="menu-forward"><i class="anzhiyufont anzhiyu-icon-arrow-right"></i></div><div class="rightMenu-item" id="menu-refresh"><i class="anzhiyufont anzhiyu-icon-arrow-rotate-right" style="font-size: 1rem;"></i></div><div class="rightMenu-item" id="menu-top"><i class="anzhiyufont anzhiyu-icon-arrow-up"></i></div></div><div class="rightMenu-group rightMenu-line rightMenuPlugin"><div class="rightMenu-item" id="menu-copytext"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制选中文本</span></div><div class="rightMenu-item" id="menu-pastetext"><i class="anzhiyufont anzhiyu-icon-paste"></i><span>粘贴文本</span></div><a class="rightMenu-item" id="menu-commenttext"><i class="anzhiyufont anzhiyu-icon-comment-medical"></i><span>引用到评论</span></a><div class="rightMenu-item" id="menu-newwindow"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开</span></div><div class="rightMenu-item" id="menu-copylink"><i class="anzhiyufont anzhiyu-icon-link"></i><span>复制链接地址</span></div><div class="rightMenu-item" id="menu-copyimg"><i class="anzhiyufont anzhiyu-icon-images"></i><span>复制此图片</span></div><div class="rightMenu-item" id="menu-downloadimg"><i class="anzhiyufont anzhiyu-icon-download"></i><span>下载此图片</span></div><div class="rightMenu-item" id="menu-newwindowimg"><i class="anzhiyufont anzhiyu-icon-window-restore"></i><span>新窗口打开图片</span></div><div class="rightMenu-item" id="menu-search"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>站内搜索</span></div><div class="rightMenu-item" id="menu-searchBaidu"><i class="anzhiyufont anzhiyu-icon-magnifying-glass"></i><span>百度搜索</span></div><div class="rightMenu-item" id="menu-music-toggle"><i class="anzhiyufont anzhiyu-icon-play"></i><span>播放音乐</span></div><div class="rightMenu-item" id="menu-music-back"><i class="anzhiyufont anzhiyu-icon-backward"></i><span>切换到上一首</span></div><div class="rightMenu-item" id="menu-music-forward"><i class="anzhiyufont anzhiyu-icon-forward"></i><span>切换到下一首</span></div><div class="rightMenu-item" id="menu-music-playlist" onclick="window.open(&quot;https://y.qq.com/n/ryqq/playlist/8802438608&quot;, &quot;_blank&quot;);" style="display: none;"><i class="anzhiyufont anzhiyu-icon-radio"></i><span>查看所有歌曲</span></div><div class="rightMenu-item" id="menu-music-copyMusicName"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制歌名</span></div></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item menu-link" id="menu-randomPost"><i class="anzhiyufont anzhiyu-icon-shuffle"></i><span>随便逛逛</span></a><a class="rightMenu-item menu-link" href="/categories/"><i class="anzhiyufont anzhiyu-icon-cube"></i><span>博客分类</span></a><a class="rightMenu-item menu-link" href="/tags/"><i class="anzhiyufont anzhiyu-icon-tags"></i><span>文章标签</span></a></div><div class="rightMenu-group rightMenu-line rightMenuOther"><a class="rightMenu-item" id="menu-copy" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-copy"></i><span>复制地址</span></a><a class="rightMenu-item" id="menu-commentBarrage" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-message"></i><span class="menu-commentBarrage-text">关闭热评</span></a><a class="rightMenu-item" id="menu-darkmode" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-circle-half-stroke"></i><span class="menu-darkmode-text">深色模式</span></a><a class="rightMenu-item" id="menu-translate" href="javascript:void(0);"><i class="anzhiyufont anzhiyu-icon-language"></i><span>轉為繁體</span></a></div></div><div id="rightmenu-mask"></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.cbd.int/@fancyapps/ui@5.0.20/dist/fancybox/fancybox.umd.js"></script><script src="https://cdn.cbd.int/instant.page@5.2.0/instantpage.js" type="module"></script><script src="https://cdn.cbd.int/vanilla-lazyload@17.8.4/dist/lazyload.iife.min.js"></script><script src="https://cdn.cbd.int/node-snackbar@0.1.16/dist/snackbar.min.js"></script><canvas id="universe"></canvas><script async src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.0/dark/dark.js"></script><script async src="/anzhiyu/random.js"></script><script async="async">(function () {
+  var grt = new Date("07/15/2023 00:00:00"); //设置网站上线时间
+  var now = new Date();
+  var dnum;
+  var hnum;
+  var mnum;
+  var snum;
+  var nowHour;
+
+  // 计算并更新天数、小时数、分钟数和秒数
+  function updateTime() {
+    now = new Date(); // 更新 now 的值
+    nowHour = now.getHours(); // 更新 nowHour 的值
+    var days = (now - grt) / 1000 / 60 / 60 / 24;
+    dnum = Math.floor(days);
+    var hours = (now - grt) / 1000 / 60 / 60 - 24 * dnum;
+    hnum = Math.floor(hours);
+    if (String(hnum).length == 1) {
+      hnum = "0" + hnum;
+    }
+    var minutes = (now - grt) / 1000 / 60 - 24 * 60 * dnum - 60 * hnum;
+    mnum = Math.floor(minutes);
+    if (String(mnum).length == 1) {
+      mnum = "0" + mnum;
+    }
+    var seconds = (now - grt) / 1000 - 24 * 60 * 60 * dnum - 60 * 60 * hnum - 60 * mnum;
+    snum = Math.round(seconds);
+    if (String(snum).length == 1) {
+      snum = "0" + snum;
+    }
+  }
+
+  // 更新网页中显示的网站运行时间
+  function updateHtml() {
+    const footer = document.getElementById("footer");
+    if (!footer) return
+    let currentTimeHtml = "";
+    if (nowHour < 18 && nowHour >= 9) {
+      // 如果是上班时间，默认就是"安知鱼-上班摸鱼中.svg"图片，不需要更改
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    } else {
+      // 如果是下班时间，插入"安知鱼-下班啦.svg"图片
+      let img = document.querySelector("#workboard .workSituationImg");
+      if (img != null) {
+        img.src = "/img/label/offduty_img.svg";
+        img.title = "延毕就延毕，我先玩了再说🤡";
+        img.alt = "延毕就延毕，我先玩了再说🤡";
+      }
+
+      currentTimeHtml = `本站居然运行了 ${dnum} 天<span id='runtime'> ${hnum} 小时 ${mnum} 分 ${snum} 秒 </span><i class='anzhiyufont anzhiyu-icon-heartbeat' style='color:red'></i>`;
+    }
+
+    if (document.getElementById("runtimeTextTip")) {
+      document.getElementById("runtimeTextTip").innerHTML = currentTimeHtml;
+    }
+  }
+
+  setInterval(() => {
+    updateTime();
+    updateHtml();
+  }, 1000);
+})();</script><script src="https://cdn.cbd.int/algoliasearch@4.18.0/dist/algoliasearch-lite.umd.js"></script><script src="https://cdn.cbd.int/instantsearch.js@4.56.5/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, '']
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.cbd.int/mathjax@3.2.2/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typesetPromise()
+}</script><script>(() => {
+  const $mermaid = document.querySelectorAll('#article-container .mermaid-wrap')
+  if ($mermaid.length === 0) return
+  const runMermaid = () => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+
+    Array.from($mermaid).forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      const mermaidThemeConfig = '%%{init:{ \'theme\':\'' + theme + '\'}}%%\n'
+      const mermaidID = 'mermaid-' + index
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+
+      const renderV10 = () => {
+        renderFn.then(({svg}) => {
+          mermaidSrc.insertAdjacentHTML('afterend', svg)
+        })
+      }
+
+      const renderV9 = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+      }
+
+      typeof renderFn === 'string' ? renderV9(renderFn) : renderV10()
+    })
+  }
+
+  const loadMermaid = () => {
+    window.loadMermaid ? runMermaid() : getScript('https://cdn.cbd.int/mermaid@10.2.4/dist/mermaid.min.js').then(runMermaid)
+  }
+
+  anzhiyu.addGlobalFn('themeChange', runMermaid, 'mermaid')
+
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const init = () => {
+    twikoo.init(Object.assign({
+      el: '#twikoo-wrap',
+      envId: 'https://twikoo.karltan.com/.netlify/functions/twikoo',
+      region: '',
+      onCommentLoaded: () => {
+        anzhiyu.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      }
+    }, null))
+  }
+
+  const loadTwikoo = () => {
+    if (typeof twikoo === 'object') setTimeout(runFn,0)
+    else getScript('https://cdn.cbd.int/twikoo@1.6.25/dist/twikoo.all.min.js').then(runFn)
+  }
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://twikoo.karltan.com/.netlify/functions/twikoo',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const runFn = () => {
+    init();
+    GLOBAL_CONFIG_SITE.isPost && getCount()
+  }
+
+  if ('Twikoo' === 'Twikoo' || !false) {
+    if (false) anzhiyu.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else {
+      loadTwikoo()
+    }
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script><input type="hidden" name="page-type" id="page-type" value="post"><script async src="/js/anzhiyu/comment_barrage.js"></script></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<pre><code>.*?<\/pre>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    const runTwikoo = () => {
+      twikoo.getRecentComments({
+        envId: 'https://twikoo.karltan.com/.netlify/functions/twikoo',
+        region: '',
+        pageSize: 6,
+        includeReply: true
+      }).then(function (res) {
+        const twikooArray = res.map(e => {
+          return {
+            'content': changeContent(e.comment),
+            'avatar': e.avatar,
+            'nick': e.nick,
+            'url': e.url + '#' + e.id,
+            'date': new Date(e.created).toISOString()
+          }
+        })
+
+        saveToLocal.set('twikoo-newest-comments', JSON.stringify(twikooArray), 10/(60*24))
+        generateHtml(twikooArray)
+      }).catch(function (err) {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.textContent= "无法获取评论，请确认相关配置是否正确"
+      })
+    }
+
+    if (typeof twikoo === 'object') {
+      runTwikoo()
+    } else {
+      getScript('https://cdn.cbd.int/twikoo@1.6.25/dist/twikoo.all.min.js').then(runTwikoo)
+    }
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'data-lazy-src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'><div class='name'><span>${array[i].nick} </span></div></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <time datetime="${array[i].date}">${anzhiyu.diffDate(array[i].date, true)}</time></div>
+        </div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('twikoo-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><script async data-pjax src="https://npm.elemecdn.com/anzhiyu-theme-static@1.0.1/bubble/bubble.js"></script><script>var visitorMail = "visitor@karltan.com";
+</script><script async data-pjax src="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/waterfall/waterfall.js"></script><script src="https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/qrcodejs/1.0.0/qrcode.min.js"></script><script src="/js/anzhiyu/right_click_menu.js"></script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.1.9/icon/ali_iconfont_css.css"><script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script><script defer src="/_vercel/insights/script.js"></script><script charset="UTF-8" id="LA_COLLECT" src="https://sdk.51.la/js-sdk-pro.min.js"></script><script src="https://sdk.51.la/perf/js-sdk-perf.min.js" crossorigin="anonymous"></script><script>LA.init({id:"{3GbfAYtZPDEan7kS}",ck:"{3Gbf0O9t4EtAOhf1}"})</script><script>new LingQue.Monitor().init({id:"3GbfAYtZPDEan7kS",sendSuspicious:true});</script><script>(() => {
+  window.$crisp = [];
+  window.CRISP_WEBSITE_ID = "99975f47-0cf6-4a4b-8088-49fd5cb33ab0";
+  (function () {
+    d = document;
+    s = d.createElement("script");
+    s.src = "https://client.crisp.chat/l.js";
+    s.async = 1;
+    d.getElementsByTagName("head")[0].appendChild(s);
+  })();
+  $crisp.push(["safe", true])
+
+  const isChatBtn = true
+  const isChatHideShow = false
+
+  if (isChatBtn) {
+    const open = () => {
+      $crisp.push(["do", "chat:show"])
+      $crisp.push(["do", "chat:open"])
+    }
+
+    const close = () => {
+      $crisp.push(["do", "chat:hide"])
+    }
+
+    close()
+    $crisp.push(["on", "chat:closed", function() {
+      close()
+    }])
+
+    window.chatBtnFn = () => {
+      $crisp.is("chat:visible") ? close() : open()
+    }
+  } else if (isChatHideShow) {
+    window.chatBtn = {
+      hide: () => {
+        $crisp.push(["do", "chat:hide"])
+      },
+      show: () => {
+        $crisp.push(["do", "chat:show"])
+      }
+    }
+  }
+})()</script><link rel="stylesheet" href="https://cdn.cbd.int/anzhiyu-theme-static@1.0.0/aplayer/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.cbd.int/anzhiyu-blog-static@1.0.1/js/APlayer.min.js"></script><script src="https://cdn.cbd.int/hexo-anzhiyu-music@1.0.1/assets/js/Meting2.min.js"></script><script src="https://cdn.cbd.int/pjax@0.2.8/pjax.min.js"></script><script>let pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:type\"]","meta[property=\"og:site_name\"]","meta[property=\"og:description\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+  // removeEventListener scroll 
+  anzhiyu.removeGlobalFnEvent('pjax')
+  anzhiyu.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script charset="UTF-8" src="https://cdn.cbd.int/anzhiyu-theme-static@1.1.5/accesskey/accesskey.js"></script></div><div id="popup-window"><div class="popup-window-title">通知</div><div class="popup-window-divider"></div><div class="popup-window-content"><div class="popup-tip">你好呀</div><div class="popup-link"><i class="anzhiyufont anzhiyu-icon-arrow-circle-right"></i></div></div></div></body></html>
